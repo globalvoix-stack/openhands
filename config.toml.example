@@ -1,0 +1,81 @@
+# Thinksoft Configuration File - Example
+# Copy this file to config.toml and customize it for your environment
+
+[core]
+# Workspace directory - where Thinksoft will work on files
+workspace_base = "./workspace"
+
+# Enable/disable file store for persistent storage
+enable_file_store = false
+
+# MCP (Model Context Protocol) Server Configuration
+# Example Tavily search API key for web search capabilities
+# tavily_api_key = "YOUR_TAVILY_API_KEY"
+
+[llm]
+# LLM Model Configuration
+# This is the primary model used by Thinksoft agents
+
+# Model name - examples:
+# - "anthropic/claude-sonnet-4-20250514" (recommended)
+# - "openai/gpt-4o"
+# - "openai/gpt-4-turbo"
+model = "anthropic/claude-sonnet-4-20250514"
+
+# API Key for your LLM provider
+# For Anthropic: Get from https://console.anthropic.com/
+# For OpenAI: Get from https://platform.openai.com/api-keys
+api_key = "YOUR_LLM_API_KEY"
+
+# Optional: Base URL for custom API endpoints or proxies
+# base_url = "https://api.anthropic.com"
+
+# Temperature for response generation (0.0 - 1.0)
+temperature = 0.0
+
+[agent]
+# Agent Configuration
+memory_enabled = true
+memory_max_threads = 2
+function_calling_llm_enabled = true
+micro_agent_enabled = true
+
+[sandbox]
+# Sandbox Runtime Configuration
+# Runtime type: "docker" or "local" or "remote"
+runtime = "docker"
+
+# Timeout settings (in seconds)
+# timeout = 120
+
+[security]
+# Security Configuration
+confirmation_mode = "enabled"
+security_analyzer = "llm"
+
+# ============================================
+# ADDITIONAL LLM CONFIGURATIONS
+# Define multiple LLM configs for different use cases
+# ============================================
+
+# Example: GPT-4 configuration
+[llm.gpt4]
+model = "openai/gpt-4o"
+api_key = "YOUR_OPENAI_API_KEY"
+temperature = 0.0
+
+# Example: Claude Haiku (faster, cheaper model)
+[llm.haiku]
+model = "anthropic/claude-3-5-haiku-20241022"
+api_key = "YOUR_ANTHROPIC_API_KEY"
+temperature = 0.0
+
+# ============================================
+# CONDENSER CONFIGURATIONS
+# ============================================
+
+[condenser.summarizer]
+type = "llm"
+llm_config = "haiku"
+keep_first = 2
+keep_last = 10

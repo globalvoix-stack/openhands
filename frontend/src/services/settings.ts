@@ -30,8 +30,8 @@ export const DEFAULT_SETTINGS: Settings = {
     stdio_servers: [],
     shttp_servers: [],
   },
-  git_user_name: "openhands",
-  git_user_email: "openhands@all-hands.dev",
+  git_user_name: "thinksoft",
+  git_user_email: "thinksoft@globalvoix.com",
   v1_enabled: false,
 };
 
