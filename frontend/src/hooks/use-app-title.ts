@@ -2,13 +2,13 @@ import { useParams } from "react-router";
 import { useConfig } from "#/hooks/query/use-config";
 import { useUserConversation } from "#/hooks/query/use-user-conversation";
 
-const APP_TITLE_OSS = "OpenHands";
-const APP_TITLE_SAAS = "OpenHands Cloud";
+const APP_TITLE_OSS = "Thinksoft";
+const APP_TITLE_SAAS = "Thinksoft Cloud";
 
 /**
  * Hook that returns the appropriate document title based on APP_MODE and current route.
- * - For conversation pages: "Conversation Title | OpenHands" or "Conversation Title | OpenHands Cloud"
- * - For other pages: "OpenHands" or "OpenHands Cloud"
+ * - For conversation pages: "Conversation Title | Thinksoft" or "Conversation Title | Thinksoft Cloud"
+ * - For other pages: "Thinksoft" or "Thinksoft Cloud"
  */
 export const useAppTitle = () => {
   const { data: config } = useConfig();
