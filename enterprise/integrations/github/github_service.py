@@ -4,10 +4,10 @@ from integrations.store_repo_utils import store_repositories_in_db
 from pydantic import SecretStr
 from server.auth.token_manager import TokenManager
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.integrations.github.github_service import GitHubService
-from openhands.integrations.service_types import ProviderType, Repository
-from openhands.server.types import AppMode
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.integrations.github.github_service import GitHubService
+from thinksoft.integrations.service_types import ProviderType, Repository
+from thinksoft.server.types import AppMode
 
 
 class SaaSGitHubService(GitHubService):

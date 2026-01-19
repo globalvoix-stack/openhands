@@ -19,17 +19,17 @@ from storage.user import User
 from storage.user_settings import UserSettings
 from storage.user_store import UserStore
 
-from openhands.core.config.openhands_config import OpenHandsConfig
-from openhands.server.settings import Settings
-from openhands.storage.settings.settings_store import SettingsStore
-from openhands.utils.async_utils import call_sync_from_async
+from thinksoft.core.config.thinksoft_config import ThinksoftConfig
+from thinksoft.server.settings import Settings
+from thinksoft.storage.settings.settings_store import SettingsStore
+from thinksoft.utils.async_utils import call_sync_from_async
 
 
 @dataclass
 class SaasSettingsStore(SettingsStore):
     user_id: str
     session_maker: sessionmaker
-    config: OpenHandsConfig
+    config: ThinksoftConfig
     ENCRYPT_VALUES = ['llm_api_key', 'llm_api_key_for_byor', 'search_api_key']
 
     def _get_user_settings_by_keycloak_id(
@@ -144,9 +144,9 @@ class SaasSettingsStore(SettingsStore):
                     return None
 
             org_id = user.current_org_id
-            # Check if provider is OpenHands and generate API key if needed
-            if self._is_openhands_provider(item):
-                await self._ensure_openhands_api_key(item, str(org_id))
+            # Check if provider is Thinksoft and generate API key if needed
+            if self._is_thinksoft_provider(item):
+                await self._ensure_thinksoft_api_key(item, str(org_id))
             org_member = None
             for om in user.org_members:
                 if om.org_id == org_id:
@@ -171,7 +171,7 @@ class SaasSettingsStore(SettingsStore):
     @classmethod
     async def get_instance(
         cls,
-        config: OpenHandsConfig,
+        config: ThinksoftConfig,
         user_id: str,  # type: ignore[override]
     ) -> SaasSettingsStore:
         logger.debug(f'saas_settings_store.get_instance::{user_id}')
@@ -223,14 +223,14 @@ class SaasSettingsStore(SettingsStore):
         fernet_key = b64encode(hashlib.sha256(jwt_secret.encode()).digest())
         return Fernet(fernet_key)
 
-    def _is_openhands_provider(self, item: Settings) -> bool:
-        """Check if the settings use the OpenHands provider."""
-        return bool(item.llm_model and item.llm_model.startswith('openhands/'))
+    def _is_thinksoft_provider(self, item: Settings) -> bool:
+        """Check if the settings use the Thinksoft provider."""
+        return bool(item.llm_model and item.llm_model.startswith('thinksoft/'))
 
-    async def _ensure_openhands_api_key(self, item: Settings, org_id: str) -> None:
-        """Generate and set the OpenHands API key for the given settings.
+    async def _ensure_thinksoft_api_key(self, item: Settings, org_id: str) -> None:
+        """Generate and set the Thinksoft API key for the given settings.
 
-        First checks if an existing key with the OpenHands alias exists,
+        First checks if an existing key with the Thinksoft alias exists,
         and reuses it if found. Otherwise, generates a new key.
         """
         # Generate new key if none exists
@@ -238,17 +238,17 @@ class SaasSettingsStore(SettingsStore):
             self.user_id,
             org_id,
             None,
-            {'type': 'openhands'},
+            {'type': 'thinksoft'},
         )
 
         if generated_key:
             item.llm_api_key = SecretStr(generated_key)
             logger.info(
-                'saas_settings_store:store:generated_openhands_key',
+                'saas_settings_store:store:generated_thinksoft_key',
                 extra={'user_id': self.user_id},
             )
         else:
             logger.warning(
-                'saas_settings_store:store:failed_to_generate_openhands_key',
+                'saas_settings_store:store:failed_to_generate_thinksoft_key',
                 extra={'user_id': self.user_id},
             )

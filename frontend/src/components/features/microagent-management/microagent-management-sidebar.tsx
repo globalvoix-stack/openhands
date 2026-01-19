@@ -12,8 +12,8 @@ import { Provider } from "#/types/settings";
 import {
   cn,
   shouldIncludeRepository,
-  getOpenHandsQuery,
-  hasOpenHandsSuffix,
+  getThinksoftQuery,
+  hasThinksoftSuffix,
 } from "#/utils/utils";
 import { sanitizeQuery } from "#/utils/sanitize-query";
 import { I18nKey } from "#/i18n/declaration";
@@ -64,7 +64,7 @@ export function MicroagentManagementSidebar({
     data: userAndOrgLevelRepositorySearchResults,
     isLoading: isUserAndOrgLevelRepositoryLoading,
   } = useSearchRepositories(
-    getOpenHandsQuery(selectedProvider),
+    getThinksoftQuery(selectedProvider),
     selectedProvider,
     false,
     500,
@@ -130,7 +130,7 @@ export function MicroagentManagementSidebar({
     if (userAndOrgLevelRepositorySearchResults?.length) {
       userAndOrgLevelRepositorySearchResults.forEach((repo: GitRepository) => {
         if (
-          hasOpenHandsSuffix(repo, selectedProvider) &&
+          hasThinksoftSuffix(repo, selectedProvider) &&
           shouldIncludeRepository(repo, debouncedSearchQuery)
         ) {
           if (repo.owner_type === "user") {
@@ -152,7 +152,7 @@ export function MicroagentManagementSidebar({
     setOrganizationRepositories,
   ]);
 
-  // Process other repositories (non-OpenHands repositories) from filteredRepositories
+  // Process other repositories (non-Thinksoft repositories) from filteredRepositories
   useEffect(() => {
     if (!filteredRepositories?.length) {
       setRepositories([]);
@@ -162,8 +162,8 @@ export function MicroagentManagementSidebar({
     const otherRepos: GitRepository[] = [];
 
     filteredRepositories.forEach((repo: GitRepository) => {
-      // Only include repositories that don't have the OpenHands suffix
-      if (!hasOpenHandsSuffix(repo, selectedProvider)) {
+      // Only include repositories that don't have the Thinksoft suffix
+      if (!hasThinksoftSuffix(repo, selectedProvider)) {
         otherRepos.push(repo);
       }
     });

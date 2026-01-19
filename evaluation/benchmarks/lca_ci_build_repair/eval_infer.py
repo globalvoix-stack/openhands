@@ -16,29 +16,29 @@ import ruamel.yaml
 from evaluation.utils.shared import (
     EvalMetadata,
     get_default_sandbox_config_for_eval,
-    get_openhands_config_for_eval,
+    get_thinksoft_config_for_eval,
     make_metadata,
 )
-from openhands.core.config import (
+from thinksoft.core.config import (
     LLMConfig,
-    OpenHandsConfig,
+    ThinksoftConfig,
     get_evaluation_parser,
-    load_openhands_config,
+    load_thinksoft_config,
 )
-from openhands.core.logger import openhands_logger as logger
-from openhands.core.main import create_runtime
-from openhands.events.action import CmdRunAction
-from openhands.events.observation import CmdOutputObservation
-from openhands.runtime.base import Runtime
-from openhands.utils.async_utils import call_async_from_sync
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.core.main import create_runtime
+from thinksoft.events.action import CmdRunAction
+from thinksoft.events.observation import CmdOutputObservation
+from thinksoft.runtime.base import Runtime
+from thinksoft.utils.async_utils import call_async_from_sync
 
 
 def get_config(
     metadata: EvalMetadata,
-) -> OpenHandsConfig:
+) -> ThinksoftConfig:
     sandbox_config = get_default_sandbox_config_for_eval()
     sandbox_config.base_container_image = 'python:3.12-bookworm'
-    config = get_openhands_config_for_eval(
+    config = get_thinksoft_config_for_eval(
         metadata=metadata,
         runtime='docker',
         sandbox_config=sandbox_config,
@@ -49,7 +49,7 @@ def get_config(
     return config
 
 
-config = load_openhands_config()
+config = load_thinksoft_config()
 
 
 def load_bench_config():

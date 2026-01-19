@@ -7,20 +7,20 @@ from integrations.utils import (
 
 def test_has_exact_mention():
     # Test basic exact match
-    assert has_exact_mention('Hello @openhands!', '@openhands') is True
-    assert has_exact_mention('@openhands at start', '@openhands') is True
-    assert has_exact_mention('End with @openhands', '@openhands') is True
-    assert has_exact_mention('@openhands', '@openhands') is True
+    assert has_exact_mention('Hello @thinksoft!', '@thinksoft') is True
+    assert has_exact_mention('@thinksoft at start', '@thinksoft') is True
+    assert has_exact_mention('End with @thinksoft', '@thinksoft') is True
+    assert has_exact_mention('@thinksoft', '@thinksoft') is True
 
     # Test no match
-    assert has_exact_mention('No mention here', '@openhands') is False
-    assert has_exact_mention('', '@openhands') is False
+    assert has_exact_mention('No mention here', '@thinksoft') is False
+    assert has_exact_mention('', '@thinksoft') is False
 
     # Test partial matches (should be False)
-    assert has_exact_mention('Hello @openhands-agent!', '@openhands') is False
-    assert has_exact_mention('Email: user@openhands.com', '@openhands') is False
-    assert has_exact_mention('Text@openhands', '@openhands') is False
-    assert has_exact_mention('@openhandsmore', '@openhands') is False
+    assert has_exact_mention('Hello @thinksoft-agent!', '@thinksoft') is False
+    assert has_exact_mention('Email: user@thinksoft.com', '@thinksoft') is False
+    assert has_exact_mention('Text@thinksoft', '@thinksoft') is False
+    assert has_exact_mention('@thinksoftmore', '@thinksoft') is False
 
     # Test with special characters in mention
     assert has_exact_mention('Hi @open.hands!', '@open.hands') is True
@@ -28,20 +28,20 @@ def test_has_exact_mention():
     assert has_exact_mention('With @open_hands_ai', '@open_hands_ai') is True
 
     # Test case insensitivity (function now handles case conversion internally)
-    assert has_exact_mention('Hi @OpenHands', '@OpenHands') is True
-    assert has_exact_mention('Hi @OpenHands', '@openhands') is True
-    assert has_exact_mention('Hi @openhands', '@OpenHands') is True
-    assert has_exact_mention('Hi @OPENHANDS', '@openhands') is True
+    assert has_exact_mention('Hi @Thinksoft', '@Thinksoft') is True
+    assert has_exact_mention('Hi @Thinksoft', '@thinksoft') is True
+    assert has_exact_mention('Hi @thinksoft', '@Thinksoft') is True
+    assert has_exact_mention('Hi @THINKSOFT', '@thinksoft') is True
 
     # Test multiple mentions
-    assert has_exact_mention('@openhands and @openhands again', '@openhands') is True
-    assert has_exact_mention('@openhands-agent and @openhands', '@openhands') is True
+    assert has_exact_mention('@thinksoft and @thinksoft again', '@thinksoft') is True
+    assert has_exact_mention('@thinksoft-agent and @thinksoft', '@thinksoft') is True
 
     # Test with surrounding punctuation
-    assert has_exact_mention('Hey, @openhands!', '@openhands') is True
-    assert has_exact_mention('(@openhands)', '@openhands') is True
-    assert has_exact_mention('@openhands: hello', '@openhands') is True
-    assert has_exact_mention('@openhands? yes', '@openhands') is True
+    assert has_exact_mention('Hey, @thinksoft!', '@thinksoft') is True
+    assert has_exact_mention('(@thinksoft)', '@thinksoft') is True
+    assert has_exact_mention('@thinksoft: hello', '@thinksoft') is True
+    assert has_exact_mention('@thinksoft? yes', '@thinksoft') is True
 
 
 def test_markdown_to_jira_markup():
@@ -74,8 +74,8 @@ def test_infer_repo_from_message():
         # Single GitHub URLs
         ('Clone https://github.com/demo123/demo1.git', ['demo123/demo1']),
         (
-            'Check out https://github.com/OpenHands/OpenHands.git for details',
-            ['OpenHands/OpenHands'],
+            'Check out https://github.com/Thinksoft/Thinksoft.git for details',
+            ['Thinksoft/Thinksoft'],
         ),
         ('Visit https://github.com/microsoft/vscode', ['microsoft/vscode']),
         # Single GitLab URLs
@@ -92,7 +92,7 @@ def test_infer_repo_from_message():
             ['atlassian/atlassian-connect-express'],
         ),
         # Single direct owner/repo mentions
-        ('Please deploy the OpenHands/OpenHands repo', ['OpenHands/OpenHands']),
+        ('Please deploy the Thinksoft/Thinksoft repo', ['Thinksoft/Thinksoft']),
         ('I need help with the microsoft/vscode repository', ['microsoft/vscode']),
         ('Check facebook/react for examples', ['facebook/react']),
         ('The torvalds/linux kernel', ['torvalds/linux']),

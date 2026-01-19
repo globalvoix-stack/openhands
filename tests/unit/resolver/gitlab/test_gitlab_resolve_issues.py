@@ -4,25 +4,25 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from openhands.core.config import LLMConfig
-from openhands.events.action import CmdRunAction
-from openhands.events.observation import (
+from thinksoft.core.config import LLMConfig
+from thinksoft.events.action import CmdRunAction
+from thinksoft.events.observation import (
     CmdOutputMetadata,
     CmdOutputObservation,
     NullObservation,
 )
-from openhands.integrations.service_types import ProviderType
-from openhands.llm.llm import LLM
-from openhands.resolver.interfaces.gitlab import GitlabIssueHandler, GitlabPRHandler
-from openhands.resolver.interfaces.issue import Issue, ReviewThread
-from openhands.resolver.interfaces.issue_definitions import (
+from thinksoft.integrations.service_types import ProviderType
+from thinksoft.llm.llm import LLM
+from thinksoft.resolver.interfaces.gitlab import GitlabIssueHandler, GitlabPRHandler
+from thinksoft.resolver.interfaces.issue import Issue, ReviewThread
+from thinksoft.resolver.interfaces.issue_definitions import (
     ServiceContextIssue,
     ServiceContextPR,
 )
-from openhands.resolver.issue_resolver import (
+from thinksoft.resolver.issue_resolver import (
     IssueResolver,
 )
-from openhands.resolver.resolver_output import ResolverOutput
+from thinksoft.resolver.resolver_output import ResolverOutput
 
 
 @pytest.fixture
@@ -58,7 +58,7 @@ def mock_gitlab_token():
     This eliminates the need for repeated patching in each test function.
     """
     with patch(
-        'openhands.resolver.issue_resolver.identify_token',
+        'thinksoft.resolver.issue_resolver.identify_token',
         return_value=ProviderType.GITLAB,
     ) as patched:
         yield patched
@@ -516,17 +516,17 @@ async def test_process_issue(
 
     # Patch the necessary functions and methods
     with (
-        patch('openhands.resolver.issue_resolver.create_runtime', mock_create_runtime),
-        patch('openhands.resolver.issue_resolver.run_controller', mock_run_controller),
+        patch('thinksoft.resolver.issue_resolver.create_runtime', mock_create_runtime),
+        patch('thinksoft.resolver.issue_resolver.run_controller', mock_run_controller),
         patch.object(
             resolver, 'complete_runtime', return_value={'git_patch': 'test patch'}
         ),
         patch.object(resolver, 'initialize_runtime') as mock_initialize_runtime,
         patch(
-            'openhands.resolver.issue_resolver.SandboxConfig', return_value=MagicMock()
+            'thinksoft.resolver.issue_resolver.SandboxConfig', return_value=MagicMock()
         ),
         patch(
-            'openhands.resolver.issue_resolver.OpenHandsConfig',
+            'thinksoft.resolver.issue_resolver.ThinksoftConfig',
             return_value=MagicMock(),
         ),
     ):
@@ -629,12 +629,12 @@ def test_file_instruction():
         title='Test Issue',
         body='This is a test issue ![image](https://sampleimage.com/sample.png)',
     )
-    # load prompt from openhands/resolver/prompts/resolve/basic.jinja
-    with open('openhands/resolver/prompts/resolve/basic.jinja', 'r') as f:
+    # load prompt from thinksoft/resolver/prompts/resolve/basic.jinja
+    with open('thinksoft/resolver/prompts/resolve/basic.jinja', 'r') as f:
         prompt = f.read()
 
     with open(
-        'openhands/resolver/prompts/resolve/basic-conversation-instructions.jinja', 'r'
+        'thinksoft/resolver/prompts/resolve/basic-conversation-instructions.jinja', 'r'
     ) as f:
         conversation_instructions_template = f.read()
 
@@ -672,18 +672,18 @@ def test_file_instruction_with_repo_instruction():
         title='Test Issue',
         body='This is a test issue',
     )
-    # load prompt from openhands/resolver/prompts/resolve/basic.jinja
-    with open('openhands/resolver/prompts/resolve/basic.jinja', 'r') as f:
+    # load prompt from thinksoft/resolver/prompts/resolve/basic.jinja
+    with open('thinksoft/resolver/prompts/resolve/basic.jinja', 'r') as f:
         prompt = f.read()
 
     with open(
-        'openhands/resolver/prompts/resolve/basic-conversation-instructions.jinja', 'r'
+        'thinksoft/resolver/prompts/resolve/basic-conversation-instructions.jinja', 'r'
     ) as f:
         conversation_instructions_prompt = f.read()
 
-    # load repo instruction from openhands/resolver/prompts/repo_instructions/all-hands-ai___openhands-resolver.txt
+    # load repo instruction from thinksoft/resolver/prompts/repo_instructions/all-hands-ai___thinksoft-resolver.txt
     with open(
-        'openhands/resolver/prompts/repo_instructions/all-hands-ai___openhands-resolver.txt',
+        'thinksoft/resolver/prompts/repo_instructions/all-hands-ai___thinksoft-resolver.txt',
         'r',
     ) as f:
         repo_instruction = f.read()
@@ -708,7 +708,7 @@ This is a test issue"""
 You SHOULD INCLUDE PROPER INDENTATION in your edit commands.
 
 Some basic information about this repository:
-This is a Python repo for openhands-resolver, a library that attempts to resolve github issues with the AI agent OpenHands.
+This is a Python repo for thinksoft-resolver, a library that attempts to resolve github issues with the AI agent Thinksoft.
 
 - Setup: `poetry install --with test --with dev`
 - Testing: `poetry run pytest tests/test_*.py`
@@ -814,11 +814,11 @@ def test_instruction_with_thread_comments():
     )
 
     # Load the basic prompt template
-    with open('openhands/resolver/prompts/resolve/basic.jinja', 'r') as f:
+    with open('thinksoft/resolver/prompts/resolve/basic.jinja', 'r') as f:
         prompt = f.read()
 
     with open(
-        'openhands/resolver/prompts/resolve/basic-conversation-instructions.jinja', 'r'
+        'thinksoft/resolver/prompts/resolve/basic-conversation-instructions.jinja', 'r'
     ) as f:
         conversation_instructions_template = f.read()
 

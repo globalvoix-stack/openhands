@@ -4,12 +4,12 @@ from unittest.mock import patch
 
 import pytest
 
-from openhands.core.config.mcp_config import (
+from thinksoft.core.config.mcp_config import (
     MCPConfig,
     MCPSSEServerConfig,
     MCPStdioServerConfig,
 )
-from openhands.storage.data_models.settings import Settings
+from thinksoft.storage.data_models.settings import Settings
 
 
 @pytest.mark.asyncio

@@ -12,8 +12,8 @@ from server.conversation_callback_processor.gitlab_callback_processor import (
 )
 from storage.conversation_callback import CallbackStatus, ConversationCallback
 
-from openhands.core.schema.agent import AgentState
-from openhands.events.observation.agent import AgentStateChangedObservation
+from thinksoft.core.schema.agent import AgentState
+from thinksoft.events.observation.agent import AgentStateChangedObservation
 
 
 @pytest.fixture

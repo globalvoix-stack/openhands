@@ -6,7 +6,7 @@ import { useCreateConversation } from "./mutation/use-create-conversation";
 import { useUserProviders } from "./use-user-providers";
 import { useConversationSubscriptions } from "#/context/conversation-subscriptions-provider";
 import { Provider } from "#/types/settings";
-import { CreateMicroagent, Conversation } from "#/api/open-hands.types";
+import { CreateMicroagent, Conversation } from "#/api/thinksoft.types";
 import ConversationService from "#/api/conversation-service/conversation-service.api";
 import { renderConversationStartingToast } from "#/components/features/chat/microagent/microagent-status-toast";
 

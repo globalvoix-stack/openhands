@@ -3,7 +3,7 @@ import {
   VERIFIED_ANTHROPIC_MODELS,
   VERIFIED_MISTRAL_MODELS,
   VERIFIED_OPENAI_MODELS,
-  VERIFIED_OPENHANDS_MODELS,
+  VERIFIED_THINKSOFT_MODELS,
 } from "./verified-models";
 
 /**
@@ -52,8 +52,8 @@ export const extractModelAndProvider = (model: string) => {
     if (VERIFIED_MISTRAL_MODELS.includes(split[0])) {
       return { provider: "mistral", model: split[0], separator: "/" };
     }
-    if (VERIFIED_OPENHANDS_MODELS.includes(split[0])) {
-      return { provider: "openhands", model: split[0], separator: "/" };
+    if (VERIFIED_THINKSOFT_MODELS.includes(split[0])) {
+      return { provider: "thinksoft", model: split[0], separator: "/" };
     }
     // return as model only
     return { provider: "", model, separator: "" };

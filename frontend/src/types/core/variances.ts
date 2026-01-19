@@ -40,7 +40,7 @@ export interface StatusUpdate {
   message: string;
 }
 
-export type OpenHandsVariance =
+export type ThinksoftVariance =
   | TokenConfig
   | InitConfig
   | LocalUserMessageAction

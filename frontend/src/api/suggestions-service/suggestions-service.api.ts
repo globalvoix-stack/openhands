@@ -1,9 +1,9 @@
 import { SuggestedTask } from "#/utils/types";
-import { openHands } from "../open-hands-axios";
+import { thinksoft } from "../thinksoft-axios";
 
 export class SuggestionsService {
   static async getSuggestedTasks(): Promise<SuggestedTask[]> {
-    const { data } = await openHands.get("/api/user/suggested-tasks");
+    const { data } = await thinksoft.get("/api/user/suggested-tasks");
     return data;
   }
 }

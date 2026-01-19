@@ -1,4 +1,4 @@
-import { OpenHandsEvent } from "#/types/v1/core";
+import { ThinksoftEvent } from "#/types/v1/core";
 import { isObservationEvent } from "#/types/v1/type-guards";
 
 /**
@@ -6,9 +6,9 @@ import { isObservationEvent } from "#/types/v1/type-guards";
  * Replaces actions with observations when they arrive (so UI shows observation instead of action)
  */
 export const handleEventForUI = (
-  event: OpenHandsEvent,
-  uiEvents: OpenHandsEvent[],
-): OpenHandsEvent[] => {
+  event: ThinksoftEvent,
+  uiEvents: ThinksoftEvent[],
+): ThinksoftEvent[] => {
   const newUiEvents = [...uiEvents];
 
   if (isObservationEvent(event)) {

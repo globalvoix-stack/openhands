@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useActiveConversation } from "#/hooks/query/use-active-conversation";
 import { useUploadFiles } from "./use-upload-files";
 import { useV1UploadFiles } from "./use-v1-upload-files";
-import { FileUploadSuccessResponse } from "#/api/open-hands.types";
+import { FileUploadSuccessResponse } from "#/api/thinksoft.types";
 
 interface UnifiedUploadFilesVariables {
   conversationId: string;

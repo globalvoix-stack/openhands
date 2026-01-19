@@ -20,22 +20,22 @@ from evaluation.utils.shared import (
     compatibility_for_eval_history_pairs,
     get_default_sandbox_config_for_eval,
     get_metrics,
-    get_openhands_config_for_eval,
+    get_thinksoft_config_for_eval,
     make_metadata,
     prepare_dataset,
     reset_logger_for_multiprocessing,
     run_evaluation,
 )
-from openhands.controller.state.state import State
-from openhands.core.config import (
-    OpenHandsConfig,
+from thinksoft.controller.state.state import State
+from thinksoft.core.config import (
+    ThinksoftConfig,
     get_evaluation_parser,
     get_llm_config_arg,
 )
-from openhands.core.logger import openhands_logger as logger
-from openhands.core.main import create_runtime, run_controller
-from openhands.events.action import MessageAction
-from openhands.utils.async_utils import call_async_from_sync
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.core.main import create_runtime, run_controller
+from thinksoft.events.action import MessageAction
+from thinksoft.utils.async_utils import call_async_from_sync
 
 AGENT_CLS_TO_FAKE_USER_RESPONSE_FN = {
     'CodeActAgent': codeact_user_response,
@@ -48,10 +48,10 @@ AGENT_CLS_TO_INST_SUFFIX = {
 
 def get_config(
     metadata: EvalMetadata,
-) -> OpenHandsConfig:
+) -> ThinksoftConfig:
     sandbox_config = get_default_sandbox_config_for_eval()
     sandbox_config.base_container_image = 'python:3.12-bookworm'
-    config = get_openhands_config_for_eval(
+    config = get_thinksoft_config_for_eval(
         metadata=metadata,
         runtime='docker',
         sandbox_config=sandbox_config,
@@ -85,13 +85,13 @@ def process_instance(
     runtime = create_runtime(config)
     call_async_from_sync(runtime.connect)
 
-    # Note: We need to figure out how to bridge Tau-Bench environment with OpenHands agent.
-    # OpenHands agents expect to interact with a runtime (shell/browser).
+    # Note: We need to figure out how to bridge Tau-Bench environment with Thinksoft agent.
+    # Thinksoft agents expect to interact with a runtime (shell/browser).
     # Tau-Bench environments provide a python interface.
     # For now, we will assume we can run python code in the runtime to interact with Tau-Bench,
     # OR we adapt the agent to call Tau-Bench API.
 
-    # Given OpenHands agents are general purpose, we probably want to expose Tau-Bench tools
+    # Given Thinksoft agents are general purpose, we probably want to expose Tau-Bench tools
     # as Python functions available in the runtime, or standard tools.
 
     # Let's inspect how Tau-Bench works. It seems it requires `tau-bench` package.

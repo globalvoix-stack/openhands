@@ -4,7 +4,7 @@ from uuid import UUID
 
 import pytest
 
-from openhands.storage.data_models.conversation_metadata import ConversationMetadata
+from thinksoft.storage.data_models.conversation_metadata import ConversationMetadata
 
 # Mock the database module before importing
 with patch('storage.database.engine'), patch('storage.database.a_engine'):

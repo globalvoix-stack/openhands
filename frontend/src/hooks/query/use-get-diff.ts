@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import GitService from "#/api/git-service/git-service.api";
-import { GitChangeStatus } from "#/api/open-hands.types";
+import { GitChangeStatus } from "#/api/thinksoft.types";
 import { useConversationId } from "#/hooks/use-conversation-id";
 
 type UseGetDiffConfig = {

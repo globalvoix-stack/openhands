@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { usePostHog } from "posthog-js/react";
 import { useNavigate } from "react-router";
-import { openHands } from "#/api/open-hands-axios";
+import { thinksoft } from "#/api/thinksoft-axios";
 import { handleCaptureConsent } from "#/utils/handle-capture-consent";
 import { useTracking } from "#/hooks/use-tracking";
 
@@ -24,7 +24,7 @@ export const useAcceptTos = () => {
       handleCaptureConsent(posthog, true);
 
       // Call the API to record TOS acceptance in the database
-      return openHands.post<AcceptTosResponse>("/api/accept_tos", {
+      return thinksoft.post<AcceptTosResponse>("/api/accept_tos", {
         redirect_url: redirectUrl,
       });
     },

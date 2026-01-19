@@ -11,7 +11,7 @@ from integrations.models import Message, SourceType
 from server.auth.constants import GITHUB_APP_WEBHOOK_SECRET
 from server.auth.token_manager import TokenManager
 
-from openhands.core.logger import openhands_logger as logger
+from thinksoft.core.logger import thinksoft_logger as logger
 
 # Environment variable to disable GitHub webhooks
 GITHUB_WEBHOOKS_ENABLED = os.environ.get('GITHUB_WEBHOOKS_ENABLED', '1') in (

@@ -25,45 +25,45 @@ from storage.database import session_maker
 from storage.stored_conversation_metadata import StoredConversationMetadata
 from storage.stored_conversation_metadata_saas import StoredConversationMetadataSaas
 
-from openhands.controller.agent import Agent
-from openhands.core.config import LLMConfig, OpenHandsConfig
-from openhands.core.config.mcp_config import MCPConfig, MCPSHTTPServerConfig
-from openhands.core.logger import openhands_logger as logger
-from openhands.events.action import MessageAction
-from openhands.events.event_store import EventStore
-from openhands.events.serialization.event import event_to_dict
-from openhands.integrations.provider import (
+from thinksoft.controller.agent import Agent
+from thinksoft.core.config import LLMConfig, ThinksoftConfig
+from thinksoft.core.config.mcp_config import MCPConfig, MCPSHTTPServerConfig
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.events.action import MessageAction
+from thinksoft.events.event_store import EventStore
+from thinksoft.events.serialization.event import event_to_dict
+from thinksoft.integrations.provider import (
     PROVIDER_TOKEN_TYPE,
     ProviderHandler,
     ProviderToken,
 )
-from openhands.runtime.impl.remote.remote_runtime import RemoteRuntime
-from openhands.runtime.plugins.vscode import VSCodeRequirement
-from openhands.runtime.runtime_status import RuntimeStatus
-from openhands.server.config.server_config import ServerConfig
-from openhands.server.constants import ROOM_KEY
-from openhands.server.conversation_manager.conversation_manager import (
+from thinksoft.runtime.impl.remote.remote_runtime import RemoteRuntime
+from thinksoft.runtime.plugins.vscode import VSCodeRequirement
+from thinksoft.runtime.runtime_status import RuntimeStatus
+from thinksoft.server.config.server_config import ServerConfig
+from thinksoft.server.constants import ROOM_KEY
+from thinksoft.server.conversation_manager.conversation_manager import (
     ConversationManager,
 )
-from openhands.server.data_models.agent_loop_info import AgentLoopInfo
-from openhands.server.monitoring import MonitoringListener
-from openhands.server.session import Session
-from openhands.server.session.conversation import ServerConversation
-from openhands.server.session.conversation_init_data import ConversationInitData
-from openhands.storage.conversation.conversation_store import ConversationStore
-from openhands.storage.data_models.conversation_metadata import ConversationMetadata
-from openhands.storage.data_models.conversation_status import ConversationStatus
-from openhands.storage.data_models.settings import Settings
-from openhands.storage.files import FileStore
-from openhands.storage.locations import (
+from thinksoft.server.data_models.agent_loop_info import AgentLoopInfo
+from thinksoft.server.monitoring import MonitoringListener
+from thinksoft.server.session import Session
+from thinksoft.server.session.conversation import ServerConversation
+from thinksoft.server.session.conversation_init_data import ConversationInitData
+from thinksoft.storage.conversation.conversation_store import ConversationStore
+from thinksoft.storage.data_models.conversation_metadata import ConversationMetadata
+from thinksoft.storage.data_models.conversation_status import ConversationStatus
+from thinksoft.storage.data_models.settings import Settings
+from thinksoft.storage.files import FileStore
+from thinksoft.storage.locations import (
     get_conversation_event_filename,
     get_conversation_events_dir,
 )
-from openhands.utils.async_utils import call_sync_from_async
-from openhands.utils.http_session import httpx_verify_option
-from openhands.utils.import_utils import get_impl
-from openhands.utils.shutdown_listener import should_continue
-from openhands.utils.utils import create_registry_and_conversation_stats
+from thinksoft.utils.async_utils import call_sync_from_async
+from thinksoft.utils.http_session import httpx_verify_option
+from thinksoft.utils.import_utils import get_impl
+from thinksoft.utils.shutdown_listener import should_continue
+from thinksoft.utils.utils import create_registry_and_conversation_stats
 
 # Pattern for accessing runtime pods externally
 RUNTIME_URL_PATTERN = os.getenv(
@@ -109,7 +109,7 @@ class SaasNestedConversationManager(ConversationManager):
     """Conversation manager where the agent loops exist inside the remote containers."""
 
     sio: socketio.AsyncServer
-    config: OpenHandsConfig
+    config: ThinksoftConfig
     server_config: ServerConfig
     file_store: FileStore
     event_retrieval: EventRetrieval
@@ -402,12 +402,12 @@ class SaasNestedConversationManager(ConversationManager):
         self, client: httpx.AsyncClient, api_url: str, sid: str, user_id: str
     ):
         # Prevent circular import
-        from openhands.experiments.experiment_manager import (
+        from thinksoft.experiments.experiment_manager import (
             ExperimentConfig,
             ExperimentManagerImpl,
         )
 
-        config: OpenHandsConfig = ExperimentManagerImpl.run_config_variant_test(
+        config: ThinksoftConfig = ExperimentManagerImpl.run_config_variant_test(
             user_id, sid, self.config
         )
 
@@ -787,7 +787,7 @@ class SaasNestedConversationManager(ConversationManager):
     def get_instance(
         cls,
         sio: socketio.AsyncServer,
-        config: OpenHandsConfig,
+        config: ThinksoftConfig,
         file_store: FileStore,
         server_config: ServerConfig,
         monitoring_listener: MonitoringListener,
@@ -890,7 +890,7 @@ class SaasNestedConversationManager(ConversationManager):
         config = self.config.model_copy(deep=True)
         env_vars = config.sandbox.runtime_startup_env_vars
         env_vars['CONVERSATION_MANAGER_CLASS'] = (
-            'openhands.server.conversation_manager.standalone_conversation_manager.StandaloneConversationManager'
+            'thinksoft.server.conversation_manager.standalone_conversation_manager.StandaloneConversationManager'
         )
         env_vars['LOG_JSON'] = '1'
         env_vars['SERVE_FRONTEND'] = '0'
@@ -899,7 +899,7 @@ class SaasNestedConversationManager(ConversationManager):
         env_vars['USER'] = (
             RUNTIME_USERNAME
             if RUNTIME_USERNAME
-            else ('openhands' if config.run_as_openhands else 'root')
+            else ('thinksoft' if config.run_as_thinksoft else 'root')
         )
         env_vars['PERMITTED_CORS_ORIGINS'] = ','.join(PERMITTED_CORS_ORIGINS)
         env_vars['port'] = '60000'
@@ -909,7 +909,7 @@ class SaasNestedConversationManager(ConversationManager):
         env_vars['WORK_PORT_2'] = '12001'
         # We need to be able to specify the nested conversation id within the nested runtime
         env_vars['ALLOW_SET_CONVERSATION_ID'] = '1'
-        env_vars['FILE_STORE_PATH'] = '/workspace/.openhands/file_store'
+        env_vars['FILE_STORE_PATH'] = '/workspace/.thinksoft/file_store'
         env_vars['WORKSPACE_BASE'] = '/workspace/project'
         env_vars['WORKSPACE_MOUNT_PATH_IN_SANDBOX'] = '/workspace/project'
         env_vars['SANDBOX_CLOSE_DELAY'] = '0'
@@ -954,7 +954,7 @@ class SaasNestedConversationManager(ConversationManager):
             headless_mode=False,
             user_id=user_id,
             # git_provider_tokens: PROVIDER_TOKEN_TYPE | None = None,
-            main_module='openhands.server',
+            main_module='thinksoft.server',
             llm_registry=llm_registry,
         )
 

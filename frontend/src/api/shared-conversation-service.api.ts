@@ -1,5 +1,5 @@
-import { OpenHandsEvent } from "#/types/v1/core";
-import { openHands } from "./open-hands-axios";
+import { ThinksoftEvent } from "#/types/v1/core";
+import { thinksoft } from "./thinksoft-axios";
 
 export interface SharedConversation {
   id: string;
@@ -19,7 +19,7 @@ export interface SharedConversation {
 }
 
 export interface EventPage {
-  items: OpenHandsEvent[];
+  items: ThinksoftEvent[];
   next_page_id: string | null;
 }
 
@@ -30,7 +30,7 @@ export const sharedConversationService = {
   async getSharedConversation(
     conversationId: string,
   ): Promise<SharedConversation | null> {
-    const response = await openHands.get<(SharedConversation | null)[]>(
+    const response = await thinksoft.get<(SharedConversation | null)[]>(
       "/api/shared-conversations",
       { params: { ids: conversationId } },
     );
@@ -45,7 +45,7 @@ export const sharedConversationService = {
     limit: number = 100,
     pageId?: string,
   ): Promise<EventPage> {
-    const response = await openHands.get<EventPage>(
+    const response = await thinksoft.get<EventPage>(
       "/api/shared-events/search",
       {
         params: {

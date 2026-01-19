@@ -29,29 +29,29 @@ from storage.org_store import OrgStore
 from storage.proactive_conversation_store import ProactiveConversationStore
 from storage.saas_secrets_store import SaasSecretsStore
 
-from openhands.agent_server.models import SendMessageRequest
-from openhands.app_server.app_conversation.app_conversation_models import (
+from thinksoft.agent_server.models import SendMessageRequest
+from thinksoft.app_server.app_conversation.app_conversation_models import (
     AppConversationStartRequest,
     AppConversationStartTaskStatus,
 )
-from openhands.app_server.config import get_app_conversation_service
-from openhands.app_server.services.injector import InjectorState
-from openhands.app_server.user.specifiy_user_context import USER_CONTEXT_ATTR
-from openhands.core.logger import openhands_logger as logger
-from openhands.integrations.github.github_service import GithubServiceImpl
-from openhands.integrations.provider import PROVIDER_TOKEN_TYPE, ProviderType
-from openhands.integrations.service_types import Comment
-from openhands.sdk import TextContent
-from openhands.server.services.conversation_service import (
+from thinksoft.app_server.config import get_app_conversation_service
+from thinksoft.app_server.services.injector import InjectorState
+from thinksoft.app_server.user.specifiy_user_context import USER_CONTEXT_ATTR
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.integrations.github.github_service import GithubServiceImpl
+from thinksoft.integrations.provider import PROVIDER_TOKEN_TYPE, ProviderType
+from thinksoft.integrations.service_types import Comment
+from thinksoft.sdk import TextContent
+from thinksoft.server.services.conversation_service import (
     initialize_conversation,
     start_conversation,
 )
-from openhands.server.user_auth.user_auth import UserAuth
-from openhands.storage.data_models.conversation_metadata import (
+from thinksoft.server.user_auth.user_auth import UserAuth
+from thinksoft.storage.data_models.conversation_metadata import (
     ConversationMetadata,
     ConversationTrigger,
 )
-from openhands.utils.async_utils import call_sync_from_async
+from thinksoft.utils.async_utils import call_sync_from_async
 
 OH_LABEL, INLINE_OH_LABEL = get_oh_labels(HOST)
 
@@ -502,11 +502,11 @@ class GithubFailingAction:
 
         if any(failed_jobs['merge conflict']):
             suggestions.append(
-                f'@OpenHands please fix the merge conflicts on PR #{pr_number}{branch_info}'
+                f'@Thinksoft please fix the merge conflicts on PR #{pr_number}{branch_info}'
             )
         if any(failed_jobs['actions']):
             suggestions.append(
-                f'@OpenHands please fix the failing actions on PR #{pr_number}{branch_info}'
+                f'@Thinksoft please fix the failing actions on PR #{pr_number}{branch_info}'
             )
 
         # Take at most 2 suggestions

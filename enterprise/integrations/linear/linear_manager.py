@@ -14,7 +14,7 @@ from integrations.manager import Manager
 from integrations.models import JobContext, Message
 from integrations.utils import (
     HOST_URL,
-    OPENHANDS_RESOLVER_TEMPLATES_DIR,
+    THINKSOFT_RESOLVER_TEMPLATES_DIR,
     filter_potential_repos_by_user_msg,
     get_session_expired_message,
 )
@@ -26,17 +26,17 @@ from storage.linear_integration_store import LinearIntegrationStore
 from storage.linear_user import LinearUser
 from storage.linear_workspace import LinearWorkspace
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.integrations.provider import ProviderHandler
-from openhands.integrations.service_types import Repository
-from openhands.server.shared import server_config
-from openhands.server.types import (
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.integrations.provider import ProviderHandler
+from thinksoft.integrations.service_types import Repository
+from thinksoft.server.shared import server_config
+from thinksoft.server.types import (
     LLMAuthenticationError,
     MissingSettingsError,
     SessionExpiredError,
 )
-from openhands.server.user_auth.user_auth import UserAuth
-from openhands.utils.http_session import httpx_verify_option
+from thinksoft.server.user_auth.user_auth import UserAuth
+from thinksoft.utils.http_session import httpx_verify_option
 
 
 class LinearManager(Manager):
@@ -45,13 +45,13 @@ class LinearManager(Manager):
         self.integration_store = LinearIntegrationStore.get_instance()
         self.api_url = 'https://api.linear.app/graphql'
         self.jinja_env = Environment(
-            loader=FileSystemLoader(OPENHANDS_RESOLVER_TEMPLATES_DIR + 'linear')
+            loader=FileSystemLoader(THINKSOFT_RESOLVER_TEMPLATES_DIR + 'linear')
         )
 
     async def authenticate_user(
         self, linear_user_id: str, workspace_id: int
     ) -> tuple[LinearUser | None, UserAuth | None]:
-        """Authenticate Linear user and get their OpenHands user auth."""
+        """Authenticate Linear user and get their Thinksoft user auth."""
 
         # Find active Linear user by Linear user ID and workspace ID
         linear_user = await self.integration_store.get_active_user(
@@ -146,7 +146,7 @@ class LinearManager(Manager):
             data = payload.get('data', {})
             comment = data.get('body', '')
 
-            if '@openhands' not in comment:
+            if '@thinksoft' not in comment:
                 return None
 
             issue_data = data.get('issue', {})
@@ -156,15 +156,15 @@ class LinearManager(Manager):
             data = payload.get('data', {})
             labels = data.get('labels', [])
 
-            has_openhands_label = False
+            has_thinksoft_label = False
             label_id = ''
             for label in labels:
-                if label.get('name') == 'openhands':
+                if label.get('name') == 'thinksoft':
                     label_id = label.get('id', '')
-                    has_openhands_label = True
+                    has_thinksoft_label = True
                     break
 
-            if not has_openhands_label and not label_id:
+            if not has_thinksoft_label and not label_id:
                 return None
 
             labelIdChanges = data.get('updatedFrom', {}).get('labelIds', [])
@@ -386,11 +386,11 @@ class LinearManager(Manager):
 
         except MissingSettingsError as e:
             logger.warning(f'[Linear] Missing settings error: {str(e)}')
-            msg_info = f'Please re-login into [OpenHands Cloud]({HOST_URL}) before starting a job.'
+            msg_info = f'Please re-login into [Thinksoft Cloud]({HOST_URL}) before starting a job.'
 
         except LLMAuthenticationError as e:
             logger.warning(f'[Linear] LLM authentication error: {str(e)}')
-            msg_info = f'Please set a valid LLM API key in [OpenHands Cloud]({HOST_URL}) before starting a job.'
+            msg_info = f'Please set a valid LLM API key in [Thinksoft Cloud]({HOST_URL}) before starting a job.'
 
         except SessionExpiredError as e:
             logger.warning(f'[Linear] Session expired: {str(e)}')

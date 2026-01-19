@@ -27,28 +27,28 @@ import { LlmSettingsInputsSkeleton } from "#/components/features/settings/llm-se
 import { KeyStatusIcon } from "#/components/features/settings/key-status-icon";
 import { DEFAULT_SETTINGS } from "#/services/settings";
 import { getProviderId } from "#/utils/map-provider";
-import { DEFAULT_OPENHANDS_MODEL } from "#/utils/verified-models";
+import { DEFAULT_THINKSOFT_MODEL } from "#/utils/verified-models";
 
-interface OpenHandsApiKeyHelpProps {
+interface ThinksoftApiKeyHelpProps {
   testId: string;
 }
 
-function OpenHandsApiKeyHelp({ testId }: OpenHandsApiKeyHelpProps) {
+function ThinksoftApiKeyHelp({ testId }: ThinksoftApiKeyHelpProps) {
   const { t } = useTranslation();
 
   return (
     <>
       <HelpLink
         testId={testId}
-        text={t(I18nKey.SETTINGS$OPENHANDS_API_KEY_HELP_TEXT)}
+        text={t(I18nKey.SETTINGS$THINKSOFT_API_KEY_HELP_TEXT)}
         linkText={t(I18nKey.SETTINGS$NAV_API_KEYS)}
         href="https://app.all-hands.dev/settings/api-keys"
-        suffix={` ${t(I18nKey.SETTINGS$OPENHANDS_API_KEY_HELP_SUFFIX)}`}
+        suffix={` ${t(I18nKey.SETTINGS$THINKSOFT_API_KEY_HELP_SUFFIX)}`}
       />
       <p className="text-xs">
         {t(I18nKey.SETTINGS$LLM_BILLING_INFO)}{" "}
         <a
-          href="https://docs.all-hands.dev/usage/llms/openhands-llms"
+          href="https://docs.all-hands.dev/usage/llms/thinksoft-llms"
           rel="noreferrer noopener"
           target="_blank"
           className="underline underline-offset-2"
@@ -110,27 +110,27 @@ function LlmSettingsScreen() {
     resources?.models || [],
   );
 
-  // Determine if we should hide the API key input and use OpenHands-managed key (when using OpenHands provider in SaaS mode)
+  // Determine if we should hide the API key input and use Thinksoft-managed key (when using Thinksoft provider in SaaS mode)
   const currentModel = currentSelectedModel || settings?.llm_model;
 
   const isSaasMode = config?.APP_MODE === "saas";
 
-  const isOpenHandsProvider = () => {
+  const isThinksoftProvider = () => {
     if (view === "basic") {
-      return selectedProvider === "openhands";
+      return selectedProvider === "thinksoft";
     }
 
     if (view === "advanced") {
       if (dirtyInputs.model) {
-        return currentModel?.startsWith("openhands/");
+        return currentModel?.startsWith("thinksoft/");
       }
-      return settings?.llm_model?.startsWith("openhands/");
+      return settings?.llm_model?.startsWith("thinksoft/");
     }
 
     return false;
   };
 
-  const shouldUseOpenHandsKey = isOpenHandsProvider() && isSaasMode;
+  const shouldUseThinksoftKey = isThinksoftProvider() && isSaasMode;
 
   // Determine if we should hide the agent dropdown when V1 conversation API is enabled
   const isV1Enabled = settings?.v1_enabled;
@@ -225,8 +225,8 @@ function LlmSettingsScreen() {
 
     const fullLlmModel = provider && model && `${provider}/${model}`;
 
-    // Use OpenHands-managed key for OpenHands provider in SaaS mode
-    const finalApiKey = shouldUseOpenHandsKey ? null : apiKey;
+    // Use Thinksoft-managed key for Thinksoft provider in SaaS mode
+    const finalApiKey = shouldUseThinksoftKey ? null : apiKey;
 
     saveSettings(
       {
@@ -276,8 +276,8 @@ function LlmSettingsScreen() {
       .get("security-analyzer-input")
       ?.toString();
 
-    // Use OpenHands-managed key for OpenHands provider in SaaS mode
-    const finalApiKey = shouldUseOpenHandsKey ? null : apiKey;
+    // Use Thinksoft-managed key for Thinksoft provider in SaaS mode
+    const finalApiKey = shouldUseThinksoftKey ? null : apiKey;
 
     saveSettings(
       {
@@ -512,19 +512,19 @@ function LlmSettingsScreen() {
                 <>
                   <ModelSelector
                     models={modelsAndProviders}
-                    currentModel={settings.llm_model || DEFAULT_OPENHANDS_MODEL}
+                    currentModel={settings.llm_model || DEFAULT_THINKSOFT_MODEL}
                     onChange={handleModelIsDirty}
                     onDefaultValuesChanged={onDefaultValuesChanged}
                     wrapperClassName="!flex-col !gap-6"
                   />
-                  {(settings.llm_model?.startsWith("openhands/") ||
-                    currentSelectedModel?.startsWith("openhands/")) && (
-                    <OpenHandsApiKeyHelp testId="openhands-api-key-help" />
+                  {(settings.llm_model?.startsWith("thinksoft/") ||
+                    currentSelectedModel?.startsWith("thinksoft/")) && (
+                    <ThinksoftApiKeyHelp testId="thinksoft-api-key-help" />
                   )}
                 </>
               )}
 
-              {!shouldUseOpenHandsKey && (
+              {!shouldUseThinksoftKey && (
                 <>
                   <SettingsInput
                     testId="llm-api-key-input"
@@ -561,15 +561,15 @@ function LlmSettingsScreen() {
                 testId="llm-custom-model-input"
                 name="llm-custom-model-input"
                 label={t(I18nKey.SETTINGS$CUSTOM_MODEL)}
-                defaultValue={settings.llm_model || DEFAULT_OPENHANDS_MODEL}
-                placeholder={DEFAULT_OPENHANDS_MODEL}
+                defaultValue={settings.llm_model || DEFAULT_THINKSOFT_MODEL}
+                placeholder={DEFAULT_THINKSOFT_MODEL}
                 type="text"
                 className="w-full max-w-[680px]"
                 onChange={handleCustomModelIsDirty}
               />
-              {(settings.llm_model?.startsWith("openhands/") ||
-                currentSelectedModel?.startsWith("openhands/")) && (
-                <OpenHandsApiKeyHelp testId="openhands-api-key-help-2" />
+              {(settings.llm_model?.startsWith("thinksoft/") ||
+                currentSelectedModel?.startsWith("thinksoft/")) && (
+                <ThinksoftApiKeyHelp testId="thinksoft-api-key-help-2" />
               )}
 
               <SettingsInput
@@ -583,7 +583,7 @@ function LlmSettingsScreen() {
                 onChange={handleBaseUrlIsDirty}
               />
 
-              {!shouldUseOpenHandsKey && (
+              {!shouldUseThinksoftKey && (
                 <>
                   <SettingsInput
                     testId="llm-api-key-input"

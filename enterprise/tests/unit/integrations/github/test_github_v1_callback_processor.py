@@ -19,20 +19,20 @@ from integrations.github.github_v1_callback_processor import (
     GithubV1CallbackProcessor,
 )
 
-from openhands.app_server.app_conversation.app_conversation_models import (
+from thinksoft.app_server.app_conversation.app_conversation_models import (
     AppConversationInfo,
 )
-from openhands.app_server.event_callback.event_callback_models import EventCallback
-from openhands.app_server.event_callback.event_callback_result_models import (
+from thinksoft.app_server.event_callback.event_callback_models import EventCallback
+from thinksoft.app_server.event_callback.event_callback_result_models import (
     EventCallbackResultStatus,
 )
-from openhands.app_server.sandbox.sandbox_models import (
+from thinksoft.app_server.sandbox.sandbox_models import (
     ExposedUrl,
     SandboxInfo,
     SandboxStatus,
 )
-from openhands.events.action.message import MessageAction
-from openhands.sdk.event import ConversationStateUpdateEvent
+from thinksoft.events.action.message import MessageAction
+from thinksoft.sdk.event import ConversationStateUpdateEvent
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -205,9 +205,9 @@ class TestGithubV1CallbackProcessor:
         'integrations.github.github_v1_callback_processor.GITHUB_APP_PRIVATE_KEY',
         'test_private_key',
     )
-    @patch('openhands.app_server.config.get_app_conversation_info_service')
-    @patch('openhands.app_server.config.get_sandbox_service')
-    @patch('openhands.app_server.config.get_httpx_client')
+    @patch('thinksoft.app_server.config.get_app_conversation_info_service')
+    @patch('thinksoft.app_server.config.get_sandbox_service')
+    @patch('thinksoft.app_server.config.get_httpx_client')
     @patch('integrations.github.github_v1_callback_processor.get_summary_instruction')
     @patch('integrations.github.github_v1_callback_processor.Auth')
     @patch('integrations.github.github_v1_callback_processor.GithubIntegration')
@@ -300,9 +300,9 @@ class TestGithubV1CallbackProcessor:
         'integrations.github.github_v1_callback_processor.GITHUB_APP_PRIVATE_KEY',
         'test_private_key',
     )
-    @patch('openhands.app_server.config.get_app_conversation_info_service')
-    @patch('openhands.app_server.config.get_sandbox_service')
-    @patch('openhands.app_server.config.get_httpx_client')
+    @patch('thinksoft.app_server.config.get_app_conversation_info_service')
+    @patch('thinksoft.app_server.config.get_sandbox_service')
+    @patch('thinksoft.app_server.config.get_httpx_client')
     @patch('integrations.github.github_v1_callback_processor.get_summary_instruction')
     @patch('integrations.github.github_v1_callback_processor.GithubIntegration')
     @patch('integrations.github.github_v1_callback_processor.Github')
@@ -364,9 +364,9 @@ class TestGithubV1CallbackProcessor:
     # ------------------------------------------------------------------ #
 
     @patch('integrations.github.github_v1_callback_processor.get_summary_instruction')
-    @patch('openhands.app_server.config.get_httpx_client')
-    @patch('openhands.app_server.config.get_sandbox_service')
-    @patch('openhands.app_server.config.get_app_conversation_info_service')
+    @patch('thinksoft.app_server.config.get_httpx_client')
+    @patch('thinksoft.app_server.config.get_sandbox_service')
+    @patch('thinksoft.app_server.config.get_app_conversation_info_service')
     async def test_missing_installation_id(
         self,
         mock_get_app_conversation_info_service,
@@ -412,9 +412,9 @@ class TestGithubV1CallbackProcessor:
         '',
     )
     @patch('integrations.github.github_v1_callback_processor.get_summary_instruction')
-    @patch('openhands.app_server.config.get_httpx_client')
-    @patch('openhands.app_server.config.get_sandbox_service')
-    @patch('openhands.app_server.config.get_app_conversation_info_service')
+    @patch('thinksoft.app_server.config.get_httpx_client')
+    @patch('thinksoft.app_server.config.get_sandbox_service')
+    @patch('thinksoft.app_server.config.get_app_conversation_info_service')
     async def test_missing_github_credentials(
         self,
         mock_get_app_conversation_info_service,
@@ -457,8 +457,8 @@ class TestGithubV1CallbackProcessor:
         'integrations.github.github_v1_callback_processor.GITHUB_APP_PRIVATE_KEY',
         'test_private_key',
     )
-    @patch('openhands.app_server.config.get_app_conversation_info_service')
-    @patch('openhands.app_server.config.get_sandbox_service')
+    @patch('thinksoft.app_server.config.get_app_conversation_info_service')
+    @patch('thinksoft.app_server.config.get_sandbox_service')
     async def test_sandbox_not_running(
         self,
         mock_get_sandbox_service,
@@ -509,9 +509,9 @@ class TestGithubV1CallbackProcessor:
         'integrations.github.github_v1_callback_processor.GITHUB_APP_PRIVATE_KEY',
         'test_private_key',
     )
-    @patch('openhands.app_server.config.get_app_conversation_info_service')
-    @patch('openhands.app_server.config.get_sandbox_service')
-    @patch('openhands.app_server.config.get_httpx_client')
+    @patch('thinksoft.app_server.config.get_app_conversation_info_service')
+    @patch('thinksoft.app_server.config.get_sandbox_service')
+    @patch('thinksoft.app_server.config.get_httpx_client')
     @patch('integrations.github.github_v1_callback_processor.get_summary_instruction')
     async def test_agent_server_http_error(
         self,
@@ -566,9 +566,9 @@ class TestGithubV1CallbackProcessor:
         'integrations.github.github_v1_callback_processor.GITHUB_APP_PRIVATE_KEY',
         'test_private_key',
     )
-    @patch('openhands.app_server.config.get_app_conversation_info_service')
-    @patch('openhands.app_server.config.get_sandbox_service')
-    @patch('openhands.app_server.config.get_httpx_client')
+    @patch('thinksoft.app_server.config.get_app_conversation_info_service')
+    @patch('thinksoft.app_server.config.get_sandbox_service')
+    @patch('thinksoft.app_server.config.get_httpx_client')
     @patch('integrations.github.github_v1_callback_processor.get_summary_instruction')
     async def test_agent_server_timeout(
         self,
@@ -743,9 +743,9 @@ class TestGithubV1CallbackProcessor:
         'test_private_key',
     )
     @patch('integrations.github.github_v1_callback_processor.get_summary_instruction')
-    @patch('openhands.app_server.config.get_httpx_client')
-    @patch('openhands.app_server.config.get_sandbox_service')
-    @patch('openhands.app_server.config.get_app_conversation_info_service')
+    @patch('thinksoft.app_server.config.get_httpx_client')
+    @patch('thinksoft.app_server.config.get_sandbox_service')
+    @patch('thinksoft.app_server.config.get_app_conversation_info_service')
     async def test_exception_handling_posts_error_to_github(
         self,
         mock_get_app_conversation_info_service,
@@ -804,7 +804,7 @@ class TestGithubV1CallbackProcessor:
         call_args = mock_issue.create_comment.call_args
         error_comment = call_args[1].get('body') or call_args[0][0]
         assert (
-            'OpenHands encountered an error: **Simulated agent server error**'
+            'Thinksoft encountered an error: **Simulated agent server error**'
             in error_comment
         )
         assert f'conversations/{conversation_id}' in error_comment

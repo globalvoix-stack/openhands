@@ -1,5 +1,5 @@
 DOCKER_REGISTRY=ghcr.io
-DOCKER_ORG=openhands
+DOCKER_ORG=thinksoft
 DOCKER_BASE_DIR="./containers/runtime"
 DOCKER_IMAGE=runtime
 # These variables will be appended by the runtime_build.py script

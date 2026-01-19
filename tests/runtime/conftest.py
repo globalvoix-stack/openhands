@@ -7,23 +7,23 @@ import time
 import pytest
 from pytest import TempPathFactory
 
-from openhands.core.config import MCPConfig, OpenHandsConfig, load_openhands_config
-from openhands.core.logger import openhands_logger as logger
-from openhands.events import EventStream
-from openhands.llm.llm_registry import LLMRegistry
-from openhands.runtime.base import Runtime
-from openhands.runtime.impl.cli.cli_runtime import CLIRuntime
-from openhands.runtime.impl.docker.docker_runtime import DockerRuntime
-from openhands.runtime.impl.local.local_runtime import LocalRuntime
-from openhands.runtime.impl.remote.remote_runtime import RemoteRuntime
-from openhands.runtime.plugins import AgentSkillsRequirement, JupyterRequirement
-from openhands.runtime.utils.port_lock import find_available_port_with_lock
-from openhands.storage import get_file_store
-from openhands.utils.async_utils import call_async_from_sync
+from thinksoft.core.config import MCPConfig, ThinksoftConfig, load_thinksoft_config
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.events import EventStream
+from thinksoft.llm.llm_registry import LLMRegistry
+from thinksoft.runtime.base import Runtime
+from thinksoft.runtime.impl.cli.cli_runtime import CLIRuntime
+from thinksoft.runtime.impl.docker.docker_runtime import DockerRuntime
+from thinksoft.runtime.impl.local.local_runtime import LocalRuntime
+from thinksoft.runtime.impl.remote.remote_runtime import RemoteRuntime
+from thinksoft.runtime.plugins import AgentSkillsRequirement, JupyterRequirement
+from thinksoft.runtime.utils.port_lock import find_available_port_with_lock
+from thinksoft.storage import get_file_store
+from thinksoft.utils.async_utils import call_async_from_sync
 
 TEST_IN_CI = os.getenv('TEST_IN_CI', 'False').lower() in ['true', '1', 'yes']
 TEST_RUNTIME = os.getenv('TEST_RUNTIME', 'docker').lower()
-RUN_AS_OPENHANDS = os.getenv('RUN_AS_OPENHANDS', 'True').lower() in ['true', '1', 'yes']
+RUN_AS_THINKSOFT = os.getenv('RUN_AS_THINKSOFT', 'True').lower() in ['true', '1', 'yes']
 test_mount_path = ''
 project_dir = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -136,15 +136,15 @@ def get_runtime_classes() -> list[type[Runtime]]:
         raise ValueError(f'Invalid runtime: {runtime}')
 
 
-def get_run_as_openhands() -> list[bool]:
+def get_run_as_thinksoft() -> list[bool]:
     print(
         '\n\n########################################################################'
     )
-    print('USER: ' + 'openhands' if RUN_AS_OPENHANDS else 'root')
+    print('USER: ' + 'thinksoft' if RUN_AS_THINKSOFT else 'root')
     print(
         '########################################################################\n\n'
     )
-    return [RUN_AS_OPENHANDS]
+    return [RUN_AS_THINKSOFT]
 
 
 @pytest.fixture(scope='module')  # for xdist
@@ -171,8 +171,8 @@ def runtime_cls(request):
 
 # TODO: We will change this to `run_as_user` when `ServerRuntime` is deprecated.
 # since `DockerRuntime` supports running as an arbitrary user.
-@pytest.fixture(scope='module', params=get_run_as_openhands())
-def run_as_openhands(request):
+@pytest.fixture(scope='module', params=get_run_as_thinksoft())
+def run_as_thinksoft(request):
     time.sleep(1)
     return request.param
 
@@ -205,7 +205,7 @@ def base_container_image(request):
 def _load_runtime(
     temp_dir: str | None,
     runtime_cls: str,
-    run_as_openhands: bool = True,
+    run_as_thinksoft: bool = True,
     enable_auto_lint: bool = False,
     base_container_image: str | None = None,
     browsergym_eval_env: str | None = None,
@@ -215,15 +215,15 @@ def _load_runtime(
     docker_runtime_kwargs: dict[str, str] | None = None,
     override_mcp_config: MCPConfig | None = None,
     enable_browser: bool = False,
-) -> tuple[Runtime, OpenHandsConfig]:
+) -> tuple[Runtime, ThinksoftConfig]:
     sid = 'rt_' + str(random.randint(100000, 999999))
 
     # AgentSkills need to be initialized **before** Jupyter
     # otherwise Jupyter will not access the proper dependencies installed by AgentSkills
     plugins = [AgentSkillsRequirement(), JupyterRequirement()]
 
-    config = load_openhands_config()
-    config.run_as_openhands = run_as_openhands
+    config = load_thinksoft_config()
+    config.run_as_thinksoft = run_as_thinksoft
     config.enable_browser = enable_browser
     config.sandbox.force_rebuild_runtime = force_rebuild_runtime
     config.sandbox.keep_runtime_alive = False
@@ -271,7 +271,7 @@ def _load_runtime(
     event_stream = EventStream(sid, file_store)
 
     # Create a LLMRegistry instance for the runtime
-    llm_registry = LLMRegistry(config=OpenHandsConfig())
+    llm_registry = LLMRegistry(config=ThinksoftConfig())
 
     runtime = runtime_cls(
         config=config,

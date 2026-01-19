@@ -23,7 +23,7 @@ import { useOptimisticUserMessageStore } from "#/stores/optimistic-user-message-
 import { useConfig } from "#/hooks/query/use-config";
 import { useGetTrajectory } from "#/hooks/mutation/use-get-trajectory";
 import { useUnifiedUploadFiles } from "#/hooks/mutation/use-unified-upload-files";
-import { OpenHandsAction } from "#/types/core/actions";
+import { ThinksoftAction } from "#/types/core/actions";
 import { useEventStore } from "#/stores/use-event-store";
 import { useAgentState } from "#/hooks/use-agent-state";
 import { AgentState } from "#/types/agent-state";
@@ -156,14 +156,14 @@ describe("ChatInterface - Chat Suggestions", () => {
   });
 
   test("should show chat suggestions when there are only environment events", () => {
-    const environmentEvent: OpenHandsAction = {
+    const environmentEvent: ThinksoftAction = {
       id: 1,
       source: "environment",
       action: "system",
       args: {
-        content: "source .openhands/setup.sh",
+        content: "source .thinksoft/setup.sh",
         tools: null,
-        openhands_version: null,
+        thinksoft_version: null,
         agent_class: null,
       },
       message: "Running setup script",
@@ -183,7 +183,7 @@ describe("ChatInterface - Chat Suggestions", () => {
   });
 
   test("should hide chat suggestions when there is a user message", () => {
-    const mockUserEvent: OpenHandsAction = {
+    const mockUserEvent: ThinksoftAction = {
       id: 1,
       source: "user",
       action: "message",

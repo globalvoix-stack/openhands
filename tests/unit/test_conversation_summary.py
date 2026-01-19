@@ -4,8 +4,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from openhands.core.config import LLMConfig
-from openhands.utils.conversation_summary import generate_conversation_title
+from thinksoft.core.config import LLMConfig
+from thinksoft.utils.conversation_summary import generate_conversation_title
 
 
 @pytest.mark.asyncio

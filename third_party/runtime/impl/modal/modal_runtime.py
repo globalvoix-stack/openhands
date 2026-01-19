@@ -8,21 +8,21 @@ import httpx
 import modal
 import tenacity
 
-from openhands.core.config import OpenHandsConfig
-from openhands.events import EventStream
-from openhands.integrations.provider import PROVIDER_TOKEN_TYPE
-from openhands.runtime.impl.action_execution.action_execution_client import (
+from thinksoft.core.config import ThinksoftConfig
+from thinksoft.events import EventStream
+from thinksoft.integrations.provider import PROVIDER_TOKEN_TYPE
+from thinksoft.runtime.impl.action_execution.action_execution_client import (
     ActionExecutionClient,
 )
-from openhands.runtime.plugins import PluginRequirement
-from openhands.runtime.runtime_status import RuntimeStatus
-from openhands.runtime.utils.command import get_action_execution_server_startup_command
-from openhands.runtime.utils.runtime_build import (
+from thinksoft.runtime.plugins import PluginRequirement
+from thinksoft.runtime.runtime_status import RuntimeStatus
+from thinksoft.runtime.utils.command import get_action_execution_server_startup_command
+from thinksoft.runtime.utils.runtime_build import (
     BuildFromImageType,
     prep_build_folder,
 )
-from openhands.utils.async_utils import call_sync_from_async
-from openhands.utils.tenacity_stop import stop_if_should_exit
+from thinksoft.utils.async_utils import call_sync_from_async
+from thinksoft.utils.tenacity_stop import stop_if_should_exit
 
 # FIXME: this will not work in HA mode. We need a better way to track IDs
 MODAL_RUNTIME_IDS: dict[str, str] = {}
@@ -34,20 +34,20 @@ class ModalRuntime(ActionExecutionClient):
     When receive an event, it will send the event to runtime-client which run inside the Modal sandbox environment.
 
     Args:
-        config (OpenHandsConfig): The application configuration.
+        config (ThinksoftConfig): The application configuration.
         event_stream (EventStream): The event stream to subscribe to.
         sid (str, optional): The session ID. Defaults to 'default'.
         plugins (list[PluginRequirement] | None, optional): List of plugin requirements. Defaults to None.
         env_vars (dict[str, str] | None, optional): Environment variables to set. Defaults to None.
     """
 
-    container_name_prefix = "openhands-sandbox-"
+    container_name_prefix = "thinksoft-sandbox-"
     sandbox: modal.Sandbox | None
     sid: str
 
     def __init__(
         self,
-        config: OpenHandsConfig,
+        config: ThinksoftConfig,
         event_stream: EventStream,
         sid: str = "default",
         plugins: list[PluginRequirement] | None = None,
@@ -80,7 +80,7 @@ class ModalRuntime(ActionExecutionClient):
             modal_token_secret,
         )
         self.app = modal.App.lookup(
-            "openhands", create_if_missing=True, client=self.modal_client
+            "thinksoft", create_if_missing=True, client=self.modal_client
         )
 
         # workspace_base cannot be used because we can't bind mount into a sandbox.
@@ -245,7 +245,7 @@ echo 'export INPUTRC=/etc/inputrc' >> /etc/bash.bashrc
             self.sandbox = modal.Sandbox.create(
                 *sandbox_start_cmd,
                 secrets=[env_secret],
-                workdir="/openhands/code",
+                workdir="/thinksoft/code",
                 encrypted_ports=[self.container_port, self._vscode_port],
                 image=self.image,
                 app=self.app,

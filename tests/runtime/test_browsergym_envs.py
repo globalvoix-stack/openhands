@@ -2,9 +2,9 @@ import json
 
 import pytest
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.events.action.browse import BrowseInteractiveAction
-from openhands.events.observation.browse import BrowserOutputObservation
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.events.action.browse import BrowseInteractiveAction
+from thinksoft.events.observation.browse import BrowserOutputObservation
 from tests.runtime.conftest import _close_test_runtime, _load_runtime
 
 
@@ -32,13 +32,13 @@ def test_browsergym_eval_env(runtime_cls, temp_dir):
     runtime, config = _load_runtime(
         temp_dir,
         runtime_cls=runtime_cls,
-        run_as_openhands=False,  # need root permission to access file
+        run_as_thinksoft=False,  # need root permission to access file
         base_container_image='xingyaoww/od-eval-miniwob:v1.0',
         browsergym_eval_env='browsergym/miniwob.choose-list',
         force_rebuild_runtime=True,
         enable_browser=True,
     )
-    from openhands.runtime.browser.browser_env import (
+    from thinksoft.runtime.browser.browser_env import (
         BROWSER_EVAL_GET_GOAL_ACTION,
         BROWSER_EVAL_GET_REWARDS_ACTION,
     )

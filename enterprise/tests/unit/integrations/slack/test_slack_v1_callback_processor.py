@@ -16,20 +16,20 @@ from integrations.slack.slack_v1_callback_processor import (
     SlackV1CallbackProcessor,
 )
 
-from openhands.app_server.app_conversation.app_conversation_models import (
+from thinksoft.app_server.app_conversation.app_conversation_models import (
     AppConversationInfo,
 )
-from openhands.app_server.event_callback.event_callback_models import EventCallback
-from openhands.app_server.event_callback.event_callback_result_models import (
+from thinksoft.app_server.event_callback.event_callback_models import EventCallback
+from thinksoft.app_server.event_callback.event_callback_result_models import (
     EventCallbackResultStatus,
 )
-from openhands.app_server.sandbox.sandbox_models import (
+from thinksoft.app_server.sandbox.sandbox_models import (
     ExposedUrl,
     SandboxInfo,
     SandboxStatus,
 )
-from openhands.events.action.message import MessageAction
-from openhands.sdk.event import ConversationStateUpdateEvent
+from thinksoft.events.action.message import MessageAction
+from thinksoft.sdk.event import ConversationStateUpdateEvent
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -186,9 +186,9 @@ class TestSlackV1CallbackProcessor:
     # -------------------------------------------------------------------------
 
     @patch('storage.slack_team_store.SlackTeamStore.get_instance')
-    @patch('openhands.app_server.config.get_httpx_client')
-    @patch('openhands.app_server.config.get_sandbox_service')
-    @patch('openhands.app_server.config.get_app_conversation_info_service')
+    @patch('thinksoft.app_server.config.get_httpx_client')
+    @patch('thinksoft.app_server.config.get_sandbox_service')
+    @patch('thinksoft.app_server.config.get_app_conversation_info_service')
     @patch('integrations.slack.slack_v1_callback_processor.get_summary_instruction')
     @patch('integrations.slack.slack_v1_callback_processor.WebClient')
     async def test_successful_end_to_end_flow(
@@ -370,9 +370,9 @@ class TestSlackV1CallbackProcessor:
         ],
     )
     @patch('storage.slack_team_store.SlackTeamStore.get_instance')
-    @patch('openhands.app_server.config.get_httpx_client')
-    @patch('openhands.app_server.config.get_sandbox_service')
-    @patch('openhands.app_server.config.get_app_conversation_info_service')
+    @patch('thinksoft.app_server.config.get_httpx_client')
+    @patch('thinksoft.app_server.config.get_sandbox_service')
+    @patch('thinksoft.app_server.config.get_app_conversation_info_service')
     @patch('integrations.slack.slack_v1_callback_processor.get_summary_instruction')
     async def test_agent_server_error_scenarios(
         self,

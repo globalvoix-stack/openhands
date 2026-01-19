@@ -4,14 +4,14 @@ from integrations.types import SummaryExtractionTracker
 from jinja2 import Environment
 from storage.slack_user import SlackUser
 
-from openhands.server.user_auth.user_auth import UserAuth
+from thinksoft.server.user_auth.user_auth import UserAuth
 
 
 class SlackViewInterface(SummaryExtractionTracker, ABC):
     bot_access_token: str
     user_msg: str | None
     slack_user_id: str
-    slack_to_openhands_user: SlackUser | None
+    slack_to_thinksoft_user: SlackUser | None
     saas_user_auth: UserAuth | None
     channel_id: str
     message_ts: str

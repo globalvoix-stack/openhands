@@ -16,24 +16,24 @@ from evaluation.utils.shared import (
     compatibility_for_eval_history_pairs,
     get_default_sandbox_config_for_eval,
     get_metrics,
-    get_openhands_config_for_eval,
+    get_thinksoft_config_for_eval,
     make_metadata,
     prepare_dataset,
     reset_logger_for_multiprocessing,
     run_evaluation,
 )
-from openhands.controller.state.state import State
-from openhands.core.config import (
-    OpenHandsConfig,
+from thinksoft.controller.state.state import State
+from thinksoft.core.config import (
+    ThinksoftConfig,
     get_llm_config_arg,
     parse_arguments,
 )
-from openhands.core.logger import openhands_logger as logger
-from openhands.core.main import create_runtime, run_controller
-from openhands.events.action import CmdRunAction, MessageAction
-from openhands.events.observation import CmdOutputObservation
-from openhands.runtime.base import Runtime
-from openhands.utils.async_utils import call_async_from_sync
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.core.main import create_runtime, run_controller
+from thinksoft.events.action import CmdRunAction, MessageAction
+from thinksoft.events.observation import CmdOutputObservation
+from thinksoft.runtime.base import Runtime
+from thinksoft.utils.async_utils import call_async_from_sync
 
 AGENT_CLS_TO_FAKE_USER_RESPONSE_FN = {
     'CodeActAgent': functools.partial(
@@ -57,12 +57,12 @@ FILE_EXT_MAP = {
 
 def get_config(
     metadata: EvalMetadata,
-) -> OpenHandsConfig:
+) -> ThinksoftConfig:
     BIOCODER_BENCH_CONTAINER_IMAGE = 'public.ecr.aws/i5g0m1f6/eval_biocoder:v1.0'
     sandbox_config = get_default_sandbox_config_for_eval()
     sandbox_config.base_container_image = BIOCODER_BENCH_CONTAINER_IMAGE
 
-    config = get_openhands_config_for_eval(
+    config = get_thinksoft_config_for_eval(
         metadata=metadata,
         runtime='docker',
         sandbox_config=sandbox_config,
@@ -211,7 +211,7 @@ def complete_runtime(
     assert obs.exit_code == 0
 
     action = CmdRunAction(
-        command='/home/openhands/mambaforge/bin/mamba run -n test python3 /testing/start_test_openhands.py'
+        command='/home/thinksoft/mambaforge/bin/mamba run -n test python3 /testing/start_test_thinksoft.py'
     )
     logger.info(action, extra={'msg_type': 'ACTION'})
     obs = runtime.run_action(action)

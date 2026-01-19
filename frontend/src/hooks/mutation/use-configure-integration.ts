@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import { openHands } from "#/api/open-hands-axios";
+import { thinksoft } from "#/api/thinksoft-axios";
 import { I18nKey } from "#/i18n/declaration";
 import { displayErrorToast } from "#/utils/custom-toast-handlers";
 import { retrieveAxiosErrorMessage } from "#/utils/retrieve-axios-error-message";
@@ -35,7 +35,7 @@ export function useConfigureIntegration(
         is_active: data.isActive,
       };
 
-      const response = await openHands.post(
+      const response = await thinksoft.post(
         `/integration/${platform}/workspaces`,
         input,
       );

@@ -12,7 +12,7 @@ from integrations.jira_dc.jira_dc_view import (
     JiraDcNewConversationView,
 )
 
-from openhands.core.schema.agent import AgentState
+from thinksoft.core.schema.agent import AgentState
 
 
 class TestJiraDcNewConversationView:
@@ -25,7 +25,7 @@ class TestJiraDcNewConversationView:
         assert instructions == 'Test Jira DC instructions template'
         assert 'PROJ-123' in user_msg
         assert 'Test Issue' in user_msg
-        assert 'Fix this bug @openhands' in user_msg
+        assert 'Fix this bug @thinksoft' in user_msg
 
     @patch('integrations.jira_dc.jira_dc_view.create_new_conversation')
     @patch('integrations.jira_dc.jira_dc_view.integration_store')
@@ -92,7 +92,7 @@ class TestJiraDcExistingConversationView:
         assert instructions == ''
         assert 'PROJ-123' in user_msg
         assert 'Test Issue' in user_msg
-        assert 'Fix this bug @openhands' in user_msg
+        assert 'Fix this bug @thinksoft' in user_msg
 
     @patch('integrations.jira_dc.jira_dc_view.ConversationStoreImpl.get_instance')
     @patch('integrations.jira_dc.jira_dc_view.setup_init_conversation_settings')

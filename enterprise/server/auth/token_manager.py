@@ -44,9 +44,9 @@ from storage.github_app_installation import GithubAppInstallation
 from storage.offline_token_store import OfflineTokenStore
 from tenacity import RetryCallState, retry, retry_if_exception_type, stop_after_attempt
 
-from openhands.integrations.service_types import ProviderType
-from openhands.server.types import SessionExpiredError
-from openhands.utils.http_session import httpx_verify_option
+from thinksoft.integrations.service_types import ProviderType
+from thinksoft.server.types import SessionExpiredError
+from thinksoft.utils.http_session import httpx_verify_option
 
 
 def _before_sleep_callback(retry_state: RetryCallState) -> None:

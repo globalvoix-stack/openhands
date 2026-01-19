@@ -1,4 +1,4 @@
-import { openHands } from "../open-hands-axios";
+import { thinksoft } from "../thinksoft-axios";
 import { GetConfigResponse } from "./option.types";
 
 /**
@@ -10,7 +10,7 @@ class OptionService {
    * @returns List of models available
    */
   static async getModels(): Promise<string[]> {
-    const { data } = await openHands.get<string[]>("/api/options/models");
+    const { data } = await thinksoft.get<string[]>("/api/options/models");
     return data;
   }
 
@@ -19,7 +19,7 @@ class OptionService {
    * @returns List of agents available
    */
   static async getAgents(): Promise<string[]> {
-    const { data } = await openHands.get<string[]>("/api/options/agents");
+    const { data } = await thinksoft.get<string[]>("/api/options/agents");
     return data;
   }
 
@@ -28,7 +28,7 @@ class OptionService {
    * @returns List of security analyzers available
    */
   static async getSecurityAnalyzers(): Promise<string[]> {
-    const { data } = await openHands.get<string[]>(
+    const { data } = await thinksoft.get<string[]>(
       "/api/options/security-analyzers",
     );
     return data;
@@ -39,7 +39,7 @@ class OptionService {
    * @returns Configuration response
    */
   static async getConfig(): Promise<GetConfigResponse> {
-    const { data } = await openHands.get<GetConfigResponse>(
+    const { data } = await thinksoft.get<GetConfigResponse>(
       "/api/options/config",
     );
     return data;

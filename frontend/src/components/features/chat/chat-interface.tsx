@@ -7,7 +7,7 @@ import { TrajectoryActions } from "../trajectory/trajectory-actions";
 import { createChatMessage } from "#/services/chat-service";
 import { InteractiveChatBox } from "./interactive-chat-box";
 import { AgentState } from "#/types/agent-state";
-import { isOpenHandsAction, isActionOrObservation } from "#/types/core/guards";
+import { isThinksoftAction, isActionOrObservation } from "#/types/core/guards";
 import { FeedbackModal } from "../feedback/feedback-modal";
 import { useScrollToBottom } from "#/hooks/use-scroll-to-bottom";
 import { TypingIndicator } from "./typing-indicator";
@@ -154,7 +154,7 @@ export function ChatInterface() {
         .filter(isActionOrObservation)
         .some(
           (event) =>
-            isOpenHandsAction(event) &&
+            isThinksoftAction(event) &&
             event.source === "agent" &&
             event.action !== "system",
         ) ||

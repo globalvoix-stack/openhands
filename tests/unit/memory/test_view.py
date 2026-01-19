@@ -1,8 +1,8 @@
-from openhands.events.action.agent import CondensationAction, CondensationRequestAction
-from openhands.events.action.message import MessageAction
-from openhands.events.event import Event
-from openhands.events.observation.agent import AgentCondensationObservation
-from openhands.memory.view import View
+from thinksoft.events.action.agent import CondensationAction, CondensationRequestAction
+from thinksoft.events.action.message import MessageAction
+from thinksoft.events.event import Event
+from thinksoft.events.observation.agent import AgentCondensationObservation
+from thinksoft.memory.view import View
 
 
 def test_view_preserves_uncondensed_lists() -> None:

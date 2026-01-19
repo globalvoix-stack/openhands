@@ -2,9 +2,9 @@ import asyncio
 
 import pytest
 
-from openhands.core.config.mcp_config import MCPSSEServerConfig
-from openhands.mcp.client import MCPClient
-from openhands.mcp.utils import create_mcp_clients
+from thinksoft.core.config.mcp_config import MCPSSEServerConfig
+from thinksoft.mcp.client import MCPClient
+from thinksoft.mcp.utils import create_mcp_clients
 
 
 @pytest.mark.asyncio

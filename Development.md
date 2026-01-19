@@ -1,10 +1,10 @@
 # Development Guide
 
-This guide is for people working on OpenHands and editing the source code.
+This guide is for people working on Thinksoft and editing the source code.
 If you wish to contribute your changes, check out the
-[CONTRIBUTING.md](https://github.com/OpenHands/OpenHands/blob/main/CONTRIBUTING.md)
+[CONTRIBUTING.md](https://github.com/Thinksoft/Thinksoft/blob/main/CONTRIBUTING.md)
 on how to clone and setup the project initially before moving on. Otherwise,
-you can clone the OpenHands project directly.
+you can clone the Thinksoft project directly.
 
 ## Start the Server for Development
 
@@ -51,7 +51,7 @@ mamba install conda-forge::poetry
 ### 2. Build and Setup The Environment
 
 Begin by building the project which includes setting up the environment and installing dependencies. This step ensures
-that OpenHands is ready to run on your system:
+that Thinksoft is ready to run on your system:
 
 ```bash
 make build
@@ -59,7 +59,7 @@ make build
 
 ### 3. Configuring the Language Model
 
-OpenHands supports a diverse array of Language Models (LMs) through the powerful [litellm](https://docs.litellm.ai) library.
+Thinksoft supports a diverse array of Language Models (LMs) through the powerful [litellm](https://docs.litellm.ai) library.
 
 To configure the LM of your choice, run:
 
@@ -67,22 +67,22 @@ To configure the LM of your choice, run:
 make setup-config
 ```
 
-This command will prompt you to enter the LLM API key, model name, and other variables ensuring that OpenHands is
+This command will prompt you to enter the LLM API key, model name, and other variables ensuring that Thinksoft is
 tailored to your specific needs. Note that the model name will apply only when you run headless. If you use the UI,
 please set the model in the UI.
 
-Note: If you have previously run OpenHands using the docker command, you may have already set some environment
+Note: If you have previously run Thinksoft using the docker command, you may have already set some environment
 variables in your terminal. The final configurations are set from highest to lowest priority:
 Environment variables > config.toml variables > default variables
 
 **Note on Alternative Models:**
-See [our documentation](https://docs.openhands.dev/usage/llms) for recommended models.
+See [our documentation](https://docs.thinksoft.dev/usage/llms) for recommended models.
 
 ### 4. Running the application
 
 #### Option A: Run the Full Application
 
-Once the setup is complete, this command starts both the backend and frontend servers, allowing you to interact with OpenHands:
+Once the setup is complete, this command starts both the backend and frontend servers, allowing you to interact with Thinksoft:
 
 ```bash
 make run
@@ -103,13 +103,13 @@ make run
   make start-frontend
   ```
 
-### 5. Running OpenHands with OpenHands
+### 5. Running Thinksoft with Thinksoft
 
-You can use OpenHands to develop and improve OpenHands itself! This is a powerful way to leverage AI assistance for contributing to the project.
+You can use Thinksoft to develop and improve Thinksoft itself! This is a powerful way to leverage AI assistance for contributing to the project.
 
 #### Quick Start
 
-1. **Build and run OpenHands:**
+1. **Build and run Thinksoft:**
 
    ```bash
    export INSTALL_DOCKER=0
@@ -131,11 +131,11 @@ You can use OpenHands to develop and improve OpenHands itself! This is a powerfu
 ### 6. LLM Debugging
 
 If you encounter any issues with the Language Model (LM) or you're simply curious, export DEBUG=1 in the environment and restart the backend.
-OpenHands will log the prompts and responses in the logs/llm/CURRENT_DATE directory, allowing you to identify the causes.
+Thinksoft will log the prompts and responses in the logs/llm/CURRENT_DATE directory, allowing you to identify the causes.
 
 ### 7. Help
 
-Need help or info on available targets and commands? Use the help command for all the guidance you need with OpenHands.
+Need help or info on available targets and commands? Use the help command for all the guidance you need with Thinksoft.
 
 ```bash
 make help
@@ -161,7 +161,7 @@ poetry run pytest ./tests/unit/test_*.py
 To reduce build time (e.g., if no changes were made to the client-runtime component), you can use an existing Docker
 container image by setting the SANDBOX_RUNTIME_CONTAINER_IMAGE environment variable to the desired Docker image.
 
-Example: `export SANDBOX_RUNTIME_CONTAINER_IMAGE=ghcr.io/openhands/runtime:1.2-nikolaik`
+Example: `export SANDBOX_RUNTIME_CONTAINER_IMAGE=ghcr.io/thinksoft/runtime:1.2-nikolaik`
 
 ## Develop inside Docker container
 
@@ -173,7 +173,7 @@ make docker-dev
 
 See more details [here](./containers/dev/README.md).
 
-If you are just interested in running `OpenHands` without installing all the required tools on your host.
+If you are just interested in running `Thinksoft` without installing all the required tools on your host.
 
 ```bash
 make docker-run
@@ -193,14 +193,14 @@ You do need [Docker](https://docs.docker.com/engine/install/) installed on your 
 Here's a guide to the important documentation files in the repository:
 
 - [/README.md](./README.md): Main project overview, features, and basic setup instructions
-- [/Development.md](./Development.md) (this file): Comprehensive guide for developers working on OpenHands
+- [/Development.md](./Development.md) (this file): Comprehensive guide for developers working on Thinksoft
 - [/CONTRIBUTING.md](./CONTRIBUTING.md): Guidelines for contributing to the project, including code style and PR process
-- [DOC_STYLE_GUIDE.md](https://github.com/OpenHands/docs/blob/main/openhands/DOC_STYLE_GUIDE.md): Standards for writing and maintaining project documentation
-- [/openhands/README.md](./openhands/README.md): Details about the backend Python implementation
+- [DOC_STYLE_GUIDE.md](https://github.com/Thinksoft/docs/blob/main/thinksoft/DOC_STYLE_GUIDE.md): Standards for writing and maintaining project documentation
+- [/thinksoft/README.md](./thinksoft/README.md): Details about the backend Python implementation
 - [/frontend/README.md](./frontend/README.md): Frontend React application setup and development guide
 - [/containers/README.md](./containers/README.md): Information about Docker containers and deployment
 - [/tests/unit/README.md](./tests/unit/README.md): Guide to writing and running unit tests
 - [/evaluation/README.md](./evaluation/README.md): Documentation for the evaluation framework and benchmarks
 - [/skills/README.md](./skills/README.md): Information about the skills architecture and implementation
-- [/openhands/server/README.md](./openhands/server/README.md): Server implementation details and API documentation
-- [/openhands/runtime/README.md](./openhands/runtime/README.md): Documentation for the runtime environment and execution model
+- [/thinksoft/server/README.md](./thinksoft/server/README.md): Server implementation details and API documentation
+- [/thinksoft/runtime/README.md](./thinksoft/runtime/README.md): Documentation for the runtime environment and execution model

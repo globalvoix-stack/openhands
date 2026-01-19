@@ -5,7 +5,7 @@ import V1GitService from "#/api/git-service/v1-git-service.api";
 import { useConversationId } from "#/hooks/use-conversation-id";
 import { useActiveConversation } from "#/hooks/query/use-active-conversation";
 import { getGitPath } from "#/utils/get-git-path";
-import type { GitChangeStatus } from "#/api/open-hands.types";
+import type { GitChangeStatus } from "#/api/thinksoft.types";
 
 type UseUnifiedGitDiffConfig = {
   filePath: string;

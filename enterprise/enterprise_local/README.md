@@ -2,7 +2,7 @@
 
 You have a few options here, which are expanded on below:
 
-- A simple local development setup, with live reloading for both OpenHands and this repo
+- A simple local development setup, with live reloading for both Thinksoft and this repo
 - A more complex setup that includes Redis
 - An even more complex setup that includes GitHub events
 
@@ -26,21 +26,21 @@ Before starting, make sure you have the following tools installed:
 
 ## Option 1: Simple local development
 
-This option will allow you to modify both the OpenHands code and the code in this repo,
+This option will allow you to modify both the Thinksoft code and the code in this repo,
 and see the changes in real-time.
 
 This option works best for most scenarios. The only thing it's missing is
 the GitHub events webhook, which is not necessary for most development.
 
-### 1. OpenHands location
+### 1. Thinksoft location
 
-The open source OpenHands repo should be cloned as a sibling directory,
-in `../OpenHands`. This is hard-coded in the pyproject.toml (edit if necessary)
+The open source Thinksoft repo should be cloned as a sibling directory,
+in `../Thinksoft`. This is hard-coded in the pyproject.toml (edit if necessary)
 
 If you're doing this the first time, you may need to run
 
 ```
-poetry update openhands-ai
+poetry update thinksoft-ai
 ```
 
 ### 2. Set up env
@@ -64,7 +64,7 @@ python enterprise_local/convert_to_env.py
 You'll also need to set up the runtime image, so that the dev server doesn't try to rebuild it.
 
 ```
-export SANDBOX_RUNTIME_CONTAINER_IMAGE=ghcr.io/openhands/runtime:main-nikolaik
+export SANDBOX_RUNTIME_CONTAINER_IMAGE=ghcr.io/thinksoft/runtime:main-nikolaik
 docker pull $SANDBOX_RUNTIME_CONTAINER_IMAGE
 ```
 
@@ -74,9 +74,9 @@ By default the application will log in json, you can override.
 export LOG_PLAIN_TEXT=1
 ```
 
-### 3. Start the OpenHands frontend
+### 3. Start the Thinksoft frontend
 
-Start the frontend like you normally would in the open source OpenHands repo.
+Start the frontend like you normally would in the open source Thinksoft repo.
 
 ### 4. Start the SaaS backend
 
@@ -94,7 +94,7 @@ Oauth should work properly.
 Follow all the steps above, then setup redis:
 
 ```bash
-docker run  -p 6379:6379 --name openhands-redis -d redis
+docker run  -p 6379:6379 --name thinksoft-redis -d redis
 export REDIS_HOST=host.docker.internal # you may want this to be localhost
 export REDIS_PORT=6379
 ```
@@ -105,20 +105,20 @@ export REDIS_PORT=6379
 
 (see above)
 
-### 2. Build OpenHands
+### 2. Build Thinksoft
 
-Develop on [Openhands](https://github.com/OpenHands/OpenHands) locally. When ready, run the following inside Openhands repo (not the Deploy repo)
-
-```
-docker build -f containers/app/Dockerfile -t openhands .
-```
-
-### 3. Build SAAS Openhands
-
-Build the SAAS image locally inside Deploy repo. Note that `openhands` is the name of the image built in Step 2
+Develop on [Thinksoft](https://github.com/Thinksoft/Thinksoft) locally. When ready, run the following inside Thinksoft repo (not the Deploy repo)
 
 ```
-docker build -t openhands-saas ./app/ --build-arg BASE="openhands"
+docker build -f containers/app/Dockerfile -t thinksoft .
+```
+
+### 3. Build SAAS Thinksoft
+
+Build the SAAS image locally inside Deploy repo. Note that `thinksoft` is the name of the image built in Step 2
+
+```
+docker build -t thinksoft-saas ./app/ --build-arg BASE="thinksoft"
 ```
 
 ### 4. Create a tunnel
@@ -143,10 +143,10 @@ Using the URL found in Step 4, add another callback URL (`https://bc71-2603-7000
 
 ### 6. Run
 
-This is the last step! Run SAAS openhands locally using
+This is the last step! Run SAAS thinksoft locally using
 
 ```
-docker run --env-file ./app/.env -p 3000:3000 openhands-saas
+docker run --env-file ./app/.env -p 3000:3000 thinksoft-saas
 ```
 
 Note `--env-file` is what injects the `.env` file created in Step 1
@@ -155,7 +155,7 @@ Visit the tunnel domain found in Step 4 to run the app (`https://bc71-2603-7000-
 
 ### Local Debugging with VSCode
 
-Local Development necessitates running a version of OpenHands that is as similar as possible to the version running in the SAAS Environment. Before running these steps, it is assumed you have a local development version of OpenHands running.
+Local Development necessitates running a version of Thinksoft that is as similar as possible to the version running in the SAAS Environment. Before running these steps, it is assumed you have a local development version of Thinksoft running.
 
 #### Redis
 
@@ -165,7 +165,7 @@ A Local redis instance is required for clustered communication between server no
 #### Postgres
 
 A Local postgres instance is required. I used the official docker image:
-`docker run -p 5432:5432 --name my-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=openhands -d postgres`
+`docker run -p 5432:5432 --name my-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=thinksoft -d postgres`
 Run the alembic migrations:
 `poetry run alembic upgrade head `
 
@@ -185,7 +185,7 @@ And then invoking `printenv`. NOTE: _DO NOT DO THIS WITH PROD!!!_ (Hopefully by 
             "program": "${file}"
         },
         {
-            "name": "OpenHands Deploy",
+            "name": "Thinksoft Deploy",
             "type": "debugpy",
             "request": "launch",
             "module": "uvicorn",
@@ -201,11 +201,11 @@ And then invoking `printenv`. NOTE: _DO NOT DO THIS WITH PROD!!!_ (Hopefully by 
                 "DEBUG": "1",
                 "FILE_STORE": "local",
                 "REDIS_HOST": "localhost:6379",
-                "OPENHANDS": "<YOUR LOCAL OPENHANDS DIR>",
-                "FRONTEND_DIRECTORY": "<YOUR LOCAL OPENHANDS DIR>/frontend/build",
-                "SANDBOX_RUNTIME_CONTAINER_IMAGE": "ghcr.io/openhands/runtime:main-nikolaik",
-                "FILE_STORE_PATH": "<YOUR HOME DIRECTORY>>/.openhands-state",
-                "OPENHANDS_CONFIG_CLS": "server.config.SaaSServerConfig",
+                "THINKSOFT": "<YOUR LOCAL THINKSOFT DIR>",
+                "FRONTEND_DIRECTORY": "<YOUR LOCAL THINKSOFT DIR>/frontend/build",
+                "SANDBOX_RUNTIME_CONTAINER_IMAGE": "ghcr.io/thinksoft/runtime:main-nikolaik",
+                "FILE_STORE_PATH": "<YOUR HOME DIRECTORY>>/.thinksoft-state",
+                "THINKSOFT_CONFIG_CLS": "server.config.SaaSServerConfig",
                 "GITHUB_APP_ID": "1062351",
                 "GITHUB_APP_PRIVATE_KEY": "<GITHUB PRIVATE KEY>",
                 "GITHUB_APP_CLIENT_ID": "Iv23lis7eUWDQHIq8US0",
@@ -219,7 +219,7 @@ And then invoking `printenv`. NOTE: _DO NOT DO THIS WITH PROD!!!_ (Hopefully by 
             "cwd": "${workspaceFolder}/app"
         },
         {
-            "name": "OpenHands Deploy 2",
+            "name": "Thinksoft Deploy 2",
             "type": "debugpy",
             "request": "launch",
             "module": "uvicorn",
@@ -235,11 +235,11 @@ And then invoking `printenv`. NOTE: _DO NOT DO THIS WITH PROD!!!_ (Hopefully by 
                 "DEBUG": "1",
                 "FILE_STORE": "local",
                 "REDIS_HOST": "localhost:6379",
-                "OPENHANDS": "<YOUR LOCAL OPENHANDS DIR>",
-                "FRONTEND_DIRECTORY": "<YOUR LOCAL OPENHANDS DIR>/frontend/build",
-                "SANDBOX_RUNTIME_CONTAINER_IMAGE": "ghcr.io/openhands/runtime:main-nikolaik",
-                "FILE_STORE_PATH": "<YOUR HOME DIRECTORY>>/.openhands-state",
-                "OPENHANDS_CONFIG_CLS": "server.config.SaaSServerConfig",
+                "THINKSOFT": "<YOUR LOCAL THINKSOFT DIR>",
+                "FRONTEND_DIRECTORY": "<YOUR LOCAL THINKSOFT DIR>/frontend/build",
+                "SANDBOX_RUNTIME_CONTAINER_IMAGE": "ghcr.io/thinksoft/runtime:main-nikolaik",
+                "FILE_STORE_PATH": "<YOUR HOME DIRECTORY>>/.thinksoft-state",
+                "THINKSOFT_CONFIG_CLS": "server.config.SaaSServerConfig",
                 "GITHUB_APP_ID": "1062351",
                 "GITHUB_APP_PRIVATE_KEY": "<GITHUB PRIVATE KEY>",
                 "GITHUB_APP_CLIENT_ID": "Iv23lis7eUWDQHIq8US0",

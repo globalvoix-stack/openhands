@@ -1,6 +1,6 @@
 import React from "react";
-import { OpenHandsAction } from "#/types/core/actions";
-import { isOpenHandsAction } from "#/types/core/guards";
+import { ThinksoftAction } from "#/types/core/actions";
+import { isThinksoftAction } from "#/types/core/guards";
 import { ChatMessage } from "../chat-message";
 import { MicroagentStatusWrapper } from "./microagent-status-wrapper";
 import { MicroagentStatus } from "#/types/microagent-status";
@@ -10,7 +10,7 @@ const hasThoughtProperty = (
 ): obj is { thought: string } => "thought" in obj && !!obj.thought;
 
 interface ObservationPairEventMessageProps {
-  event: OpenHandsAction;
+  event: ThinksoftAction;
   microagentStatus?: MicroagentStatus | null;
   microagentConversationId?: string;
   microagentPRUrl?: string;
@@ -28,7 +28,7 @@ export function ObservationPairEventMessage({
   microagentPRUrl,
   actions,
 }: ObservationPairEventMessageProps) {
-  if (!isOpenHandsAction(event)) {
+  if (!isThinksoftAction(event)) {
     return null;
   }
 

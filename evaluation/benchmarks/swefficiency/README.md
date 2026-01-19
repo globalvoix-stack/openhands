@@ -1,10 +1,10 @@
 # SWE-fficiency Evaluation
 
-This folder contains the OpenHands inference generation of the [SWE-fficiency benchmark](https://swefficiency.com/) ([paper](https://arxiv.org/pdf/2507.12415v1)).
+This folder contains the Thinksoft inference generation of the [SWE-fficiency benchmark](https://swefficiency.com/) ([paper](https://arxiv.org/pdf/2507.12415v1)).
 
 The evaluation consists of three steps:
 
-1. Environment setup: [install python environment](../../README.md#development-environment) and [configure LLM config](../../README.md#configure-openhands-and-your-llm).
+1. Environment setup: [install python environment](../../README.md#development-environment) and [configure LLM config](../../README.md#configure-thinksoft-and-your-llm).
 2. [Run inference](#running-inference-locally-with-docker): Generate a edit patch for each Github issue
 3. [Evaluate patches](#evaluate-generated-patches)
 
@@ -18,7 +18,7 @@ Make sure your Docker daemon is running, and you have ample disk space (at least
 
 When the `run_infer.sh` script is started, it will automatically pull the relevant SWE-Perf images.
 For example, for instance ID `scikit-learn_scikit-learn-11674`, it will try to pull our pre-build docker image `betty1202/sweb.eval.x86_64.scikit-learn_s_scikit-learn-11674` from DockerHub.
-This image will be used create an OpenHands runtime image where the agent will operate on.
+This image will be used create an Thinksoft runtime image where the agent will operate on.
 
 ```bash
 ./evaluation/benchmarks/swefficiency/scripts/run_infer.sh [model_config] [git-version] [agent] [eval_limit] [max_iter] [num_workers] [dataset] [dataset_split] [n_runs] [mode]
@@ -31,7 +31,7 @@ where `model_config` is mandatory, and the rest are optional.
 
 - `model_config`, e.g. `eval_gpt4_1106_preview`, is the config group name for your
 LLM settings, as defined in your `config.toml`.
-- `git-version`, e.g. `HEAD`, is the git commit hash of the OpenHands version you would
+- `git-version`, e.g. `HEAD`, is the git commit hash of the Thinksoft version you would
 like to evaluate. It could also be a release tag like `0.6.2`.
 - `agent`, e.g. `CodeActAgent`, is the name of the agent for benchmarks, defaulting
 to `CodeActAgent`.

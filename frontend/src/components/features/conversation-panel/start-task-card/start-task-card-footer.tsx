@@ -4,7 +4,7 @@ import { cn } from "#/utils/utils";
 import { I18nKey } from "#/i18n/declaration";
 import { ConversationRepoLink } from "../conversation-card/conversation-repo-link";
 import { NoRepository } from "../conversation-card/no-repository";
-import type { RepositorySelection } from "#/api/open-hands.types";
+import type { RepositorySelection } from "#/api/thinksoft.types";
 
 interface StartTaskCardFooterProps {
   selectedRepository: RepositorySelection | null;

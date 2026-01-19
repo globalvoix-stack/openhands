@@ -16,8 +16,8 @@ from storage.org import Org
 from storage.user import User
 from storage.user_settings import UserSettings
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.storage.data_models.settings import Settings
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.storage.data_models.settings import Settings
 
 
 class OrgStore:

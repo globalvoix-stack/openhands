@@ -2,7 +2,7 @@ import os
 
 from server.auth.sheets_client import GoogleSheetsClient
 
-from openhands.core.logger import openhands_logger as logger
+from thinksoft.core.logger import thinksoft_logger as logger
 
 
 class UserVerifier:

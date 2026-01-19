@@ -9,7 +9,7 @@ with patch('storage.database.engine'), patch('storage.database.a_engine'):
     from storage.org import Org
     from storage.org_store import OrgStore
 
-from openhands.storage.data_models.settings import Settings
+from thinksoft.storage.data_models.settings import Settings
 
 
 @pytest.fixture

@@ -1,5 +1,5 @@
 import React from "react";
-import { OpenHandsEvent } from "#/types/v1/core";
+import { ThinksoftEvent } from "#/types/v1/core";
 import { EventMessage } from "./event-message";
 import { ChatMessage } from "../../features/chat/chat-message";
 import { useOptimisticUserMessageStore } from "#/stores/optimistic-user-message-store";
@@ -8,8 +8,8 @@ import { useOptimisticUserMessageStore } from "#/stores/optimistic-user-message-
 // import MemoryIcon from "#/icons/memory_icon.svg?react";
 
 interface MessagesProps {
-  messages: OpenHandsEvent[]; // UI events (actions replaced by observations)
-  allEvents: OpenHandsEvent[]; // Full event history (for action lookup)
+  messages: ThinksoftEvent[]; // UI events (actions replaced by observations)
+  allEvents: ThinksoftEvent[]; // Full event history (for action lookup)
 }
 
 export const Messages: React.FC<MessagesProps> = React.memo(

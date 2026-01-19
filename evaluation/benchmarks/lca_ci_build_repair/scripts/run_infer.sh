@@ -5,12 +5,12 @@ source "evaluation/utils/version_control.sh"
 
 MODEL_CONFIG=$1
 
-get_openhands_version
+get_thinksoft_version
 
-echo "OPENHANDS_VERSION: $OPENHANDS_VERSION"
+echo "THINKSOFT_VERSION: $THINKSOFT_VERSION"
 echo "MODEL_CONFIG: $MODEL_CONFIG"
 
-EVAL_NOTE="$OPENHANDS_VERSION"
+EVAL_NOTE="$THINKSOFT_VERSION"
 if [ -n "$EXP_NAME" ]; then
   EVAL_NOTE="$EVAL_NOTE-$EXP_NAME"
 fi

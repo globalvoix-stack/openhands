@@ -9,8 +9,8 @@ from sqlalchemy.orm import sessionmaker
 from storage.auth_tokens import AuthTokens
 from storage.database import a_session_maker
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.integrations.service_types import ProviderType
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.integrations.service_types import ProviderType
 
 
 @dataclass

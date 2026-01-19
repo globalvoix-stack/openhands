@@ -19,23 +19,23 @@ from evaluation.utils.shared import (
     EvalMetadata,
     EvalOutput,
     get_default_sandbox_config_for_eval,
-    get_openhands_config_for_eval,
+    get_thinksoft_config_for_eval,
     prepare_dataset,
     reset_logger_for_multiprocessing,
     run_evaluation,
 )
-from openhands.core.config import (
+from thinksoft.core.config import (
     LLMConfig,
-    OpenHandsConfig,
+    ThinksoftConfig,
     get_evaluation_parser,
 )
-from openhands.core.logger import openhands_logger as logger
-from openhands.core.main import create_runtime
-from openhands.events.action import CmdRunAction
-from openhands.events.observation import CmdOutputObservation
-from openhands.utils.async_utils import call_async_from_sync
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.core.main import create_runtime
+from thinksoft.events.action import CmdRunAction
+from thinksoft.events.observation import CmdOutputObservation
+from thinksoft.utils.async_utils import call_async_from_sync
 
-# TODO: migrate all swe-bench docker to ghcr.io/openhands
+# TODO: migrate all swe-bench docker to ghcr.io/thinksoft
 DOCKER_IMAGE_PREFIX = os.environ.get('EVAL_DOCKER_IMAGE_PREFIX', 'docker.io/xingyaoww/')
 logger.info(f'Using docker image prefix: {DOCKER_IMAGE_PREFIX}')
 
@@ -50,7 +50,7 @@ def process_git_patch(patch):
 
     patch = patch.replace('\r\n', '\n')
     # There might be some weird characters at the beginning of the patch
-    # due to some OpenHands inference command outputs
+    # due to some Thinksoft inference command outputs
 
     # FOR EXAMPLE:
     # git diff --no-color --cached 895f28f9cbed817c00ab68770433170d83132d90
@@ -70,13 +70,13 @@ def process_git_patch(patch):
     return patch
 
 
-def get_config(metadata: EvalMetadata, instance: pd.Series) -> OpenHandsConfig:
+def get_config(metadata: EvalMetadata, instance: pd.Series) -> ThinksoftConfig:
     # We use a different instance image for the each instance of swe-bench eval
     base_container_image = get_instance_docker_image(instance['instance_id'])
     logger.info(
         f'Using instance container image: {base_container_image}. '
         f'Please make sure this image exists. '
-        f'Submit an issue on https://github.com/OpenHands/OpenHands if you run into any issues.'
+        f'Submit an issue on https://github.com/Thinksoft/Thinksoft if you run into any issues.'
     )
     sandbox_config = get_default_sandbox_config_for_eval()
     sandbox_config.base_container_image = base_container_image
@@ -84,7 +84,7 @@ def get_config(metadata: EvalMetadata, instance: pd.Series) -> OpenHandsConfig:
         dataset_name=metadata.dataset,
         instance_id=instance['instance_id'],
     )
-    config = get_openhands_config_for_eval(
+    config = get_thinksoft_config_for_eval(
         runtime=os.environ.get('RUNTIME', 'docker'),
         sandbox_config=sandbox_config,
     )

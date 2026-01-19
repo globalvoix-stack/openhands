@@ -255,7 +255,7 @@ export function ApiKeysManager() {
         />
 
         <h3 className="text-xl font-medium text-white">
-          {t(I18nKey.SETTINGS$OPENHANDS_API_KEYS)}
+          {t(I18nKey.SETTINGS$THINKSOFT_API_KEYS)}
         </h3>
 
         <div className="flex items-center justify-between">

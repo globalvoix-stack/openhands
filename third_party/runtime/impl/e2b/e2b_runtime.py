@@ -1,9 +1,9 @@
 import os
 from typing import Callable
 
-from openhands.core.config import OpenHandsConfig
-from openhands.core.logger import openhands_logger as logger
-from openhands.events.action import (
+from thinksoft.core.config import ThinksoftConfig
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.events.action import (
     BrowseURLAction,
     BrowseInteractiveAction,
     CmdRunAction,
@@ -12,7 +12,7 @@ from openhands.events.action import (
     FileWriteAction,
     IPythonRunCellAction,
 )
-from openhands.events.observation import (
+from thinksoft.events.observation import (
     BrowserOutputObservation,
     CmdOutputObservation,
     ErrorObservation,
@@ -22,16 +22,16 @@ from openhands.events.observation import (
     IPythonRunCellObservation,
     Observation,
 )
-from openhands.events.stream import EventStream
-from openhands.integrations.provider import PROVIDER_TOKEN_TYPE
-from openhands.llm.llm_registry import LLMRegistry
-from openhands.runtime.impl.action_execution.action_execution_client import (
+from thinksoft.events.stream import EventStream
+from thinksoft.integrations.provider import PROVIDER_TOKEN_TYPE
+from thinksoft.llm.llm_registry import LLMRegistry
+from thinksoft.runtime.impl.action_execution.action_execution_client import (
     ActionExecutionClient,
 )
-from openhands.runtime.plugins import PluginRequirement
-from openhands.runtime.runtime_status import RuntimeStatus
-from openhands.runtime.utils.files import insert_lines, read_lines
-from openhands.utils.async_utils import call_sync_from_async
+from thinksoft.runtime.plugins import PluginRequirement
+from thinksoft.runtime.runtime_status import RuntimeStatus
+from thinksoft.runtime.utils.files import insert_lines, read_lines
+from thinksoft.utils.async_utils import call_sync_from_async
 from third_party.runtime.impl.e2b.filestore import E2BFileStore
 from third_party.runtime.impl.e2b.sandbox import E2BBox, E2BSandbox
 
@@ -42,7 +42,7 @@ class E2BRuntime(ActionExecutionClient):
     
     def __init__(
         self,
-        config: OpenHandsConfig,
+        config: ThinksoftConfig,
         event_stream: EventStream,
         llm_registry: LLMRegistry,
         sid: str = "default",
@@ -390,13 +390,13 @@ class E2BRuntime(ActionExecutionClient):
         return ""
     
     @classmethod
-    def setup(cls, config: OpenHandsConfig, headless_mode: bool = False) -> None:
+    def setup(cls, config: ThinksoftConfig, headless_mode: bool = False) -> None:
         """Set up the E2B runtime environment."""
         logger.info("E2B runtime setup called")
         pass
     
     @classmethod
-    def teardown(cls, config: OpenHandsConfig) -> None:
+    def teardown(cls, config: ThinksoftConfig) -> None:
         """Tear down the E2B runtime environment."""
         logger.info("E2B runtime teardown called")
         pass

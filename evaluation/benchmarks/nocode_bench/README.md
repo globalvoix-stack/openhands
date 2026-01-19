@@ -1,4 +1,4 @@
-# Evaluate OpenHands on NoCode-bench
+# Evaluate Thinksoft on NoCode-bench
 
 ## LLM Setup
 
@@ -7,7 +7,7 @@ Please follow [here](../../README.md#setup).
 
 ## Docker image download
 
-Evaluating OpenHands on NoCode-bench need instance-level docker image.
+Evaluating Thinksoft on NoCode-bench need instance-level docker image.
 Please follow the instructions of NoCode-bench image setup to build or download all instance-level dokcer [here](https://github.com/NoCode-bench/NoCode-bench).
 
 ## Generate patch

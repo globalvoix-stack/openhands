@@ -303,12 +303,12 @@ export const constructPullRequestUrl = (
  * @returns The URL to the microagent file in the Git provider
  *
  * @example
- * constructMicroagentUrl("github", "owner/repo", ".openhands/microagents/tell-me-a-joke.md")
- * // "https://github.com/owner/repo/blob/main/.openhands/microagents/tell-me-a-joke.md"
+ * constructMicroagentUrl("github", "owner/repo", ".thinksoft/microagents/tell-me-a-joke.md")
+ * // "https://github.com/owner/repo/blob/main/.thinksoft/microagents/tell-me-a-joke.md"
  * constructMicroagentUrl("gitlab", "owner/repo", "microagents/git-helper.md")
  * // "https://gitlab.com/owner/repo/-/blob/main/microagents/git-helper.md"
- * constructMicroagentUrl("bitbucket", "owner/repo", ".openhands/microagents/docker-helper.md")
- * // "https://bitbucket.org/owner/repo/src/main/.openhands/microagents/docker-helper.md"
+ * constructMicroagentUrl("bitbucket", "owner/repo", ".thinksoft/microagents/docker-helper.md")
+ * // "https://bitbucket.org/owner/repo/src/main/.thinksoft/microagents/docker-helper.md"
  */
 export const constructMicroagentUrl = (
   gitProvider: Provider,
@@ -534,7 +534,7 @@ export const getRepoMdCreatePrompt = (
   const pr = getPR(gitProvider === "gitlab");
   const prShort = getPRShort(gitProvider === "gitlab");
 
-  return `Please explore this repository. Create the file .openhands/microagents/repo.md with:
+  return `Please explore this repository. Create the file .thinksoft/microagents/repo.md with:
             ${
               query
                 ? `- ${query}`
@@ -627,15 +627,15 @@ export const shouldIncludeRepository = (
 };
 
 /**
- * Get the OpenHands query string based on the provider
+ * Get the Thinksoft query string based on the provider
  * @param provider The git provider
- * @returns The query string for searching OpenHands repositories
+ * @returns The query string for searching Thinksoft repositories
  */
-export const getOpenHandsQuery = (provider: Provider | null): string => {
+export const getThinksoftQuery = (provider: Provider | null): string => {
   const providerRepositorySuffix: Record<string, string> = {
-    gitlab: "openhands-config",
-    azure_devops: "openhands-config",
-    default: ".openhands",
+    gitlab: "thinksoft-config",
+    azure_devops: "thinksoft-config",
+    default: ".thinksoft",
   } as const;
 
   return provider && provider in providerRepositorySuffix
@@ -644,15 +644,15 @@ export const getOpenHandsQuery = (provider: Provider | null): string => {
 };
 
 /**
- * Check if a repository has the OpenHands suffix based on the provider
+ * Check if a repository has the Thinksoft suffix based on the provider
  * @param repo The Git repository to check
  * @param provider The git provider
- * @returns True if the repository has the OpenHands suffix
+ * @returns True if the repository has the Thinksoft suffix
  */
-export const hasOpenHandsSuffix = (
+export const hasThinksoftSuffix = (
   repo: GitRepository,
   provider: Provider | null,
-): boolean => repo.full_name.endsWith(`/${getOpenHandsQuery(provider)}`);
+): boolean => repo.full_name.endsWith(`/${getThinksoftQuery(provider)}`);
 
 /**
  * Build headers for V1 API requests that require session authentication

@@ -5,10 +5,10 @@ from fastapi.responses import JSONResponse
 from pydantic import SecretStr
 from server.auth.token_manager import TokenManager
 
-from openhands.integrations.provider import (
+from thinksoft.integrations.provider import (
     PROVIDER_TOKEN_TYPE,
 )
-from openhands.integrations.service_types import (
+from thinksoft.integrations.service_types import (
     Branch,
     PaginatedBranchesResponse,
     ProviderType,
@@ -16,12 +16,12 @@ from openhands.integrations.service_types import (
     SuggestedTask,
     User,
 )
-from openhands.microagent.types import (
+from thinksoft.microagent.types import (
     MicroagentContentResponse,
     MicroagentResponse,
 )
-from openhands.server.dependencies import get_dependencies
-from openhands.server.routes.git import (
+from thinksoft.server.dependencies import get_dependencies
+from thinksoft.server.routes.git import (
     get_repository_branches,
     get_repository_microagent_content,
     get_repository_microagents,
@@ -32,7 +32,7 @@ from openhands.server.routes.git import (
     search_branches,
     search_repositories,
 )
-from openhands.server.user_auth import (
+from thinksoft.server.user_auth import (
     get_access_token,
     get_provider_tokens,
     get_user_id,
@@ -265,9 +265,9 @@ async def saas_get_repository_microagents(
     """Scan the microagents directory of a repository and return the list of microagents.
 
     The microagents directory location depends on the git provider and actual repository name:
-    - If git provider is not GitLab and actual repository name is ".openhands": scans "microagents" folder
-    - If git provider is GitLab and actual repository name is "openhands-config": scans "microagents" folder
-    - Otherwise: scans ".openhands/microagents" folder
+    - If git provider is not GitLab and actual repository name is ".thinksoft": scans "microagents" folder
+    - If git provider is GitLab and actual repository name is "thinksoft-config": scans "microagents" folder
+    - Otherwise: scans ".thinksoft/microagents" folder
 
     Note: This API returns microagent metadata without content for performance.
     Use the separate content API to fetch individual microagent content.
@@ -323,7 +323,7 @@ async def saas_get_repository_microagent_content(
         Microagent file content and metadata
 
     Example:
-        GET /api/user/repository/owner/repo/microagents/content?file_path=.openhands/microagents/my-agent.md
+        GET /api/user/repository/owner/repo/microagents/content?file_path=.thinksoft/microagents/my-agent.md
     """
     if not provider_tokens:
         retval = await _check_idp(

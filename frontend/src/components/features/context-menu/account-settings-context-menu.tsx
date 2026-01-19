@@ -55,7 +55,7 @@ export function AccountSettingsContextMenu({
       <Divider />
 
       <a
-        href="https://docs.openhands.dev"
+        href="https://docs.thinksoft.dev"
         target="_blank"
         rel="noopener noreferrer"
         className="text-decoration-none"

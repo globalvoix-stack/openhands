@@ -1,4 +1,4 @@
 DOCKER_REGISTRY=ghcr.io
-DOCKER_ORG=openhands
-DOCKER_IMAGE=openhands
+DOCKER_ORG=thinksoft
+DOCKER_IMAGE=thinksoft
 DOCKER_BASE_DIR="."

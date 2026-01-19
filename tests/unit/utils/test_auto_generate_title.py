@@ -5,18 +5,18 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from openhands.core.config.openhands_config import OpenHandsConfig
-from openhands.events.action import MessageAction
-from openhands.events.event import EventSource
-from openhands.events.event_store import EventStore
-from openhands.llm.llm_registry import LLMRegistry
-from openhands.server.conversation_manager.standalone_conversation_manager import (
+from thinksoft.core.config.thinksoft_config import ThinksoftConfig
+from thinksoft.events.action import MessageAction
+from thinksoft.events.event import EventSource
+from thinksoft.events.event_store import EventStore
+from thinksoft.llm.llm_registry import LLMRegistry
+from thinksoft.server.conversation_manager.standalone_conversation_manager import (
     StandaloneConversationManager,
 )
-from openhands.server.monitoring import MonitoringListener
-from openhands.storage.data_models.settings import Settings
-from openhands.storage.memory import InMemoryFileStore
-from openhands.utils.conversation_summary import auto_generate_title
+from thinksoft.server.monitoring import MonitoringListener
+from thinksoft.storage.data_models.settings import Settings
+from thinksoft.storage.memory import InMemoryFileStore
+from thinksoft.utils.conversation_summary import auto_generate_title
 
 
 @pytest.mark.asyncio
@@ -40,7 +40,7 @@ async def test_auto_generate_title_with_llm():
 
     # Mock the EventStore class
     with patch(
-        'openhands.utils.conversation_summary.EventStore'
+        'thinksoft.utils.conversation_summary.EventStore'
     ) as mock_event_store_cls:
         # Configure the mock event stream to return our test message
         mock_event_store = MagicMock(spec=EventStore)
@@ -96,7 +96,7 @@ async def test_auto_generate_title_fallback():
 
     # Mock the EventStore class
     with patch(
-        'openhands.utils.conversation_summary.EventStore'
+        'thinksoft.utils.conversation_summary.EventStore'
     ) as mock_event_store_cls:
         # Configure the mock event stream to return our test message
         mock_event_store = MagicMock(spec=EventStore)
@@ -141,7 +141,7 @@ async def test_auto_generate_title_no_messages():
 
     # Mock the EventStore class
     with patch(
-        'openhands.utils.conversation_summary.EventStore'
+        'thinksoft.utils.conversation_summary.EventStore'
     ) as mock_event_store_cls:
         # Configure the mock event store to return no events
         mock_event_store = MagicMock(spec=EventStore)
@@ -199,7 +199,7 @@ async def test_update_conversation_with_title():
     # Create the conversation manager
     manager = StandaloneConversationManager(
         sio=sio,
-        config=OpenHandsConfig(),
+        config=ThinksoftConfig(),
         file_store=file_store,
         server_config=server_config,
         monitoring_listener=MonitoringListener(),
@@ -210,7 +210,7 @@ async def test_update_conversation_with_title():
 
     # Mock the auto_generate_title function
     with patch(
-        'openhands.server.conversation_manager.standalone_conversation_manager.auto_generate_title',
+        'thinksoft.server.conversation_manager.standalone_conversation_manager.auto_generate_title',
         AsyncMock(return_value='Generated Title'),
     ):
         # Call the method

@@ -7,7 +7,7 @@ from unittest.mock import patch
 import pytest
 from server.logger import format_stack, setup_json_logger
 
-from openhands.core.logger import openhands_logger
+from thinksoft.core.logger import thinksoft_logger
 
 
 @pytest.fixture
@@ -262,8 +262,8 @@ class TestLogOutput:
         string_io = StringIO()
         with (
             patch.dict(os.environ, {'my_secret_key': 'supersecretvalue'}),
-            patch.object(openhands_logger.handlers[0], 'stream', string_io),
+            patch.object(thinksoft_logger.handlers[0], 'stream', string_io),
         ):
-            openhands_logger.info('The secret key was supersecretvalue')
+            thinksoft_logger.info('The secret key was supersecretvalue')
         output = json.loads(string_io.getvalue())
         assert output == {'message': 'The secret key was ******', 'severity': 'INFO'}

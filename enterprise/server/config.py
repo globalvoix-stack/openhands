@@ -20,10 +20,10 @@ from server.auth.constants import (
     RECAPTCHA_SITE_KEY,
 )
 
-from openhands.core.config.utils import load_openhands_config
-from openhands.integrations.service_types import ProviderType
-from openhands.server.config.server_config import ServerConfig
-from openhands.server.types import AppMode
+from thinksoft.core.config.utils import load_thinksoft_config
+from thinksoft.integrations.service_types import ProviderType
+from thinksoft.server.config.server_config import ServerConfig
+from thinksoft.server.types import AppMode
 
 # Create a function to get config to avoid circular imports
 _config = None
@@ -32,7 +32,7 @@ _config = None
 def get_config():
     global _config
     if _config is None:
-        _config = load_openhands_config()
+        _config = load_thinksoft_config()
     return _config
 
 
@@ -61,7 +61,7 @@ def verify_signature(payload: bytes, signature: str):
 
 
 class SaaSServerConfig(ServerConfig):
-    config_cls: str = os.environ.get('OPENHANDS_CONFIG_CLS', '')
+    config_cls: str = os.environ.get('THINKSOFT_CONFIG_CLS', '')
     app_mode: AppMode = AppMode.SAAS
     posthog_client_key: str = os.environ.get('POSTHOG_CLIENT_KEY', '')
     github_client_id: str = os.environ.get('GITHUB_APP_CLIENT_ID', '')

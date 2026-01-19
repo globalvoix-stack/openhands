@@ -105,4 +105,4 @@ Evaluation results are saved in JSONL format with detailed metrics:
 
 ## License
 
-This benchmark is part of the OpenHands evaluation framework. See the main project for licensing information.
+This benchmark is part of the Thinksoft evaluation framework. See the main project for licensing information.

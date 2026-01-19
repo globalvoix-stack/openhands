@@ -1,6 +1,6 @@
 import pytest
 
-from openhands.core.config import (
+from thinksoft.core.config import (
     get_evaluation_parser,
     get_headless_parser,
 )
@@ -170,7 +170,7 @@ def test_evaluation_parser_help_message(capsys):
     print(help_output)
     expected_elements = [
         'usage:',
-        'Run OpenHands in evaluation mode',
+        'Run Thinksoft in evaluation mode',
         'options:',
         '-v, --version',
         '-h, --help',

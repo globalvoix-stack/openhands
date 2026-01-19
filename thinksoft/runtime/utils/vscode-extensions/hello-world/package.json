@@ -1,0 +1,23 @@
+{
+    "name": "thinksoft-hello-world",
+    "displayName": "Thinksoft Hello World",
+    "description": "A simple hello world extension for Thinksoft",
+    "version": "0.0.1",
+    "publisher": "thinksoft",
+    "engines": {
+        "vscode": "^1.98.2"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:thinksoft-hello-world.helloWorld"
+    ],
+    "main": "./extension.js",
+    "contributes": {
+        "commands": [{
+            "command": "thinksoft-hello-world.helloWorld",
+            "title": "Hello World from Thinksoft"
+        }]
+    }
+}

@@ -3,8 +3,8 @@ from unittest.mock import MagicMock, patch
 import pytest
 from pydantic import SecretStr
 
-from openhands.core.config.openhands_config import OpenHandsConfig
-from openhands.server.settings import Settings
+from thinksoft.core.config.thinksoft_config import ThinksoftConfig
+from thinksoft.server.settings import Settings
 
 # Mock the database module before importing
 with patch('storage.database.engine'), patch('storage.database.a_engine'):
@@ -17,7 +17,7 @@ with patch('storage.database.engine'), patch('storage.database.a_engine'):
 
 @pytest.fixture
 def mock_config():
-    config = MagicMock(spec=OpenHandsConfig)
+    config = MagicMock(spec=ThinksoftConfig)
     config.jwt_secret = SecretStr('test_secret')
     config.file_store = 'google_cloud'
     config.file_store_path = 'bucket'

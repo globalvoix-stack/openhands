@@ -1,34 +1,34 @@
 import asyncio
 
 from integrations.github.data_collector import GitHubDataCollector
-from storage.openhands_pr import OpenhandsPR
-from storage.openhands_pr_store import OpenhandsPRStore
+from storage.thinksoft_pr import ThinksoftPR
+from storage.thinksoft_pr_store import ThinksoftPRStore
 
-from openhands.core.logger import openhands_logger as logger
+from thinksoft.core.logger import thinksoft_logger as logger
 
 PROCESS_AMOUNT = 50
 MAX_RETRIES = 3
 
-store = OpenhandsPRStore.get_instance()
+store = ThinksoftPRStore.get_instance()
 data_collector = GitHubDataCollector()
 
 
-def get_unprocessed_prs() -> list[OpenhandsPR]:
+def get_unprocessed_prs() -> list[ThinksoftPR]:
     """
-    Get unprocessed PR entries from the OpenhandsPR table.
+    Get unprocessed PR entries from the ThinksoftPR table.
 
     Args:
         limit: Maximum number of PRs to retrieve (default: 50)
 
     Returns:
-        List of OpenhandsPR objects that need processing
+        List of ThinksoftPR objects that need processing
     """
     unprocessed_prs = store.get_unprocessed_prs(PROCESS_AMOUNT, MAX_RETRIES)
     logger.info(f'Retrieved {len(unprocessed_prs)} unprocessed PRs for enrichment')
     return unprocessed_prs
 
 
-async def process_pr(pr: OpenhandsPR):
+async def process_pr(pr: ThinksoftPR):
     """
     Process a single PR to enrich its data.
     """

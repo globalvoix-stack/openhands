@@ -1,7 +1,7 @@
 from fastapi import HTTPException, Request, status
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.server.shared import sio
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.server.shared import sio
 
 # Rate limiting constants
 RATE_LIMIT_USER_SECONDS = 120  # 2 minutes per user_id

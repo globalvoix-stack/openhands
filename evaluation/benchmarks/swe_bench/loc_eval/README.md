@@ -4,7 +4,7 @@ This folder implements localization evaluation at both file and function levels 
 
 ## **1. Environment Setup**
 - Python env: [Install python environment](../../../README.md#development-environment)
-- LLM config: [Configure LLM config](../../../README.md#configure-openhands-and-your-llm)
+- LLM config: [Configure LLM config](../../../README.md#configure-thinksoft-and-your-llm)
 
 ## **2. Inference & Evaluation**
 - Inference and evaluation follow the original `run_infer.sh` and `run_eval.sh` implementation

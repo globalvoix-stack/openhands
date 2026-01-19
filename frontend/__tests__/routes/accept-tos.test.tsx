@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AcceptTOS from "#/routes/accept-tos";
 import * as CaptureConsent from "#/utils/handle-capture-consent";
-import { openHands } from "#/api/open-hands-axios";
+import { thinksoft } from "#/api/thinksoft-axios";
 
 // Mock the react-router hooks
 vi.mock("react-router", () => ({
@@ -22,8 +22,8 @@ vi.mock("react-router", () => ({
 }));
 
 // Mock the axios instance
-vi.mock("#/api/open-hands-axios", () => ({
-  openHands: {
+vi.mock("#/api/thinksoft-axios", () => ({
+  thinksoft: {
     post: vi.fn(),
   },
 }));
@@ -93,7 +93,7 @@ describe("AcceptTOS", () => {
     );
 
     // Mock the API response
-    vi.mocked(openHands.post).mockResolvedValue({
+    vi.mocked(thinksoft.post).mockResolvedValue({
       data: { redirect_url: "/dashboard" },
     });
 
@@ -113,7 +113,7 @@ describe("AcceptTOS", () => {
       expect.anything(),
       true,
     );
-    expect(openHands.post).toHaveBeenCalledWith("/api/accept_tos", {
+    expect(thinksoft.post).toHaveBeenCalledWith("/api/accept_tos", {
       redirect_url: "/dashboard",
     });
   });
@@ -121,7 +121,7 @@ describe("AcceptTOS", () => {
   it("should handle external redirect URLs", async () => {
     // Mock the API response with an external URL
     const externalUrl = "https://example.com/callback";
-    vi.mocked(openHands.post).mockResolvedValue({
+    vi.mocked(thinksoft.post).mockResolvedValue({
       data: { redirect_url: externalUrl },
     });
 

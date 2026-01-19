@@ -11,12 +11,12 @@ from conftest import (
     _load_runtime,
 )
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.events.action import CmdRunAction
-from openhands.events.observation import CmdOutputObservation, ErrorObservation
-from openhands.runtime.impl.cli.cli_runtime import CLIRuntime
-from openhands.runtime.impl.local.local_runtime import LocalRuntime
-from openhands.runtime.utils.bash_constants import TIMEOUT_MESSAGE_TEMPLATE
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.events.action import CmdRunAction
+from thinksoft.events.observation import CmdOutputObservation, ErrorObservation
+from thinksoft.runtime.impl.cli.cli_runtime import CLIRuntime
+from thinksoft.runtime.impl.local.local_runtime import LocalRuntime
+from thinksoft.runtime.utils.bash_constants import TIMEOUT_MESSAGE_TEMPLATE
 
 
 def get_timeout_suffix(timeout_seconds):
@@ -51,8 +51,8 @@ def get_platform_command(linux_cmd, windows_cmd):
     return windows_cmd if is_windows() else linux_cmd
 
 
-def test_bash_server(temp_dir, runtime_cls, run_as_openhands, dynamic_port):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_bash_server(temp_dir, runtime_cls, run_as_thinksoft, dynamic_port):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Use python -u for unbuffered output, potentially helping capture initial output on Windows
         action = CmdRunAction(command=f'python -u -m http.server {dynamic_port}')
@@ -122,8 +122,8 @@ def test_bash_server(temp_dir, runtime_cls, run_as_openhands, dynamic_port):
         _close_test_runtime(runtime)
 
 
-def test_bash_background_server(temp_dir, runtime_cls, run_as_openhands, dynamic_port):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_bash_background_server(temp_dir, runtime_cls, run_as_thinksoft, dynamic_port):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     server_port = dynamic_port
     try:
         # Start the server, expect it to timeout (run in background manner)
@@ -237,10 +237,10 @@ def test_multiline_commands(temp_dir, runtime_cls):
 @pytest.mark.skipif(
     is_windows(), reason='Test relies on Linux bash-specific complex commands'
 )
-def test_complex_commands(temp_dir, runtime_cls, run_as_openhands):
+def test_complex_commands(temp_dir, runtime_cls, run_as_thinksoft):
     cmd = """count=0; tries=0; while [ $count -lt 3 ]; do result=$(echo "Heads"); tries=$((tries+1)); echo "Flip $tries: $result"; if [ "$result" = "Heads" ]; then count=$((count+1)); else count=0; fi; done; echo "Got 3 heads in a row after $tries flips!";"""
 
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         obs = _run_cmd_action(runtime, cmd)
         logger.info(obs, extra={'msg_type': 'OBSERVATION'})
@@ -251,9 +251,9 @@ def test_complex_commands(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_no_ps2_in_output(temp_dir, runtime_cls, run_as_openhands):
+def test_no_ps2_in_output(temp_dir, runtime_cls, run_as_thinksoft):
     """Test that the PS2 sign is not added to the output of a multiline command."""
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         if is_windows():
             obs = _run_cmd_action(runtime, 'Write-Output "hello`nworld"')
@@ -271,7 +271,7 @@ def test_no_ps2_in_output(temp_dir, runtime_cls, run_as_openhands):
     is_windows(), reason='Test uses Linux-specific bash loops and sed commands'
 )
 def test_multiline_command_loop(temp_dir, runtime_cls):
-    # https://github.com/OpenHands/OpenHands/issues/3143
+    # https://github.com/Thinksoft/Thinksoft/issues/3143
     init_cmd = """mkdir -p _modules && \
 for month in {01..04}; do
     for day in {01..05}; do
@@ -301,7 +301,7 @@ done && echo "success"
     os.getenv('TEST_RUNTIME') == 'cli',
     reason='CLIRuntime uses bash -c which handles newline-separated commands. This test expects rejection. See test_cliruntime_multiple_newline_commands.',
 )
-def test_multiple_multiline_commands(temp_dir, runtime_cls, run_as_openhands):
+def test_multiple_multiline_commands(temp_dir, runtime_cls, run_as_thinksoft):
     if is_windows():
         cmds = [
             'Get-ChildItem',
@@ -328,7 +328,7 @@ def test_multiple_multiline_commands(temp_dir, runtime_cls, run_as_openhands):
         ]
     joined_cmds = '\n'.join(cmds)
 
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # First test that running multiple commands at once fails
         obs = _run_cmd_action(runtime, joined_cmds)
@@ -363,7 +363,7 @@ def test_multiple_multiline_commands(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_cliruntime_multiple_newline_commands(temp_dir, run_as_openhands):
+def test_cliruntime_multiple_newline_commands(temp_dir, run_as_thinksoft):
     # This test is specific to CLIRuntime
     runtime_cls = CLIRuntime
     if is_windows():
@@ -390,7 +390,7 @@ def test_cliruntime_multiple_newline_commands(temp_dir, run_as_openhands):
         ]  # Simplified expectations
     joined_cmds = '\n'.join(cmds)
 
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         obs = _run_cmd_action(runtime, joined_cmds)
         assert isinstance(obs, CmdOutputObservation)
@@ -402,8 +402,8 @@ def test_cliruntime_multiple_newline_commands(temp_dir, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_cmd_run(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_cmd_run(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         if is_windows():
             # Windows PowerShell version
@@ -449,11 +449,11 @@ def test_cmd_run(temp_dir, runtime_cls, run_as_openhands):
             obs = _run_cmd_action(runtime, 'ls -l')
             assert obs.exit_code == 0
             if (
-                run_as_openhands
+                run_as_thinksoft
                 and runtime_cls != CLIRuntime
                 and runtime_cls != LocalRuntime
             ):
-                assert 'openhands' in obs.content
+                assert 'thinksoft' in obs.content
             elif runtime_cls == LocalRuntime or runtime_cls == CLIRuntime:
                 # For CLI and Local runtimes, the user depends on the actual environment
                 # In CI it might be a non-root user, in cloud environments it might be root
@@ -483,8 +483,8 @@ def test_cmd_run(temp_dir, runtime_cls, run_as_openhands):
     sys.platform != 'win32' and os.getenv('TEST_RUNTIME') == 'cli',
     reason='CLIRuntime runs as the host user, so ~ is the host home. This test assumes a sandboxed user.',
 )
-def test_run_as_user_correct_home_dir(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_run_as_user_correct_home_dir(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         if is_windows():
             # Windows PowerShell version
@@ -503,8 +503,8 @@ def test_run_as_user_correct_home_dir(temp_dir, runtime_cls, run_as_openhands):
             assert obs.exit_code == 0
             if runtime_cls == LocalRuntime:
                 assert os.getenv('HOME') in obs.content
-            elif run_as_openhands:
-                assert '/home/openhands' in obs.content
+            elif run_as_thinksoft:
+                assert '/home/thinksoft' in obs.content
             else:
                 assert '/root' in obs.content
     finally:
@@ -813,20 +813,20 @@ def test_git_operation(temp_dir, runtime_cls):
         use_workspace=False,
         runtime_cls=runtime_cls,
         # Need to use non-root user to expose issues
-        run_as_openhands=True,
+        run_as_thinksoft=True,
     )
     # this will happen if permission of runtime is not properly configured
     # fatal: detected dubious ownership in repository at config.workspace_mount_path_in_sandbox
     try:
         if runtime_cls != LocalRuntime and runtime_cls != CLIRuntime:
             # on local machine, permissionless sudo will probably not be available
-            obs = _run_cmd_action(runtime, 'sudo chown -R openhands:root .')
+            obs = _run_cmd_action(runtime, 'sudo chown -R thinksoft:root .')
             assert obs.exit_code == 0
 
         # check the ownership of the current directory
         obs = _run_cmd_action(runtime, 'ls -alh .')
         assert obs.exit_code == 0
-        # drwx--S--- 2 openhands root   64 Aug  7 23:32 .
+        # drwx--S--- 2 thinksoft root   64 Aug  7 23:32 .
         # drwxr-xr-x 1 root      root 4.0K Aug  7 23:33 ..
         for line in obs.content.split('\n'):
             if runtime_cls == LocalRuntime or runtime_cls == CLIRuntime:
@@ -835,11 +835,11 @@ def test_git_operation(temp_dir, runtime_cls):
             if ' ..' in line:
                 # parent directory should be owned by root
                 assert 'root' in line
-                assert 'openhands' not in line
+                assert 'thinksoft' not in line
             elif ' .' in line:
-                # current directory should be owned by openhands
+                # current directory should be owned by thinksoft
                 # and its group should be root
-                assert 'openhands' in line
+                assert 'thinksoft' in line
                 assert 'root' in line
 
         # make sure all git operations are allowed
@@ -855,7 +855,7 @@ def test_git_operation(temp_dir, runtime_cls):
             logger.info('Setting git config author')
             obs = _run_cmd_action(
                 runtime,
-                'git config user.name "openhands" && git config user.email "openhands@all-hands.dev"',
+                'git config user.name "thinksoft" && git config user.email "thinksoft@all-hands.dev"',
             )
             assert obs.exit_code == 0
 
@@ -880,8 +880,8 @@ def test_git_operation(temp_dir, runtime_cls):
         _close_test_runtime(runtime)
 
 
-def test_python_version(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_python_version(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         obs = runtime.run_action(CmdRunAction(command='python --version'))
 
@@ -894,8 +894,8 @@ def test_python_version(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_pwd_property(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_pwd_property(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Create a subdirectory and verify pwd updates
         obs = _run_cmd_action(runtime, 'mkdir -p random_dir')
@@ -908,8 +908,8 @@ def test_pwd_property(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_basic_command(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_basic_command(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         if is_windows():
             # Test simple command
@@ -976,11 +976,11 @@ def test_basic_command(temp_dir, runtime_cls, run_as_openhands):
     os.getenv('TEST_RUNTIME') == 'cli',
     reason='CLIRuntime does not support interactive commands from the agent.',
 )
-def test_interactive_command(temp_dir, runtime_cls, run_as_openhands):
+def test_interactive_command(temp_dir, runtime_cls, run_as_thinksoft):
     runtime, config = _load_runtime(
         temp_dir,
         runtime_cls,
-        run_as_openhands,
+        run_as_thinksoft,
         runtime_startup_env_vars={'NO_CHANGE_TIMEOUT_SECONDS': '1'},
     )
     try:
@@ -1016,8 +1016,8 @@ EOF""")
     is_windows(),
     reason='Test relies on Linux-specific commands like seq and bash for loops',
 )
-def test_long_output(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_long_output(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Generate a long output
         action = CmdRunAction('for i in $(seq 1 5000); do echo "Line $i"; done')
@@ -1038,8 +1038,8 @@ def test_long_output(temp_dir, runtime_cls, run_as_openhands):
     os.getenv('TEST_RUNTIME') == 'cli',
     reason='CLIRuntime does not truncate command output.',
 )
-def test_long_output_exceed_history_limit(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_long_output_exceed_history_limit(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Generate a long output
         action = CmdRunAction('for i in $(seq 1 50000); do echo "Line $i"; done')
@@ -1057,8 +1057,8 @@ def test_long_output_exceed_history_limit(temp_dir, runtime_cls, run_as_openhand
 @pytest.mark.skipif(
     is_windows(), reason='Test uses Linux-specific temp directory and bash for loops'
 )
-def test_long_output_from_nested_directories(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_long_output_from_nested_directories(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Create nested directories with many files
         setup_cmd = 'mkdir -p /tmp/test_dir && cd /tmp/test_dir && for i in $(seq 1 100); do mkdir -p "folder_$i"; for j in $(seq 1 100); do touch "folder_$i/file_$j.txt"; done; done'
@@ -1086,8 +1086,8 @@ def test_long_output_from_nested_directories(temp_dir, runtime_cls, run_as_openh
     is_windows(),
     reason='Test uses Linux-specific commands like find and grep with complex syntax',
 )
-def test_command_backslash(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_command_backslash(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Create a file with the content "implemented_function"
         action = CmdRunAction(
@@ -1121,12 +1121,12 @@ def test_command_backslash(temp_dir, runtime_cls, run_as_openhands):
     reason='CLIRuntime does not support interactive commands from the agent.',
 )
 def test_stress_long_output_with_soft_and_hard_timeout(
-    temp_dir, runtime_cls, run_as_openhands
+    temp_dir, runtime_cls, run_as_thinksoft
 ):
     runtime, config = _load_runtime(
         temp_dir,
         runtime_cls,
-        run_as_openhands,
+        run_as_thinksoft,
         runtime_startup_env_vars={'NO_CHANGE_TIMEOUT_SECONDS': '1'},
         docker_runtime_kwargs={
             'cpu_period': 100000,  # 100ms
@@ -1151,7 +1151,7 @@ def test_stress_long_output_with_soft_and_hard_timeout(
 
             # Check action_execution_server mem
             mem_action = CmdRunAction(
-                'ps aux | awk \'{printf "%8.1f KB  %s\\n", $6, $0}\' | sort -nr | grep "action_execution_server" | grep "/openhands/poetry" | grep -v grep | awk \'{print $1}\''
+                'ps aux | awk \'{printf "%8.1f KB  %s\\n", $6, $0}\' | sort -nr | grep "action_execution_server" | grep "/thinksoft/poetry" | grep -v grep | awk \'{print $1}\''
             )
             mem_obs = runtime.run_action(mem_action)
             assert mem_obs.exit_code == 0
@@ -1214,8 +1214,8 @@ def test_stress_long_output_with_soft_and_hard_timeout(
     os.getenv('TEST_RUNTIME') == 'cli',
     reason='FIXME: CLIRuntime does not watch previously timed-out commands except for getting full output a short time after timeout.',
 )
-def test_command_output_continuation(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_command_output_continuation(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         if is_windows():
             # Windows PowerShell version
@@ -1303,9 +1303,9 @@ def test_command_output_continuation(temp_dir, runtime_cls, run_as_openhands):
     reason='FIXME: CLIRuntime does not implement empty command behavior.',
 )
 def test_long_running_command_follow_by_execute(
-    temp_dir, runtime_cls, run_as_openhands
+    temp_dir, runtime_cls, run_as_thinksoft
 ):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         if is_windows():
             action = CmdRunAction('1..3 | ForEach-Object { Write-Output $_; sleep 3 }')
@@ -1353,8 +1353,8 @@ def test_long_running_command_follow_by_execute(
     os.getenv('TEST_RUNTIME') == 'cli',
     reason='FIXME: CLIRuntime does not implement empty command behavior.',
 )
-def test_empty_command_errors(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_empty_command_errors(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Test empty command without previous command - behavior should be the same on all platforms
         obs = runtime.run_action(CmdRunAction(''))
@@ -1373,8 +1373,8 @@ def test_empty_command_errors(temp_dir, runtime_cls, run_as_openhands):
     os.getenv('TEST_RUNTIME') == 'cli',
     reason='CLIRuntime does not support interactive commands from the agent.',
 )
-def test_python_interactive_input(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_python_interactive_input(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Test Python program that asks for input - same for both platforms
         python_script = """name = input('Enter your name: '); age = input('Enter your age: '); print(f'Hello {name}, you are {age} years old')"""
@@ -1410,9 +1410,9 @@ def test_python_interactive_input(temp_dir, runtime_cls, run_as_openhands):
     reason='CLIRuntime does not support interactive commands from the agent.',
 )
 def test_python_interactive_input_without_set_input(
-    temp_dir, runtime_cls, run_as_openhands
+    temp_dir, runtime_cls, run_as_thinksoft
 ):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Test Python program that asks for input
         python_script = """name = input('Enter your name: '); age = input('Enter your age: '); print(f'Hello {name}, you are {age} years old')"""
@@ -1448,12 +1448,12 @@ def test_python_interactive_input_without_set_input(
         _close_test_runtime(runtime)
 
 
-def test_bash_remove_prefix(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_bash_remove_prefix(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # create a git repo - same for both platforms
         action = CmdRunAction(
-            'git init && git remote add origin https://github.com/OpenHands/OpenHands'
+            'git init && git remote add origin https://github.com/Thinksoft/Thinksoft'
         )
         obs = runtime.run_action(action)
         # logger.info(obs, extra={'msg_type': 'OBSERVATION'})
@@ -1463,7 +1463,7 @@ def test_bash_remove_prefix(temp_dir, runtime_cls, run_as_openhands):
         obs = runtime.run_action(CmdRunAction('git remote -v'))
         # logger.info(obs, extra={'msg_type': 'OBSERVATION'})
         assert obs.metadata.exit_code == 0
-        assert 'https://github.com/OpenHands/OpenHands' in obs.content
+        assert 'https://github.com/Thinksoft/Thinksoft' in obs.content
         assert 'git remote -v' not in obs.content
     finally:
         _close_test_runtime(runtime)

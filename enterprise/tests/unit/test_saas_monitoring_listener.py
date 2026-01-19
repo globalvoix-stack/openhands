@@ -1,17 +1,17 @@
 import pytest
 from server.saas_monitoring_listener import SaaSMonitoringListener
 
-from openhands.core.config.openhands_config import OpenHandsConfig
-from openhands.core.schema.agent import AgentState
-from openhands.events.event import Event
-from openhands.events.observation import (
+from thinksoft.core.config.thinksoft_config import ThinksoftConfig
+from thinksoft.core.schema.agent import AgentState
+from thinksoft.events.event import Event
+from thinksoft.events.observation import (
     AgentStateChangedObservation,
 )
 
 
 @pytest.fixture
 def listener():
-    return SaaSMonitoringListener.get_instance(OpenHandsConfig())
+    return SaaSMonitoringListener.get_instance(ThinksoftConfig())
 
 
 def test_on_session_event_with_agent_state_changed_non_error(listener):

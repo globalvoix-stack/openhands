@@ -11,7 +11,7 @@ from server.auth.constants import (
     SUSPICIOUS_LABELS,
 )
 
-from openhands.core.logger import openhands_logger as logger
+from thinksoft.core.logger import thinksoft_logger as logger
 
 
 @dataclass

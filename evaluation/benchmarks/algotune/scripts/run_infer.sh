@@ -41,16 +41,16 @@ if [ -z "$MAX_ITER" ]; then
 fi
 
 checkout_eval_branch
-get_openhands_version
+get_thinksoft_version
 
 echo "AGENT: $AGENT"
-echo "OPENHANDS_VERSION: $OPENHANDS_VERSION"
+echo "THINKSOFT_VERSION: $THINKSOFT_VERSION"
 echo "MODEL_CONFIG: $MODEL_CONFIG"
 echo "OPTIM_TASK: $OPTIM_TASK"
 echo "MAX_ITER: $MAX_ITER"
 echo "NUM_WORKERS: $NUM_WORKERS"
 
-EVAL_NOTE=$OPENHANDS_VERSION
+EVAL_NOTE=$THINKSOFT_VERSION
 
 # Handle enable volumes option
 if [ -z "$ENABLE_VOLUMES" ]; then

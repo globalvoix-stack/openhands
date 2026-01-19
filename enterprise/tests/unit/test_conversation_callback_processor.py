@@ -16,7 +16,7 @@ from storage.stored_conversation_metadata_saas import (
     StoredConversationMetadataSaas,
 )
 
-from openhands.events.observation.agent import AgentStateChangedObservation
+from thinksoft.events.observation.agent import AgentStateChangedObservation
 
 
 class MockConversationCallbackProcessor(ConversationCallbackProcessor):

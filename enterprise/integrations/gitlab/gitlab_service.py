@@ -7,15 +7,15 @@ from server.auth.token_manager import TokenManager
 from storage.gitlab_webhook import GitlabWebhook, WebhookStatus
 from storage.gitlab_webhook_store import GitlabWebhookStore
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.integrations.gitlab.gitlab_service import GitLabService
-from openhands.integrations.service_types import (
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.integrations.gitlab.gitlab_service import GitLabService
+from thinksoft.integrations.service_types import (
     ProviderType,
     RateLimitError,
     Repository,
     RequestMethod,
 )
-from openhands.server.types import AppMode
+from thinksoft.server.types import AppMode
 
 
 class SaaSGitLabService(GitLabService):
@@ -459,7 +459,7 @@ class SaaSGitLabService(GitLabService):
                 - str: A reason message explaining the result
         """
 
-        description = 'Cloud OpenHands Resolver'
+        description = 'Cloud Thinksoft Resolver'
 
         # Set up webhook parameters
         webhook_data = {
@@ -476,8 +476,8 @@ class SaaSGitLabService(GitLabService):
         # Add custom headers with user id
         if self.external_auth_id:
             webhook_data['custom_headers'] = [
-                {'key': 'X-OpenHands-User-ID', 'value': self.external_auth_id},
-                {'key': 'X-OpenHands-Webhook-ID', 'value': webhook_uuid},
+                {'key': 'X-Thinksoft-User-ID', 'value': self.external_auth_id},
+                {'key': 'X-Thinksoft-Webhook-ID', 'value': webhook_uuid},
             ]
 
         if resource_type == GitLabResourceType.GROUP:

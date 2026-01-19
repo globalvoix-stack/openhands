@@ -13,9 +13,9 @@ from storage.database import a_session_maker
 from storage.gitlab_webhook import GitlabWebhook, WebhookStatus
 from storage.gitlab_webhook_store import GitlabWebhookStore
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.integrations.gitlab.gitlab_service import GitLabServiceImpl
-from openhands.integrations.service_types import GitService
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.integrations.gitlab.gitlab_service import GitLabServiceImpl
+from thinksoft.integrations.service_types import GitService
 
 CHUNK_SIZE = 100
 
@@ -169,7 +169,7 @@ class VerifyWebhookStatus:
 
                 if not isinstance(gitlab_service_impl, SaaSGitLabService):
                     raise Exception('Only SaaSGitLabService is supported')
-                # Cast needed when mypy can see OpenHands
+                # Cast needed when mypy can see Thinksoft
                 gitlab_service = cast(type[SaaSGitLabService], gitlab_service_impl)
 
                 await self.verify_conditions_are_met(

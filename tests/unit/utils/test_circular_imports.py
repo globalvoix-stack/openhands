@@ -11,31 +11,31 @@ class TestCircularImports(unittest.TestCase):
         Test that there are no circular imports in key modules that were previously problematic.
 
         This test specifically checks the modules that were involved in a previous circular import issue:
-        - openhands.utils.prompt
-        - openhands.agenthub.codeact_agent.tools.bash
-        - openhands.agenthub.codeact_agent.tools.prompt
-        - openhands.memory.memory
-        - openhands.memory.conversation_memory
+        - thinksoft.utils.prompt
+        - thinksoft.agenthub.codeact_agent.tools.bash
+        - thinksoft.agenthub.codeact_agent.tools.prompt
+        - thinksoft.memory.memory
+        - thinksoft.memory.conversation_memory
         """
         # Get the project root directory
         project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 
         # Map module names to file paths
         module_paths = {
-            'openhands.utils.prompt': os.path.join(
-                project_root, 'openhands/utils/prompt.py'
+            'thinksoft.utils.prompt': os.path.join(
+                project_root, 'thinksoft/utils/prompt.py'
             ),
-            'openhands.agenthub.codeact_agent.tools.bash': os.path.join(
-                project_root, 'openhands/agenthub/codeact_agent/tools/bash.py'
+            'thinksoft.agenthub.codeact_agent.tools.bash': os.path.join(
+                project_root, 'thinksoft/agenthub/codeact_agent/tools/bash.py'
             ),
-            'openhands.agenthub.codeact_agent.tools.prompt': os.path.join(
-                project_root, 'openhands/agenthub/codeact_agent/tools/prompt.py'
+            'thinksoft.agenthub.codeact_agent.tools.prompt': os.path.join(
+                project_root, 'thinksoft/agenthub/codeact_agent/tools/prompt.py'
             ),
-            'openhands.memory.memory': os.path.join(
-                project_root, 'openhands/memory/memory.py'
+            'thinksoft.memory.memory': os.path.join(
+                project_root, 'thinksoft/memory/memory.py'
             ),
-            'openhands.memory.conversation_memory': os.path.join(
-                project_root, 'openhands/memory/conversation_memory.py'
+            'thinksoft.memory.conversation_memory': os.path.join(
+                project_root, 'thinksoft/memory/conversation_memory.py'
             ),
         }
 
@@ -89,12 +89,12 @@ class TestCircularImports(unittest.TestCase):
                         parts = line[7:].split(',')
                         for part in parts:
                             module_part = part.strip().split(' as ')[0].strip()
-                            if module_part.startswith('openhands.'):
+                            if module_part.startswith('thinksoft.'):
                                 imported_modules.append(module_part)
                     elif line.startswith('from '):
                         # Handle "from module import name" or "from module import name as alias"
                         module_part = line[5:].split(' import ')[0].strip()
-                        if module_part.startswith('openhands.'):
+                        if module_part.startswith('thinksoft.'):
                             imported_modules.append(module_part)
 
                 module_imports[module_name] = imported_modules
@@ -114,20 +114,20 @@ class TestCircularImports(unittest.TestCase):
         Test for the specific circular import pattern that caused the issue in the stack trace.
 
         The problematic pattern was:
-        openhands.utils.prompt imports from openhands.agenthub.codeact_agent.tools.bash
-        openhands.agenthub.codeact_agent.tools.bash imports from openhands.agenthub.codeact_agent.tools.prompt
-        openhands.agenthub.codeact_agent.tools.prompt imports from openhands.utils.prompt
+        thinksoft.utils.prompt imports from thinksoft.agenthub.codeact_agent.tools.bash
+        thinksoft.agenthub.codeact_agent.tools.bash imports from thinksoft.agenthub.codeact_agent.tools.prompt
+        thinksoft.agenthub.codeact_agent.tools.prompt imports from thinksoft.utils.prompt
         """
         # Get the project root directory
         project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 
         # Check if the problematic pattern exists
-        prompt_path = os.path.join(project_root, 'openhands/utils/prompt.py')
+        prompt_path = os.path.join(project_root, 'thinksoft/utils/prompt.py')
         bash_path = os.path.join(
-            project_root, 'openhands/agenthub/codeact_agent/tools/bash.py'
+            project_root, 'thinksoft/agenthub/codeact_agent/tools/bash.py'
         )
         tools_prompt_path = os.path.join(
-            project_root, 'openhands/agenthub/codeact_agent/tools/prompt.py'
+            project_root, 'thinksoft/agenthub/codeact_agent/tools/prompt.py'
         )
 
         # Check if all files exist
@@ -149,20 +149,20 @@ class TestCircularImports(unittest.TestCase):
         # Check for the problematic imports
         prompt_imports_bash = (
             re.search(
-                r'from openhands\.agenthub\.codeact_agent\.tools\.bash import',
+                r'from thinksoft\.agenthub\.codeact_agent\.tools\.bash import',
                 prompt_code,
             )
             is not None
         )
         bash_imports_tools_prompt = (
             re.search(
-                r'from openhands\.agenthub\.codeact_agent\.tools\.prompt import',
+                r'from thinksoft\.agenthub\.codeact_agent\.tools\.prompt import',
                 bash_code,
             )
             is not None
         )
         tools_prompt_imports_prompt = (
-            re.search(r'from openhands\.utils\.prompt import', tools_prompt_code)
+            re.search(r'from thinksoft\.utils\.prompt import', tools_prompt_code)
             is not None
         )
 
@@ -174,9 +174,9 @@ class TestCircularImports(unittest.TestCase):
         ):
             self.fail(
                 'Circular import pattern detected:\n'
-                'openhands.utils.prompt imports from openhands.agenthub.codeact_agent.tools.bash\n'
-                'openhands.agenthub.codeact_agent.tools.bash imports from openhands.agenthub.codeact_agent.tools.prompt\n'
-                'openhands.agenthub.codeact_agent.tools.prompt imports from openhands.utils.prompt'
+                'thinksoft.utils.prompt imports from thinksoft.agenthub.codeact_agent.tools.bash\n'
+                'thinksoft.agenthub.codeact_agent.tools.bash imports from thinksoft.agenthub.codeact_agent.tools.prompt\n'
+                'thinksoft.agenthub.codeact_agent.tools.prompt imports from thinksoft.utils.prompt'
             )
 
     def test_detect_circular_imports_in_server_modules(self):
@@ -184,32 +184,32 @@ class TestCircularImports(unittest.TestCase):
         Test for circular imports in the server modules that were involved in the stack trace.
 
         The problematic modules were:
-        - openhands.server.shared
-        - openhands.server.conversation_manager.conversation_manager
-        - openhands.server.session.agent_session
-        - openhands.server.session
-        - openhands.server.session.session
+        - thinksoft.server.shared
+        - thinksoft.server.conversation_manager.conversation_manager
+        - thinksoft.server.session.agent_session
+        - thinksoft.server.session
+        - thinksoft.server.session.session
         """
         # Get the project root directory
         project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 
         # Map module names to file paths
         module_paths = {
-            'openhands.server.shared': os.path.join(
-                project_root, 'openhands/server/shared.py'
+            'thinksoft.server.shared': os.path.join(
+                project_root, 'thinksoft/server/shared.py'
             ),
-            'openhands.server.conversation_manager.conversation_manager': os.path.join(
+            'thinksoft.server.conversation_manager.conversation_manager': os.path.join(
                 project_root,
-                'openhands/server/conversation_manager/conversation_manager.py',
+                'thinksoft/server/conversation_manager/conversation_manager.py',
             ),
-            'openhands.server.session.agent_session': os.path.join(
-                project_root, 'openhands/server/session/agent_session.py'
+            'thinksoft.server.session.agent_session': os.path.join(
+                project_root, 'thinksoft/server/session/agent_session.py'
             ),
-            'openhands.server.session.__init__': os.path.join(
-                project_root, 'openhands/server/session/__init__.py'
+            'thinksoft.server.session.__init__': os.path.join(
+                project_root, 'thinksoft/server/session/__init__.py'
             ),
-            'openhands.server.session.session': os.path.join(
-                project_root, 'openhands/server/session/session.py'
+            'thinksoft.server.session.session': os.path.join(
+                project_root, 'thinksoft/server/session/session.py'
             ),
         }
 
@@ -233,21 +233,21 @@ class TestCircularImports(unittest.TestCase):
         Test for circular imports in the MCP modules that were involved in the stack trace.
 
         The problematic modules were:
-        - openhands.mcp
-        - openhands.mcp.utils
-        - openhands.memory.memory
+        - thinksoft.mcp
+        - thinksoft.mcp.utils
+        - thinksoft.memory.memory
         """
         # Get the project root directory
         project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 
         # Map module names to file paths
         module_paths = {
-            'openhands.mcp.__init__': os.path.join(
-                project_root, 'openhands/mcp/__init__.py'
+            'thinksoft.mcp.__init__': os.path.join(
+                project_root, 'thinksoft/mcp/__init__.py'
             ),
-            'openhands.mcp.utils': os.path.join(project_root, 'openhands/mcp/utils.py'),
-            'openhands.memory.memory': os.path.join(
-                project_root, 'openhands/memory/memory.py'
+            'thinksoft.mcp.utils': os.path.join(project_root, 'thinksoft/mcp/utils.py'),
+            'thinksoft.memory.memory': os.path.join(
+                project_root, 'thinksoft/memory/memory.py'
             ),
         }
 
@@ -278,18 +278,18 @@ class TestCircularImports(unittest.TestCase):
 
         # Define the modules involved in the stack trace
         modules = [
-            'openhands.utils.prompt',
-            'openhands.agenthub.codeact_agent.tools.bash',
-            'openhands.agenthub.codeact_agent.tools.prompt',
-            'openhands.memory.memory',
-            'openhands.memory.conversation_memory',
-            'openhands.server.shared',
-            'openhands.server.conversation_manager.conversation_manager',
-            'openhands.server.session.agent_session',
-            'openhands.server.session.__init__',
-            'openhands.server.session.session',
-            'openhands.mcp.__init__',
-            'openhands.mcp.utils',
+            'thinksoft.utils.prompt',
+            'thinksoft.agenthub.codeact_agent.tools.bash',
+            'thinksoft.agenthub.codeact_agent.tools.prompt',
+            'thinksoft.memory.memory',
+            'thinksoft.memory.conversation_memory',
+            'thinksoft.server.shared',
+            'thinksoft.server.conversation_manager.conversation_manager',
+            'thinksoft.server.session.agent_session',
+            'thinksoft.server.session.__init__',
+            'thinksoft.server.session.session',
+            'thinksoft.mcp.__init__',
+            'thinksoft.mcp.utils',
         ]
 
         # Map module names to file paths
@@ -329,12 +329,12 @@ class TestCircularImports(unittest.TestCase):
                     parts = line[7:].split(',')
                     for part in parts:
                         module_part = part.strip().split(' as ')[0].strip()
-                        if module_part.startswith('openhands.'):
+                        if module_part.startswith('thinksoft.'):
                             imported_modules.append(module_part)
                 elif line.startswith('from '):
                     # Handle "from module import name" or "from module import name as alias"
                     module_part = line[5:].split(' import ')[0].strip()
-                    if module_part.startswith('openhands.'):
+                    if module_part.startswith('thinksoft.'):
                         imported_modules.append(module_part)
 
             import_graph[module_name] = [

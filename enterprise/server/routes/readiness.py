@@ -3,7 +3,7 @@ from sqlalchemy.sql import text
 from storage.database import session_maker
 from storage.redis import create_redis_client
 
-from openhands.core.logger import openhands_logger as logger
+from thinksoft.core.logger import thinksoft_logger as logger
 
 readiness_router = APIRouter()
 

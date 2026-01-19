@@ -1,5 +1,5 @@
 import React from "react";
-import { OpenHandsEvent, MessageEvent, ActionEvent } from "#/types/v1/core";
+import { ThinksoftEvent, MessageEvent, ActionEvent } from "#/types/v1/core";
 import { FinishAction } from "#/types/v1/core/base/action";
 import {
   isActionEvent,
@@ -21,8 +21,8 @@ import {
 import { createSkillReadyEvent } from "./event-content-helpers/create-skill-ready-event";
 
 interface EventMessageProps {
-  event: OpenHandsEvent & { isFromPlanningAgent?: boolean };
-  messages: OpenHandsEvent[];
+  event: ThinksoftEvent & { isFromPlanningAgent?: boolean };
+  messages: ThinksoftEvent[];
   isLastMessage: boolean;
   microagentStatus?: MicroagentStatus | null;
   microagentConversationId?: string;

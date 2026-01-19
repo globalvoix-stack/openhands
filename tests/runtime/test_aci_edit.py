@@ -5,14 +5,14 @@ from unittest.mock import MagicMock
 
 from conftest import _close_test_runtime, _load_runtime
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.events.action import FileEditAction, FileWriteAction
-from openhands.runtime.action_execution_server import _execute_file_editor
-from openhands.runtime.impl.cli.cli_runtime import CLIRuntime
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.events.action import FileEditAction, FileWriteAction
+from thinksoft.runtime.action_execution_server import _execute_file_editor
+from thinksoft.runtime.impl.cli.cli_runtime import CLIRuntime
 
 
-def test_view_file(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_view_file(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Create test file
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
@@ -37,9 +37,9 @@ def test_view_file(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_view_directory(temp_dir, runtime_cls, run_as_openhands):
+def test_view_directory(temp_dir, runtime_cls, run_as_thinksoft):
     runtime, config = _load_runtime(
-        temp_dir, runtime_cls, run_as_openhands, enable_browser=True
+        temp_dir, runtime_cls, run_as_thinksoft, enable_browser=True
     )
     try:
         # Create test file
@@ -70,8 +70,8 @@ def test_view_directory(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_create_file(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_create_file(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         new_file = os.path.join(config.workspace_mount_path_in_sandbox, 'new_file.txt')
         action = FileEditAction(
@@ -96,8 +96,8 @@ def test_create_file(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_create_file_with_empty_content(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_create_file_with_empty_content(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         new_file = os.path.join(config.workspace_mount_path_in_sandbox, 'new_file.txt')
         action = FileEditAction(
@@ -122,8 +122,8 @@ def test_create_file_with_empty_content(temp_dir, runtime_cls, run_as_openhands)
         _close_test_runtime(runtime)
 
 
-def test_create_with_none_file_text(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_create_with_none_file_text(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         new_file = os.path.join(
             config.workspace_mount_path_in_sandbox, 'none_content.txt'
@@ -143,8 +143,8 @@ def test_create_with_none_file_text(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_str_replace(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_str_replace(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Create test file
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
@@ -176,8 +176,8 @@ def test_str_replace(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_str_replace_multi_line(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_str_replace_multi_line(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
         action = FileWriteAction(
@@ -203,8 +203,8 @@ def test_str_replace_multi_line(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_str_replace_multi_line_with_tabs(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_str_replace_multi_line_with_tabs(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
         action = FileEditAction(
@@ -236,9 +236,9 @@ Review the changes and make sure they are as expected. Edit the file again if ne
 
 
 def test_str_replace_error_multiple_occurrences(
-    temp_dir, runtime_cls, run_as_openhands
+    temp_dir, runtime_cls, run_as_thinksoft
 ):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
         action = FileWriteAction(
@@ -259,9 +259,9 @@ def test_str_replace_error_multiple_occurrences(
 
 
 def test_str_replace_error_multiple_multiline_occurrences(
-    temp_dir, runtime_cls, run_as_openhands
+    temp_dir, runtime_cls, run_as_thinksoft
 ):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
         # Create a file with two identical multi-line blocks
@@ -291,8 +291,8 @@ def test_str_replace_error_multiple_multiline_occurrences(
         _close_test_runtime(runtime)
 
 
-def test_str_replace_nonexistent_string(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_str_replace_nonexistent_string(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
         action = FileWriteAction(
@@ -317,8 +317,8 @@ def test_str_replace_nonexistent_string(temp_dir, runtime_cls, run_as_openhands)
         _close_test_runtime(runtime)
 
 
-def test_str_replace_with_empty_new_str(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_str_replace_with_empty_new_str(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
         action = FileWriteAction(
@@ -341,8 +341,8 @@ def test_str_replace_with_empty_new_str(temp_dir, runtime_cls, run_as_openhands)
         _close_test_runtime(runtime)
 
 
-def test_str_replace_with_empty_old_str(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_str_replace_with_empty_old_str(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
         action = FileWriteAction(
@@ -375,8 +375,8 @@ def test_str_replace_with_empty_old_str(temp_dir, runtime_cls, run_as_openhands)
         _close_test_runtime(runtime)
 
 
-def test_str_replace_with_none_old_str(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_str_replace_with_none_old_str(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
         action = FileWriteAction(
@@ -398,8 +398,8 @@ def test_str_replace_with_none_old_str(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_insert(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_insert(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Create test file
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
@@ -433,8 +433,8 @@ def test_insert(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_insert_invalid_line(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_insert_invalid_line(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
         action = FileWriteAction(
@@ -456,8 +456,8 @@ def test_insert_invalid_line(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_insert_with_empty_string(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_insert_with_empty_string(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
         action = FileWriteAction(
@@ -480,8 +480,8 @@ def test_insert_with_empty_string(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_insert_with_none_new_str(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_insert_with_none_new_str(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
         action = FileWriteAction(
@@ -504,8 +504,8 @@ def test_insert_with_none_new_str(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_undo_edit(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_undo_edit(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Create test file
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
@@ -549,8 +549,8 @@ def test_undo_edit(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_validate_path_invalid(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_validate_path_invalid(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         invalid_file = os.path.join(
             config.workspace_mount_path_in_sandbox, 'nonexistent.txt'
@@ -567,8 +567,8 @@ def test_validate_path_invalid(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_create_existing_file_error(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_create_existing_file_error(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
         action = FileWriteAction(
@@ -588,8 +588,8 @@ def test_create_existing_file_error(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_str_replace_missing_old_str(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_str_replace_missing_old_str(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
         action = FileWriteAction(
@@ -613,8 +613,8 @@ def test_str_replace_missing_old_str(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_str_replace_new_str_and_old_str_same(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_str_replace_new_str_and_old_str_same(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
         action = FileWriteAction(
@@ -638,8 +638,8 @@ def test_str_replace_new_str_and_old_str_same(temp_dir, runtime_cls, run_as_open
         _close_test_runtime(runtime)
 
 
-def test_insert_missing_line_param(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_insert_missing_line_param(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         test_file = os.path.join(config.workspace_mount_path_in_sandbox, 'test.txt')
         action = FileWriteAction(
@@ -659,8 +659,8 @@ def test_insert_missing_line_param(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_undo_edit_no_history_error(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_undo_edit_no_history_error(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         empty_file = os.path.join(config.workspace_mount_path_in_sandbox, 'empty.txt')
         action = FileWriteAction(
@@ -680,8 +680,8 @@ def test_undo_edit_no_history_error(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_view_large_file_with_truncation(temp_dir, runtime_cls, run_as_openhands):
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+def test_view_large_file_with_truncation(temp_dir, runtime_cls, run_as_thinksoft):
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Create a large file to trigger truncation
         large_file = os.path.join(

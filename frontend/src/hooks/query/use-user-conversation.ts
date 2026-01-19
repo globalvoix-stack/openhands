@@ -2,7 +2,7 @@
 import { Query, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import ConversationService from "#/api/conversation-service/conversation-service.api";
-import { Conversation } from "#/api/open-hands.types";
+import { Conversation } from "#/api/thinksoft.types";
 
 const FIVE_MINUTES = 1000 * 60 * 5;
 const FIFTEEN_MINUTES = 1000 * 60 * 15;

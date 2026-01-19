@@ -23,7 +23,7 @@ from server.utils.conversation_callback_utils import (
 from storage.database import session_maker
 from storage.stored_conversation_metadata_saas import StoredConversationMetadataSaas
 
-from openhands.server.shared import conversation_manager
+from thinksoft.server.shared import conversation_manager
 
 event_webhook_router = APIRouter(prefix='/event-webhook')
 

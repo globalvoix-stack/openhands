@@ -11,21 +11,21 @@ from conftest import (
     _load_runtime,
 )
 
-from openhands.core.config import MCPConfig
-from openhands.core.config.mcp_config import MCPStdioServerConfig
-from openhands.mcp.utils import add_mcp_tools_to_agent
-from openhands.microagent.microagent import (
+from thinksoft.core.config import MCPConfig
+from thinksoft.core.config.mcp_config import MCPStdioServerConfig
+from thinksoft.mcp.utils import add_mcp_tools_to_agent
+from thinksoft.microagent.microagent import (
     BaseMicroagent,
     KnowledgeMicroagent,
     RepoMicroagent,
     TaskMicroagent,
 )
-from openhands.microagent.types import MicroagentType
+from thinksoft.microagent.types import MicroagentType
 
 
 def _create_test_microagents(test_dir: str):
     """Create test microagent files in the given directory."""
-    microagents_dir = Path(test_dir) / '.openhands' / 'microagents'
+    microagents_dir = Path(test_dir) / '.thinksoft' / 'microagents'
     microagents_dir.mkdir(parents=True, exist_ok=True)
 
     # Create test knowledge agent
@@ -66,16 +66,16 @@ Repository-specific test instructions.
 
 These are legacy repository instructions.
 """
-    (Path(test_dir) / '.openhands_instructions').write_text(legacy_instructions)
+    (Path(test_dir) / '.thinksoft_instructions').write_text(legacy_instructions)
 
 
 def test_load_microagents_with_trailing_slashes(
-    temp_dir, runtime_cls, run_as_openhands
+    temp_dir, runtime_cls, run_as_thinksoft
 ):
     """Test loading microagents when directory paths have trailing slashes."""
     # Create test files
     _create_test_microagents(temp_dir)
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Load microagents
         loaded_agents = runtime.get_microagents_from_selected_repo(None)
@@ -94,7 +94,7 @@ def test_load_microagents_with_trailing_slashes(
         assert 'pytest' in agent.triggers
 
         # Check repo agents (including legacy)
-        assert len(repo_agents) == 2  # repo.md + .openhands_instructions
+        assert len(repo_agents) == 2  # repo.md + .thinksoft_instructions
         repo_names = {a.name for a in repo_agents}
         assert 'repo' in repo_names
         assert 'repo_legacy' in repo_names
@@ -103,18 +103,18 @@ def test_load_microagents_with_trailing_slashes(
         _close_test_runtime(runtime)
 
 
-def test_load_microagents_with_selected_repo(temp_dir, runtime_cls, run_as_openhands):
+def test_load_microagents_with_selected_repo(temp_dir, runtime_cls, run_as_thinksoft):
     """Test loading microagents from a selected repository."""
     # Create test files in a repository-like structure
-    repo_dir = Path(temp_dir) / 'OpenHands'
+    repo_dir = Path(temp_dir) / 'Thinksoft'
     repo_dir.mkdir(parents=True)
     _create_test_microagents(str(repo_dir))
 
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Load microagents with selected repository
         loaded_agents = runtime.get_microagents_from_selected_repo(
-            'OpenHands/OpenHands'
+            'Thinksoft/Thinksoft'
         )
 
         # Verify all agents are loaded
@@ -131,7 +131,7 @@ def test_load_microagents_with_selected_repo(temp_dir, runtime_cls, run_as_openh
         assert 'pytest' in agent.triggers
 
         # Check repo agents (including legacy)
-        assert len(repo_agents) == 2  # repo.md + .openhands_instructions
+        assert len(repo_agents) == 2  # repo.md + .thinksoft_instructions
         repo_names = {a.name for a in repo_agents}
         assert 'repo' in repo_names
         assert 'repo_legacy' in repo_names
@@ -140,10 +140,10 @@ def test_load_microagents_with_selected_repo(temp_dir, runtime_cls, run_as_openh
         _close_test_runtime(runtime)
 
 
-def test_load_microagents_with_missing_files(temp_dir, runtime_cls, run_as_openhands):
+def test_load_microagents_with_missing_files(temp_dir, runtime_cls, run_as_thinksoft):
     """Test loading microagents when some files are missing."""
     # Create only repo.md, no other files
-    microagents_dir = Path(temp_dir) / '.openhands' / 'microagents'
+    microagents_dir = Path(temp_dir) / '.thinksoft' / 'microagents'
     microagents_dir.mkdir(parents=True, exist_ok=True)
 
     repo_agent = """---
@@ -159,7 +159,7 @@ Repository-specific test instructions.
 """
     (microagents_dir / 'repo.md').write_text(repo_agent)
 
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Load microagents
         loaded_agents = runtime.get_microagents_from_selected_repo(None)
@@ -185,7 +185,7 @@ def test_task_microagent_creation():
     content = """---
 name: test_task
 version: 1.0.0
-author: openhands
+author: thinksoft
 agent: CodeActAgent
 triggers:
 - /test_task
@@ -215,7 +215,7 @@ def test_task_microagent_variable_extraction():
     content = """---
 name: test_task
 version: 1.0.0
-author: openhands
+author: thinksoft
 agent: CodeActAgent
 triggers:
 - /test_task
@@ -244,7 +244,7 @@ def test_knowledge_microagent_no_prompt():
     content = """---
 name: test_knowledge
 version: 1.0.0
-author: openhands
+author: thinksoft
 agent: CodeActAgent
 triggers:
 - test_knowledge
@@ -269,7 +269,7 @@ def test_task_microagent_trigger_addition():
     content = """---
 name: test_task
 version: 1.0.0
-author: openhands
+author: thinksoft
 agent: CodeActAgent
 inputs:
   - name: TEST_VAR
@@ -294,7 +294,7 @@ def test_task_microagent_no_duplicate_trigger():
     content = """---
 name: test_task
 version: 1.0.0
-author: openhands
+author: thinksoft
 agent: CodeActAgent
 triggers:
 - /test_task
@@ -325,7 +325,7 @@ def test_task_microagent_match_trigger():
     content = """---
 name: test_task
 version: 1.0.0
-author: openhands
+author: thinksoft
 agent: CodeActAgent
 triggers:
 - /test_task
@@ -354,9 +354,9 @@ This is a test task microagent.
 def test_default_tools_microagent_exists():
     """Test that the default-tools microagent exists in the global microagents directory."""
     # Get the path to the global microagents directory
-    import openhands
+    import thinksoft
 
-    project_root = os.path.dirname(openhands.__file__)
+    project_root = os.path.dirname(thinksoft.__file__)
     parent_dir = os.path.dirname(project_root)
     microagents_dir = os.path.join(parent_dir, 'microagents')
 
@@ -386,7 +386,7 @@ async def test_add_mcp_tools_from_microagents():
     """Test that add_mcp_tools_to_agent adds tools from microagents."""
     # Import ActionExecutionClient for mocking
 
-    from openhands.runtime.impl.action_execution.action_execution_client import (
+    from thinksoft.runtime.impl.action_execution.action_execution_client import (
         ActionExecutionClient,
     )
 
@@ -417,10 +417,10 @@ async def test_add_mcp_tools_from_microagents():
     }
 
     with patch(
-        'openhands.mcp.utils.fetch_mcp_tools_from_config',
+        'thinksoft.mcp.utils.fetch_mcp_tools_from_config',
         new=AsyncMock(return_value=[mock_tool]),
     ):
-        # Call the function with the OpenHandsConfig instead of MCPConfig
+        # Call the function with the ThinksoftConfig instead of MCPConfig
         await add_mcp_tools_to_agent(mock_agent, mock_runtime, mock_memory)
 
         # Verify that the memory's get_microagent_mcp_tools was called

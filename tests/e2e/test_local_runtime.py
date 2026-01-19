@@ -5,7 +5,7 @@ import tempfile
 
 
 def test_headless_mode_with_dummy_agent_no_browser():
-    """E2E test: build a docker image from python:3.13, install openhands from source,
+    """E2E test: build a docker image from python:3.13, install thinksoft from source,
     and run a local runtime task in headless mode.
     """
     repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
@@ -18,11 +18,11 @@ def test_headless_mode_with_dummy_agent_no_browser():
     RUN pip install .
     ENV PYTHONUNBUFFERED=1
     ENV RUNTIME=local
-    ENV RUN_AS_OPENHANDS=false
+    ENV RUN_AS_THINKSOFT=false
     ENV ENABLE_BROWSER=false
     ENV AGENT_ENABLE_BROWSING=false
     ENV SKIP_DEPENDENCY_CHECK=1
-    CMD ["python", "-m", "openhands.core.main", "-c", "DummyAgent", "-t", "Hello world"]
+    CMD ["python", "-m", "thinksoft.core.main", "-c", "DummyAgent", "-t", "Hello world"]
     """
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -33,7 +33,7 @@ def test_headless_mode_with_dummy_agent_no_browser():
         build_context = os.path.join(tmpdir, 'context')
         shutil.copytree(repo_root, build_context, dirs_exist_ok=True)
 
-        image_tag = 'openhands-e2e-local-runtime-test'
+        image_tag = 'thinksoft-e2e-local-runtime-test'
         build_cmd = [
             'docker',
             'build',

@@ -1,14 +1,14 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from openhands.core.config.openhands_config import OpenHandsConfig
+    from thinksoft.core.config.thinksoft_config import ThinksoftConfig
 
-from openhands.core.config.mcp_config import (
+from thinksoft.core.config.mcp_config import (
     MCPSHTTPServerConfig,
     MCPStdioServerConfig,
-    OpenHandsMCPConfig,
+    ThinksoftMCPConfig,
 )
-from openhands.core.logger import openhands_logger as logger
+from thinksoft.core.logger import thinksoft_logger as logger
 
 
 # We opt for Streamable HTTP over SSE connection to the main app server's MCP
@@ -20,17 +20,17 @@ from openhands.core.logger import openhands_logger as logger
 # require bespoke implementation to make sure all subsequent requests hit the same replica. It is
 # also not resistant to replica pod restarts (it will kill the connection and there's no recovering from it)
 # NOTE: these details are specific to the MCP protocol
-class SaaSOpenHandsMCPConfig(OpenHandsMCPConfig):
+class SaaSThinksoftMCPConfig(ThinksoftMCPConfig):
     @staticmethod
     def create_default_mcp_server_config(
-        host: str, config: 'OpenHandsConfig', user_id: str | None = None
+        host: str, config: 'ThinksoftConfig', user_id: str | None = None
     ) -> tuple[MCPSHTTPServerConfig | None, list[MCPStdioServerConfig]]:
         """
         Create a default MCP server configuration.
 
         Args:
             host: Host string
-            config: OpenHandsConfig
+            config: ThinksoftConfig
         Returns:
             A tuple containing the default SSE server configuration and a list of MCP stdio server configurations
         """

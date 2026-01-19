@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { Feedback } from "#/api/open-hands.types";
+import { Feedback } from "#/api/thinksoft.types";
 import ConversationService from "#/api/conversation-service/conversation-service.api";
 import { useConversationId } from "#/hooks/use-conversation-id";
 import { displayErrorToast } from "#/utils/custom-toast-handlers";

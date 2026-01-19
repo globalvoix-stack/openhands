@@ -1,6 +1,6 @@
 ## Runtime Tests
 
-This folder contains integration tests that verify the functionality of OpenHands' runtime environments and their interactions with various tools and features.
+This folder contains integration tests that verify the functionality of Thinksoft' runtime environments and their interactions with various tools and features.
 
 ### What are Runtime Tests?
 
@@ -54,7 +54,7 @@ poetry run pytest -v ./tests/runtime/test_bash.py
 The runtime tests can be configured using environment variables:
 - `TEST_IN_CI`: Set to 'True' when running in CI environment
 - `TEST_RUNTIME`: Specify the runtime to test ('docker', 'local', 'remote', 'runloop', 'daytona')
-- `RUN_AS_OPENHANDS`: Set to 'True' to run tests as openhands user (default), 'False' for root
+- `RUN_AS_THINKSOFT`: Set to 'True' to run tests as thinksoft user (default), 'False' for root
 - `SANDBOX_BASE_CONTAINER_IMAGE`: Specify a custom base container image for Docker runtime
 
 For more details on pytest usage, see the [pytest documentation](https://docs.pytest.org/en/latest/contents.html).

@@ -1,9 +1,9 @@
-from openhands.app_server.user.user_context import UserContext
-from openhands.app_server.user.user_models import UserInfo
-from openhands.integrations.provider import PROVIDER_TOKEN_TYPE
-from openhands.integrations.service_types import ProviderType
-from openhands.sdk.secret import SecretSource, StaticSecret
-from openhands.server.user_auth.user_auth import UserAuth
+from thinksoft.app_server.user.user_context import UserContext
+from thinksoft.app_server.user.user_models import UserInfo
+from thinksoft.integrations.provider import PROVIDER_TOKEN_TYPE
+from thinksoft.integrations.service_types import ProviderType
+from thinksoft.sdk.secret import SecretSource, StaticSecret
+from thinksoft.server.user_auth.user_auth import UserAuth
 
 
 class ResolverUserContext(UserContext):

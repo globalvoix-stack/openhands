@@ -9,11 +9,11 @@ from server.clustered_conversation_manager import (
     ClusteredConversationManager,
 )
 
-from openhands.core.config.openhands_config import OpenHandsConfig
-from openhands.core.schema.agent import AgentState
-from openhands.server.monitoring import MonitoringListener
-from openhands.server.session.conversation_init_data import ConversationInitData
-from openhands.storage.memory import InMemoryFileStore
+from thinksoft.core.config.thinksoft_config import ThinksoftConfig
+from thinksoft.core.schema.agent import AgentState
+from thinksoft.server.monitoring import MonitoringListener
+from thinksoft.server.session.conversation_init_data import ConversationInitData
+from thinksoft.storage.memory import InMemoryFileStore
 
 
 @dataclass
@@ -85,7 +85,7 @@ async def test_session_not_running_in_cluster():
     sio = get_mock_sio(scan_keys=[])
 
     async with ClusteredConversationManager(
-        sio, OpenHandsConfig(), InMemoryFileStore(), MonitoringListener()
+        sio, ThinksoftConfig(), InMemoryFileStore(), MonitoringListener()
     ) as conversation_manager:
         result = await conversation_manager._get_running_agent_loops_remotely(
             filter_to_sids={'non-existant-session'}
@@ -102,7 +102,7 @@ async def test_get_running_agent_loops_remotely():
     sio = get_mock_sio(scan_keys=[b'ohcnv:1:existing-session'])
 
     async with ClusteredConversationManager(
-        sio, OpenHandsConfig(), InMemoryFileStore(), MonitoringListener()
+        sio, ThinksoftConfig(), InMemoryFileStore(), MonitoringListener()
     ) as conversation_manager:
         result = await conversation_manager._get_running_agent_loops_remotely(
             1, {'existing-session'}
@@ -125,7 +125,7 @@ async def test_init_new_local_session():
     get_running_agent_loops_mock.return_value = set()
     with (
         patch(
-            'openhands.server.conversation_manager.standalone_conversation_manager.Session',
+            'thinksoft.server.conversation_manager.standalone_conversation_manager.Session',
             mock_session,
         ),
         patch(
@@ -138,7 +138,7 @@ async def test_init_new_local_session():
         ),
     ):
         async with ClusteredConversationManager(
-            sio, OpenHandsConfig(), InMemoryFileStore(), MonitoringListener()
+            sio, ThinksoftConfig(), InMemoryFileStore(), MonitoringListener()
         ) as conversation_manager:
             await conversation_manager.maybe_start_agent_loop(
                 'new-session-id', ConversationInitData(), 1
@@ -163,7 +163,7 @@ async def test_join_local_session():
     get_running_agent_loops_mock.return_value = set()
     with (
         patch(
-            'openhands.server.conversation_manager.standalone_conversation_manager.Session',
+            'thinksoft.server.conversation_manager.standalone_conversation_manager.Session',
             mock_session,
         ),
         patch(
@@ -171,12 +171,12 @@ async def test_join_local_session():
             AsyncMock(),
         ),
         patch(
-            'openhands.server.conversation_manager.standalone_conversation_manager.StandaloneConversationManager.get_running_agent_loops',
+            'thinksoft.server.conversation_manager.standalone_conversation_manager.StandaloneConversationManager.get_running_agent_loops',
             get_running_agent_loops_mock,
         ),
     ):
         async with ClusteredConversationManager(
-            sio, OpenHandsConfig(), InMemoryFileStore(), MonitoringListener()
+            sio, ThinksoftConfig(), InMemoryFileStore(), MonitoringListener()
         ) as conversation_manager:
             await conversation_manager.maybe_start_agent_loop(
                 'new-session-id', ConversationInitData(), None
@@ -212,7 +212,7 @@ async def test_join_cluster_session():
 
     with (
         patch(
-            'openhands.server.conversation_manager.standalone_conversation_manager.Session',
+            'thinksoft.server.conversation_manager.standalone_conversation_manager.Session',
             mock_session,
         ),
         patch(
@@ -225,7 +225,7 @@ async def test_join_cluster_session():
         ),
     ):
         async with ClusteredConversationManager(
-            sio, OpenHandsConfig(), InMemoryFileStore(), MonitoringListener()
+            sio, ThinksoftConfig(), InMemoryFileStore(), MonitoringListener()
         ) as conversation_manager:
             # Call join_conversation with the same parameters as in the original test
             # The user_id is passed directly to the join_conversation method
@@ -253,7 +253,7 @@ async def test_add_to_local_event_stream():
     get_running_agent_loops_mock.return_value = set()
     with (
         patch(
-            'openhands.server.conversation_manager.standalone_conversation_manager.Session',
+            'thinksoft.server.conversation_manager.standalone_conversation_manager.Session',
             mock_session,
         ),
         patch(
@@ -266,7 +266,7 @@ async def test_add_to_local_event_stream():
         ),
     ):
         async with ClusteredConversationManager(
-            sio, OpenHandsConfig(), InMemoryFileStore(), MonitoringListener()
+            sio, ThinksoftConfig(), InMemoryFileStore(), MonitoringListener()
         ) as conversation_manager:
             await conversation_manager.maybe_start_agent_loop(
                 'new-session-id', ConversationInitData(), 1
@@ -297,7 +297,7 @@ async def test_add_to_cluster_event_stream():
 
     with (
         patch(
-            'openhands.server.conversation_manager.standalone_conversation_manager.Session',
+            'thinksoft.server.conversation_manager.standalone_conversation_manager.Session',
             mock_session,
         ),
         patch(
@@ -306,7 +306,7 @@ async def test_add_to_cluster_event_stream():
         ),
     ):
         async with ClusteredConversationManager(
-            sio, OpenHandsConfig(), InMemoryFileStore(), MonitoringListener()
+            sio, ThinksoftConfig(), InMemoryFileStore(), MonitoringListener()
         ) as conversation_manager:
             # Set up the connection mapping
             conversation_manager._local_connection_id_to_session_id['connection-id'] = (
@@ -332,7 +332,7 @@ async def test_cleanup_session_connections():
         ),
     ):
         async with ClusteredConversationManager(
-            sio, OpenHandsConfig(), InMemoryFileStore(), MonitoringListener()
+            sio, ThinksoftConfig(), InMemoryFileStore(), MonitoringListener()
         ) as conversation_manager:
             conversation_manager._local_connection_id_to_session_id.update(
                 {
@@ -373,7 +373,7 @@ async def test_disconnect_from_stopped_no_remote_connections():
         ),
     ):
         async with ClusteredConversationManager(
-            sio, OpenHandsConfig(), InMemoryFileStore(), MonitoringListener()
+            sio, ThinksoftConfig(), InMemoryFileStore(), MonitoringListener()
         ) as conversation_manager:
             # Setup: All connections are to local sessions
             conversation_manager._local_connection_id_to_session_id.update(
@@ -416,7 +416,7 @@ async def test_disconnect_from_stopped_with_running_remote():
         ),
     ):
         async with ClusteredConversationManager(
-            sio, OpenHandsConfig(), InMemoryFileStore(), MonitoringListener()
+            sio, ThinksoftConfig(), InMemoryFileStore(), MonitoringListener()
         ) as conversation_manager:
             # Setup: Some connections are to remote sessions
             conversation_manager._local_connection_id_to_session_id.update(
@@ -462,7 +462,7 @@ async def test_disconnect_from_stopped_with_stopped_remote():
         patch('asyncio.create_task', MagicMock()),
     ):
         async with ClusteredConversationManager(
-            sio, OpenHandsConfig(), InMemoryFileStore(), MonitoringListener()
+            sio, ThinksoftConfig(), InMemoryFileStore(), MonitoringListener()
         ) as conversation_manager:
             # Setup: Some connections are to remote sessions, one of which has stopped
             conversation_manager._local_connection_id_to_session_id.update(
@@ -520,7 +520,7 @@ async def test_close_disconnected_detached_conversations():
         ),
     ):
         async with ClusteredConversationManager(
-            sio, OpenHandsConfig(), InMemoryFileStore(), MonitoringListener()
+            sio, ThinksoftConfig(), InMemoryFileStore(), MonitoringListener()
         ) as conversation_manager:
             # Setup: Add some detached conversations
             conversation1 = AsyncMock()
@@ -552,7 +552,7 @@ async def test_close_disconnected_inactive_sessions():
     close_session_mock = AsyncMock()
 
     # Create a mock config with a short close_delay
-    config = OpenHandsConfig()
+    config = ThinksoftConfig()
     config.sandbox.close_delay = 10  # 10 seconds
 
     with (
@@ -561,7 +561,7 @@ async def test_close_disconnected_inactive_sessions():
             AsyncMock(),
         ),
         patch(
-            'openhands.server.conversation_manager.standalone_conversation_manager.StandaloneConversationManager.get_connections',
+            'thinksoft.server.conversation_manager.standalone_conversation_manager.StandaloneConversationManager.get_connections',
             get_connections_mock,
         ),
         patch(
@@ -633,7 +633,7 @@ async def test_close_disconnected_with_connections():
     close_session_mock = AsyncMock()
 
     # Create a mock config with a short close_delay
-    config = OpenHandsConfig()
+    config = ThinksoftConfig()
     config.sandbox.close_delay = 10  # 10 seconds
 
     with (
@@ -642,7 +642,7 @@ async def test_close_disconnected_with_connections():
             AsyncMock(),
         ),
         patch(
-            'openhands.server.conversation_manager.standalone_conversation_manager.StandaloneConversationManager.get_connections',
+            'thinksoft.server.conversation_manager.standalone_conversation_manager.StandaloneConversationManager.get_connections',
             get_connections_mock,
         ),
         patch(
@@ -725,7 +725,7 @@ async def test_cleanup_stale_integration():
         ),
     ):
         async with ClusteredConversationManager(
-            sio, OpenHandsConfig(), InMemoryFileStore(), MonitoringListener()
+            sio, ThinksoftConfig(), InMemoryFileStore(), MonitoringListener()
         ):
             # Let the cleanup task run for a short time
             await asyncio.sleep(0.05)

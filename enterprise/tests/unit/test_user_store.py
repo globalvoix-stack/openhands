@@ -11,7 +11,7 @@ with patch('storage.database.engine'), patch('storage.database.a_engine'):
 
 from sqlalchemy.orm import configure_mappers
 
-from openhands.storage.data_models.settings import Settings
+from thinksoft.storage.data_models.settings import Settings
 
 
 @pytest.fixture(autouse=True, scope='session')

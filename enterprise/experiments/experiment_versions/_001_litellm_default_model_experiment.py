@@ -12,7 +12,7 @@ from server.constants import (
     get_default_litellm_model,
 )
 
-from openhands.core.logger import openhands_logger as logger
+from thinksoft.core.logger import thinksoft_logger as logger
 
 
 def handle_litellm_default_model_experiment(

@@ -41,7 +41,7 @@ from tenacity import (
     wait_exponential,
 )
 
-from openhands.core.logger import openhands_logger as logger
+from thinksoft.core.logger import thinksoft_logger as logger
 
 # Get Keycloak configuration from environment variables
 KEYCLOAK_SERVER_URL = os.environ.get('KEYCLOAK_SERVER_URL', '')
@@ -51,7 +51,7 @@ KEYCLOAK_CLIENT_ID = os.environ.get('KEYCLOAK_CLIENT_ID', '')
 KEYCLOAK_CLIENT_SECRET = os.environ.get('KEYCLOAK_CLIENT_SECRET', '')
 KEYCLOAK_ADMIN_PASSWORD = os.environ.get('KEYCLOAK_ADMIN_PASSWORD', '')
 
-# Logger is imported from openhands.core.logger
+# Logger is imported from thinksoft.core.logger
 
 # Get configuration from environment variables
 RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
@@ -264,16 +264,16 @@ def send_welcome_email(
                 'RESEND_FROM_EMAIL', 'All Hands Team <contact@all-hands.dev>'
             ),
             'to': [email],
-            'subject': 'Welcome to OpenHands Cloud',
+            'subject': 'Welcome to Thinksoft Cloud',
             'html': f"""
             <div>
                 <p>{greeting}</p>
-                <p>Thanks for joining OpenHands Cloud — we're excited to help you start building with the world's leading open source AI coding agent!</p>
+                <p>Thanks for joining Thinksoft Cloud — we're excited to help you start building with the world's leading open source AI coding agent!</p>
                 <p><strong>Here are three quick ways to get started:</strong></p>
                 <ol>
-                    <li><a href="https://docs.all-hands.dev/usage/cloud/openhands-cloud#next-steps"><strong>Connect your Git repo</strong></a> – Link your <a href="https://docs.all-hands.dev/usage/cloud/github-installation">GitHub</a> or <a href="https://docs.all-hands.dev/usage/cloud/gitlab-installation">GitLab</a> repository in seconds so OpenHands can begin understanding your codebase and suggest tasks.</li>
-                    <li><a href="https://docs.all-hands.dev/usage/cloud/github-installation#working-on-github-issues-and-pull-requests-using-openhands"><strong>Use OpenHands on an issue or pull request</strong></a> – Label an issue with 'openhands' or mention @openhands on any PR comment to generate explanations, tests, refactors, or doc fixes tailored to the exact lines you're reviewing.</li>
-                    <li><a href="https://join.slack.com/t/openhands-ai/shared_invite/zt-34zm4j0gj-Qz5kRHoca8DFCbqXPS~f_A"><strong>Join the community</strong></a> – Drop into our Slack Community to share tips, feedback, and help shape the next features on our roadmap.</li>
+                    <li><a href="https://docs.all-hands.dev/usage/cloud/thinksoft-cloud#next-steps"><strong>Connect your Git repo</strong></a> – Link your <a href="https://docs.all-hands.dev/usage/cloud/github-installation">GitHub</a> or <a href="https://docs.all-hands.dev/usage/cloud/gitlab-installation">GitLab</a> repository in seconds so Thinksoft can begin understanding your codebase and suggest tasks.</li>
+                    <li><a href="https://docs.all-hands.dev/usage/cloud/github-installation#working-on-github-issues-and-pull-requests-using-thinksoft"><strong>Use Thinksoft on an issue or pull request</strong></a> – Label an issue with 'thinksoft' or mention @thinksoft on any PR comment to generate explanations, tests, refactors, or doc fixes tailored to the exact lines you're reviewing.</li>
+                    <li><a href="https://join.slack.com/t/thinksoft-ai/shared_invite/zt-34zm4j0gj-Qz5kRHoca8DFCbqXPS~f_A"><strong>Join the community</strong></a> – Drop into our Slack Community to share tips, feedback, and help shape the next features on our roadmap.</li>
                 </ol>
                 <p>Have questions? Want to share feedback? Just reply to this email—we're here to help.</p>
                 <p>Happy coding!</p>

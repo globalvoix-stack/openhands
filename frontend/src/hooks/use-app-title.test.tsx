@@ -35,7 +35,7 @@ describe("useAppTitle", () => {
     mockUseParams.mockReturnValue({});
   });
 
-  it("should return 'OpenHands' if is OSS and NOT in /conversations", async () => {
+  it("should return 'Thinksoft' if is OSS and NOT in /conversations", async () => {
     // @ts-expect-error - only returning partial config for test
     getConfigSpy.mockResolvedValue({
       APP_MODE: "oss",
@@ -43,10 +43,10 @@ describe("useAppTitle", () => {
 
     const { result } = renderAppTitleHook();
 
-    await waitFor(() => expect(result.current).toBe("OpenHands"));
+    await waitFor(() => expect(result.current).toBe("Thinksoft"));
   });
 
-  it("should return 'OpenHands Cloud' if is SaaS and NOT in /conversations", async () => {
+  it("should return 'Thinksoft Cloud' if is SaaS and NOT in /conversations", async () => {
     // @ts-expect-error - only returning partial config for test
     getConfigSpy.mockResolvedValue({
       APP_MODE: "saas",
@@ -54,10 +54,10 @@ describe("useAppTitle", () => {
 
     const { result } = renderAppTitleHook();
 
-    await waitFor(() => expect(result.current).toBe("OpenHands Cloud"));
+    await waitFor(() => expect(result.current).toBe("Thinksoft Cloud"));
   });
 
-  it("should return '{some title} | OpenHands' if is OSS and in /conversations", async () => {
+  it("should return '{some title} | Thinksoft' if is OSS and in /conversations", async () => {
     // @ts-expect-error - only returning partial config for test
     getConfigSpy.mockResolvedValue({ APP_MODE: "oss" });
     mockUseParams.mockReturnValue({ conversationId: "123" });
@@ -69,11 +69,11 @@ describe("useAppTitle", () => {
     const { result } = renderAppTitleHook();
 
     await waitFor(() =>
-      expect(result.current).toBe("My Conversation | OpenHands"),
+      expect(result.current).toBe("My Conversation | Thinksoft"),
     );
   });
 
-  it("should return '{some title} | OpenHands Cloud' if is SaaS and in /conversations", async () => {
+  it("should return '{some title} | Thinksoft Cloud' if is SaaS and in /conversations", async () => {
     // @ts-expect-error - only returning partial config for test
     getConfigSpy.mockResolvedValue({ APP_MODE: "saas" });
     mockUseParams.mockReturnValue({ conversationId: "456" });
@@ -86,7 +86,7 @@ describe("useAppTitle", () => {
 
     await waitFor(() =>
       expect(result.current).toBe(
-        "Another Conversation Title | OpenHands Cloud",
+        "Another Conversation Title | Thinksoft Cloud",
       ),
     );
   });
@@ -100,6 +100,6 @@ describe("useAppTitle", () => {
 
     const { result } = renderAppTitleHook();
 
-    await waitFor(() => expect(result.current).toBe("OpenHands"));
+    await waitFor(() => expect(result.current).toBe("Thinksoft"));
   });
 });

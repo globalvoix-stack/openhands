@@ -11,12 +11,12 @@ from uuid import uuid4
 
 import pytest
 
-from openhands.app_server.app_conversation.app_conversation_models import AgentType
-from openhands.app_server.app_conversation.app_conversation_service_base import (
+from thinksoft.app_server.app_conversation.app_conversation_models import AgentType
+from thinksoft.app_server.app_conversation.app_conversation_service_base import (
     AppConversationServiceBase,
 )
-from openhands.app_server.sandbox.sandbox_models import SandboxInfo
-from openhands.app_server.user.user_context import UserContext
+from thinksoft.app_server.sandbox.sandbox_models import SandboxInfo
+from thinksoft.app_server.user.user_context import UserContext
 
 
 class MockUserInfo:
@@ -292,7 +292,7 @@ async def test_clone_or_init_git_repo_custom_timeout(service):
 
 
 @patch(
-    'openhands.app_server.app_conversation.app_conversation_service_base.LLMSummarizingCondenser'
+    'thinksoft.app_server.app_conversation.app_conversation_service_base.LLMSummarizingCondenser'
 )
 def test_create_condenser_default_agent_with_none_max_size(mock_condenser_class):
     """Test _create_condenser for DEFAULT agent with condenser_max_size = None uses default."""
@@ -329,7 +329,7 @@ def test_create_condenser_default_agent_with_none_max_size(mock_condenser_class)
 
 
 @patch(
-    'openhands.app_server.app_conversation.app_conversation_service_base.LLMSummarizingCondenser'
+    'thinksoft.app_server.app_conversation.app_conversation_service_base.LLMSummarizingCondenser'
 )
 def test_create_condenser_default_agent_with_custom_max_size(mock_condenser_class):
     """Test _create_condenser for DEFAULT agent with custom condenser_max_size."""
@@ -365,7 +365,7 @@ def test_create_condenser_default_agent_with_custom_max_size(mock_condenser_clas
 
 
 @patch(
-    'openhands.app_server.app_conversation.app_conversation_service_base.LLMSummarizingCondenser'
+    'thinksoft.app_server.app_conversation.app_conversation_service_base.LLMSummarizingCondenser'
 )
 def test_create_condenser_plan_agent_with_none_max_size(mock_condenser_class):
     """Test _create_condenser for PLAN agent with condenser_max_size = None uses default."""
@@ -402,7 +402,7 @@ def test_create_condenser_plan_agent_with_none_max_size(mock_condenser_class):
 
 
 @patch(
-    'openhands.app_server.app_conversation.app_conversation_service_base.LLMSummarizingCondenser'
+    'thinksoft.app_server.app_conversation.app_conversation_service_base.LLMSummarizingCondenser'
 )
 def test_create_condenser_plan_agent_with_custom_max_size(mock_condenser_class):
     """Test _create_condenser for PLAN agent with custom condenser_max_size."""
@@ -469,7 +469,7 @@ def test_create_security_analyzer_returns_llm_analyzer():
     result = service._create_security_analyzer_from_string(security_analyzer_str)
 
     # Assert
-    from openhands.sdk.security.llm_analyzer import LLMSecurityAnalyzer
+    from thinksoft.sdk.security.llm_analyzer import LLMSecurityAnalyzer
 
     assert isinstance(result, LLMSecurityAnalyzer)
 
@@ -484,7 +484,7 @@ def test_create_security_analyzer_logs_warning_for_unknown_value():
 
     # Act
     with patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base._logger'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base._logger'
     ) as mock_logger:
         result = service._create_security_analyzer_from_string(unknown_value)
 
@@ -506,7 +506,7 @@ def test_select_confirmation_policy_when_disabled_returns_never_confirm():
     policy = service._select_confirmation_policy(confirmation_mode, security_analyzer)
 
     # Assert
-    from openhands.sdk.security.confirmation_policy import NeverConfirm
+    from thinksoft.sdk.security.confirmation_policy import NeverConfirm
 
     assert isinstance(policy, NeverConfirm)
 
@@ -524,7 +524,7 @@ def test_select_confirmation_policy_llm_returns_confirm_risky():
     policy = service._select_confirmation_policy(confirmation_mode, security_analyzer)
 
     # Assert
-    from openhands.sdk.security.confirmation_policy import ConfirmRisky
+    from thinksoft.sdk.security.confirmation_policy import ConfirmRisky
 
     assert isinstance(policy, ConfirmRisky)
 
@@ -544,7 +544,7 @@ def test_select_confirmation_policy_non_llm_returns_always_confirm(
     policy = service._select_confirmation_policy(confirmation_mode, security_analyzer)
 
     # Assert
-    from openhands.sdk.security.confirmation_policy import AlwaysConfirm
+    from thinksoft.sdk.security.confirmation_policy import AlwaysConfirm
 
     assert isinstance(policy, AlwaysConfirm)
 
@@ -651,7 +651,7 @@ async def test_set_security_analyzer_successfully_calls_agent_server():
             return_value=analyzer,
         ) as mock_create,
         patch(
-            'openhands.app_server.app_conversation.app_conversation_service_base._logger'
+            'thinksoft.app_server.app_conversation.app_conversation_service_base._logger'
         ) as mock_logger,
     ):
         # Act
@@ -702,7 +702,7 @@ async def test_set_security_analyzer_logs_warning_on_failure():
             return_value=analyzer,
         ) as mock_create,
         patch(
-            'openhands.app_server.app_conversation.app_conversation_service_base._logger'
+            'thinksoft.app_server.app_conversation.app_conversation_service_base._logger'
         ) as mock_logger,
     ):
         # Act
@@ -929,19 +929,19 @@ class TestLoadAndMergeAllSkillsWithOrgSkills:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_sandbox_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_sandbox_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_global_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_global_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_user_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_user_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_org_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_org_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_repo_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_repo_skills'
     )
     async def test_load_and_merge_includes_org_skills(
         self,
@@ -1007,19 +1007,19 @@ class TestLoadAndMergeAllSkillsWithOrgSkills:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_sandbox_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_sandbox_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_global_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_global_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_user_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_user_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_org_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_org_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_repo_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_repo_skills'
     )
     async def test_load_and_merge_org_skills_precedence(
         self,
@@ -1077,19 +1077,19 @@ class TestLoadAndMergeAllSkillsWithOrgSkills:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_sandbox_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_sandbox_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_global_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_global_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_user_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_user_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_org_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_org_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_repo_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_repo_skills'
     )
     async def test_load_and_merge_org_skills_override_user_skills(
         self,
@@ -1142,19 +1142,19 @@ class TestLoadAndMergeAllSkillsWithOrgSkills:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_sandbox_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_sandbox_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_global_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_global_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_user_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_user_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_org_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_org_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_repo_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_repo_skills'
     )
     async def test_load_and_merge_handles_org_skills_failure(
         self,
@@ -1205,19 +1205,19 @@ class TestLoadAndMergeAllSkillsWithOrgSkills:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_sandbox_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_sandbox_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_global_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_global_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_user_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_user_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_org_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_org_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.load_repo_skills'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.load_repo_skills'
     )
     async def test_load_and_merge_no_selected_repository(
         self,

@@ -1,10 +1,10 @@
-from openhands.core.message_utils import (
+from thinksoft.core.message_utils import (
     get_token_usage_for_event,
     get_token_usage_for_event_id,
 )
-from openhands.events.event import Event
-from openhands.events.tool import ToolCallMetadata
-from openhands.llm.metrics import Metrics, TokenUsage
+from thinksoft.events.event import Event
+from thinksoft.events.tool import ToolCallMetadata
+from thinksoft.llm.metrics import Metrics, TokenUsage
 
 
 def test_get_token_usage_for_event():

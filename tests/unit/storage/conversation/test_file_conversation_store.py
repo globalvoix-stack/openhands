@@ -2,10 +2,10 @@ import json
 
 import pytest
 
-from openhands.storage.conversation.file_conversation_store import FileConversationStore
-from openhands.storage.data_models.conversation_metadata import ConversationMetadata
-from openhands.storage.locations import get_conversation_metadata_filename
-from openhands.storage.memory import InMemoryFileStore
+from thinksoft.storage.conversation.file_conversation_store import FileConversationStore
+from thinksoft.storage.data_models.conversation_metadata import ConversationMetadata
+from thinksoft.storage.locations import get_conversation_metadata_filename
+from thinksoft.storage.memory import InMemoryFileStore
 
 
 @pytest.mark.asyncio

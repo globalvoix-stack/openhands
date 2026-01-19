@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import GitService from "#/api/git-service/git-service.api";
 import { useConversationId } from "#/hooks/use-conversation-id";
-import { GitChange } from "#/api/open-hands.types";
+import { GitChange } from "#/api/thinksoft.types";
 import { useRuntimeIsReady } from "#/hooks/use-runtime-is-ready";
 
 export const useGetGitChanges = () => {

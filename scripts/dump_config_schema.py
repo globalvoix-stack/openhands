@@ -1,6 +1,6 @@
 import json
 
-from openhands.app_server.config import get_global_config
+from thinksoft.app_server.config import get_global_config
 
 if __name__ == '__main__':
     config = get_global_config()

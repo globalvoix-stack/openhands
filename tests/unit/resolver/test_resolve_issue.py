@@ -2,15 +2,15 @@ from unittest import mock
 
 import pytest
 
-from openhands.core.config import OpenHandsConfig, SandboxConfig
-from openhands.events.action import CmdRunAction
-from openhands.resolver.issue_resolver import IssueResolver
+from thinksoft.core.config import ThinksoftConfig, SandboxConfig
+from thinksoft.events.action import CmdRunAction
+from thinksoft.resolver.issue_resolver import IssueResolver
 
 
 def assert_sandbox_config(
     config: SandboxConfig,
     base_container_image=SandboxConfig.model_fields['base_container_image'].default,
-    runtime_container_image='ghcr.io/openhands/runtime:mock-nikolaik',  # Default to mock version
+    runtime_container_image='ghcr.io/thinksoft/runtime:mock-nikolaik',  # Default to mock version
     local_runtime_url=SandboxConfig.model_fields['local_runtime_url'].default,
     enable_auto_lint=False,
 ):
@@ -26,19 +26,19 @@ def assert_sandbox_config(
 
 def test_setup_sandbox_config_default():
     """Test default configuration when no images provided and not experimental"""
-    with mock.patch('openhands.__version__', 'mock'):
-        openhands_config = OpenHandsConfig()
+    with mock.patch('thinksoft.__version__', 'mock'):
+        thinksoft_config = ThinksoftConfig()
 
         IssueResolver.update_sandbox_config(
-            openhands_config=openhands_config,
+            thinksoft_config=thinksoft_config,
             base_container_image=None,
             runtime_container_image=None,
             is_experimental=False,
         )
 
         assert_sandbox_config(
-            openhands_config.sandbox,
-            runtime_container_image='ghcr.io/openhands/runtime:mock-nikolaik',
+            thinksoft_config.sandbox,
+            runtime_container_image='ghcr.io/thinksoft/runtime:mock-nikolaik',
         )
 
 
@@ -47,10 +47,10 @@ def test_setup_sandbox_config_both_images():
     with pytest.raises(
         ValueError, match='Cannot provide both runtime and base container images.'
     ):
-        openhands_config = OpenHandsConfig()
+        thinksoft_config = ThinksoftConfig()
 
         IssueResolver.update_sandbox_config(
-            openhands_config=openhands_config,
+            thinksoft_config=thinksoft_config,
             base_container_image='base-image',
             runtime_container_image='runtime-image',
             is_experimental=False,
@@ -60,17 +60,17 @@ def test_setup_sandbox_config_both_images():
 def test_setup_sandbox_config_base_only():
     """Test configuration when only base_container_image is provided"""
     base_image = 'custom-base-image'
-    openhands_config = OpenHandsConfig()
+    thinksoft_config = ThinksoftConfig()
 
     IssueResolver.update_sandbox_config(
-        openhands_config=openhands_config,
+        thinksoft_config=thinksoft_config,
         base_container_image=base_image,
         runtime_container_image=None,
         is_experimental=False,
     )
 
     assert_sandbox_config(
-        openhands_config.sandbox,
+        thinksoft_config.sandbox,
         base_container_image=base_image,
         runtime_container_image=None,
     )
@@ -79,76 +79,76 @@ def test_setup_sandbox_config_base_only():
 def test_setup_sandbox_config_runtime_only():
     """Test configuration when only runtime_container_image is provided"""
     runtime_image = 'custom-runtime-image'
-    openhands_config = OpenHandsConfig()
+    thinksoft_config = ThinksoftConfig()
 
     IssueResolver.update_sandbox_config(
-        openhands_config=openhands_config,
+        thinksoft_config=thinksoft_config,
         base_container_image=None,
         runtime_container_image=runtime_image,
         is_experimental=False,
     )
 
     assert_sandbox_config(
-        openhands_config.sandbox, runtime_container_image=runtime_image
+        thinksoft_config.sandbox, runtime_container_image=runtime_image
     )
 
 
 def test_setup_sandbox_config_experimental():
     """Test configuration when experimental mode is enabled"""
-    with mock.patch('openhands.__version__', 'mock'):
-        openhands_config = OpenHandsConfig()
+    with mock.patch('thinksoft.__version__', 'mock'):
+        thinksoft_config = ThinksoftConfig()
 
         IssueResolver.update_sandbox_config(
-            openhands_config=openhands_config,
+            thinksoft_config=thinksoft_config,
             base_container_image=None,
             runtime_container_image=None,
             is_experimental=True,
         )
 
-        assert_sandbox_config(openhands_config.sandbox, runtime_container_image=None)
+        assert_sandbox_config(thinksoft_config.sandbox, runtime_container_image=None)
 
 
-@mock.patch('openhands.resolver.issue_resolver.os.getuid', return_value=0)
-@mock.patch('openhands.resolver.issue_resolver.get_unique_uid', return_value=1001)
+@mock.patch('thinksoft.resolver.issue_resolver.os.getuid', return_value=0)
+@mock.patch('thinksoft.resolver.issue_resolver.get_unique_uid', return_value=1001)
 def test_setup_sandbox_config_gitlab_ci(mock_get_unique_uid, mock_getuid):
     """Test GitLab CI specific configuration when running as root"""
-    with mock.patch('openhands.__version__', 'mock'):
+    with mock.patch('thinksoft.__version__', 'mock'):
         with mock.patch.object(IssueResolver, 'GITLAB_CI', True):
-            openhands_config = OpenHandsConfig()
+            thinksoft_config = ThinksoftConfig()
 
             IssueResolver.update_sandbox_config(
-                openhands_config=openhands_config,
+                thinksoft_config=thinksoft_config,
                 base_container_image=None,
                 runtime_container_image=None,
                 is_experimental=False,
             )
 
             assert_sandbox_config(
-                openhands_config.sandbox, local_runtime_url='http://localhost'
+                thinksoft_config.sandbox, local_runtime_url='http://localhost'
             )
 
 
-@mock.patch('openhands.resolver.issue_resolver.os.getuid', return_value=1000)
+@mock.patch('thinksoft.resolver.issue_resolver.os.getuid', return_value=1000)
 def test_setup_sandbox_config_gitlab_ci_non_root(mock_getuid):
     """Test GitLab CI configuration when not running as root"""
-    with mock.patch('openhands.__version__', 'mock'):
+    with mock.patch('thinksoft.__version__', 'mock'):
         with mock.patch.object(IssueResolver, 'GITLAB_CI', True):
-            openhands_config = OpenHandsConfig()
+            thinksoft_config = ThinksoftConfig()
 
             IssueResolver.update_sandbox_config(
-                openhands_config=openhands_config,
+                thinksoft_config=thinksoft_config,
                 base_container_image=None,
                 runtime_container_image=None,
                 is_experimental=False,
             )
 
             assert_sandbox_config(
-                openhands_config.sandbox, local_runtime_url='http://localhost'
+                thinksoft_config.sandbox, local_runtime_url='http://localhost'
             )
 
 
-@mock.patch('openhands.events.observation.CmdOutputObservation')
-@mock.patch('openhands.runtime.base.Runtime')
+@mock.patch('thinksoft.events.observation.CmdOutputObservation')
+@mock.patch('thinksoft.runtime.base.Runtime')
 def test_initialize_runtime_runs_setup_script_and_git_hooks(
     mock_runtime, mock_cmd_output
 ):

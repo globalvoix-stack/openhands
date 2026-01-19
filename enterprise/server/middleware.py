@@ -18,9 +18,9 @@ from server.routes.auth import (
     set_response_cookie,
 )
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.server.user_auth.user_auth import AuthType, get_user_auth
-from openhands.server.utils import config
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.server.user_auth.user_auth import AuthType, get_user_auth
+from thinksoft.server.utils import config
 
 
 class SetAuthCookieMiddleware:

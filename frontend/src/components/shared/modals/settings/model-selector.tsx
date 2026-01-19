@@ -10,7 +10,7 @@ import { mapProvider } from "#/utils/map-provider";
 import {
   VERIFIED_MODELS,
   VERIFIED_PROVIDERS,
-  VERIFIED_OPENHANDS_MODELS,
+  VERIFIED_THINKSOFT_MODELS,
 } from "#/utils/verified-models";
 import { extractModelAndProvider } from "#/utils/extract-model-and-provider";
 import { cn } from "#/utils/utils";
@@ -47,8 +47,8 @@ export function ModelSelector({
 
   // Get the appropriate verified models array based on the selected provider
   const getVerifiedModels = () => {
-    if (selectedProvider === "openhands") {
-      return VERIFIED_OPENHANDS_MODELS;
+    if (selectedProvider === "thinksoft") {
+      return VERIFIED_THINKSOFT_MODELS;
     }
     return VERIFIED_MODELS;
   };
@@ -157,10 +157,10 @@ export function ModelSelector({
         </Autocomplete>
       </fieldset>
 
-      {selectedProvider === "openhands" && (
+      {selectedProvider === "thinksoft" && (
         <HelpLink
-          testId="openhands-account-help"
-          text={t(I18nKey.SETTINGS$NEED_OPENHANDS_ACCOUNT)}
+          testId="thinksoft-account-help"
+          text={t(I18nKey.SETTINGS$NEED_THINKSOFT_ACCOUNT)}
           linkText={t(I18nKey.SETTINGS$CLICK_HERE)}
           href={PRODUCT_URL.PRODUCTION}
           size="settings"

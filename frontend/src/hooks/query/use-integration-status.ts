@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { openHands } from "#/api/open-hands-axios";
+import { thinksoft } from "#/api/thinksoft-axios";
 
 export function useIntegrationStatus(platform: "jira" | "jira-dc" | "linear") {
   return useQuery({
     queryKey: ["integration-status", platform],
     queryFn: async () => {
       try {
-        const response = await openHands.get(
+        const response = await thinksoft.get(
           `/integration/${platform}/workspaces/link`,
         );
         return response.data;

@@ -1,4 +1,4 @@
-"""Shared Event router for OpenHands Server."""
+"""Shared Event router for Thinksoft Server."""
 
 from datetime import datetime
 from typing import Annotated
@@ -10,9 +10,9 @@ from server.sharing.google_cloud_shared_event_service import (
 )
 from server.sharing.shared_event_service import SharedEventService
 
-from openhands.agent_server.models import EventPage, EventSortOrder
-from openhands.app_server.event_callback.event_callback_models import EventKind
-from openhands.sdk import Event
+from thinksoft.agent_server.models import EventPage, EventSortOrder
+from thinksoft.app_server.event_callback.event_callback_models import EventKind
+from thinksoft.sdk import Event
 
 router = APIRouter(prefix='/api/shared-events', tags=['Sharing'])
 shared_event_service_dependency = Depends(

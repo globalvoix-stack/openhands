@@ -1,11 +1,11 @@
-import { OpenHandsAction } from "./actions";
-import { OpenHandsObservation } from "./observations";
-import { OpenHandsVariance } from "./variances";
+import { ThinksoftAction } from "./actions";
+import { ThinksoftObservation } from "./observations";
+import { ThinksoftVariance } from "./variances";
 
 /**
  * @deprecated Will be removed once we fully transition to v1 events
  */
-export type OpenHandsParsedEvent =
-  | OpenHandsAction
-  | OpenHandsObservation
-  | OpenHandsVariance;
+export type ThinksoftParsedEvent =
+  | ThinksoftAction
+  | ThinksoftObservation
+  | ThinksoftVariance;

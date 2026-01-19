@@ -2,7 +2,7 @@
 
 import time
 
-from openhands.mcp.error_collector import (
+from thinksoft.mcp.error_collector import (
     MCPError,
     MCPErrorCollector,
     mcp_error_collector,

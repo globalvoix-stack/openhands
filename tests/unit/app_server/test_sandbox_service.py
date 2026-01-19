@@ -13,12 +13,12 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from openhands.app_server.sandbox.sandbox_models import (
+from thinksoft.app_server.sandbox.sandbox_models import (
     SandboxInfo,
     SandboxPage,
     SandboxStatus,
 )
-from openhands.app_server.sandbox.sandbox_service import SandboxService
+from thinksoft.app_server.sandbox.sandbox_service import SandboxService
 
 
 class MockSandboxService(SandboxService):

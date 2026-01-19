@@ -19,7 +19,7 @@ from server.auth.saas_user_auth import (
     saas_user_auth_from_signed_token,
 )
 
-from openhands.integrations.provider import ProviderToken, ProviderType
+from thinksoft.integrations.provider import ProviderToken, ProviderType
 
 
 @pytest.fixture

@@ -23,7 +23,7 @@ from server.utils.conversation_callback_utils import (
 )
 from storage.stored_conversation_metadata import StoredConversationMetadata
 
-from openhands.events.observation.agent import AgentStateChangedObservation
+from thinksoft.events.observation.agent import AgentStateChangedObservation
 
 
 class TestParseConversationIdAndSubpath:

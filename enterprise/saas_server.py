@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Ensure SAAS configuration is used
-if not os.getenv('OPENHANDS_CONFIG_CLS'):
-    os.environ['OPENHANDS_CONFIG_CLS'] = 'server.config.SaaSServerConfig'
+if not os.getenv('THINKSOFT_CONFIG_CLS'):
+    os.environ['THINKSOFT_CONFIG_CLS'] = 'server.config.SaaSServerConfig'
 
 import socketio  # noqa: E402
 from fastapi import Request, status  # noqa: E402
@@ -47,12 +47,12 @@ from server.sharing.shared_event_router import (  # noqa: E402
     router as shared_event_router,
 )
 
-from openhands.server.app import app as base_app  # noqa: E402
-from openhands.server.listen_socket import sio  # noqa: E402
-from openhands.server.middleware import (  # noqa: E402
+from thinksoft.server.app import app as base_app  # noqa: E402
+from thinksoft.server.listen_socket import sio  # noqa: E402
+from thinksoft.server.middleware import (  # noqa: E402
     CacheControlMiddleware,
 )
-from openhands.server.static import SPAStaticFiles  # noqa: E402
+from thinksoft.server.static import SPAStaticFiles  # noqa: E402
 
 directory = os.getenv('FRONTEND_DIRECTORY', './frontend/build')
 

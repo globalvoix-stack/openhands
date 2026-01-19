@@ -7,19 +7,19 @@ from runloop_api_client import Runloop
 from runloop_api_client.types import DevboxView
 from runloop_api_client.types.shared_params import LaunchParameters
 
-from openhands.core.config import OpenHandsConfig
-from openhands.core.logger import openhands_logger as logger
-from openhands.events import EventStream
-from openhands.integrations.provider import PROVIDER_TOKEN_TYPE
-from openhands.runtime.impl.action_execution.action_execution_client import (
+from thinksoft.core.config import ThinksoftConfig
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.events import EventStream
+from thinksoft.integrations.provider import PROVIDER_TOKEN_TYPE
+from thinksoft.runtime.impl.action_execution.action_execution_client import (
     ActionExecutionClient,
 )
-from openhands.runtime.plugins import PluginRequirement
-from openhands.runtime.runtime_status import RuntimeStatus
-from openhands.runtime.utils.command import get_action_execution_server_startup_command
-from openhands.utils.tenacity_stop import stop_if_should_exit
+from thinksoft.runtime.plugins import PluginRequirement
+from thinksoft.runtime.runtime_status import RuntimeStatus
+from thinksoft.runtime.utils.command import get_action_execution_server_startup_command
+from thinksoft.utils.tenacity_stop import stop_if_should_exit
 
-CONTAINER_NAME_PREFIX = "openhands-runtime-"
+CONTAINER_NAME_PREFIX = "thinksoft-runtime-"
 
 
 class RunloopRuntime(ActionExecutionClient):
@@ -30,7 +30,7 @@ class RunloopRuntime(ActionExecutionClient):
 
     def __init__(
         self,
-        config: OpenHandsConfig,
+        config: ThinksoftConfig,
         event_stream: EventStream,
         sid: str = "default",
         plugins: list[PluginRequirement] | None = None,
@@ -103,9 +103,9 @@ class RunloopRuntime(ActionExecutionClient):
         # (ie browser) to be installed as root
         # Convert start_command list to a single command string with additional setup
         start_command_str = (
-            "export MAMBA_ROOT_PREFIX=/openhands/micromamba && "
-            "cd /openhands/code && "
-            "/openhands/micromamba/bin/micromamba run -n openhands poetry config virtualenvs.path /openhands/poetry && "
+            "export MAMBA_ROOT_PREFIX=/thinksoft/micromamba && "
+            "cd /thinksoft/code && "
+            "/thinksoft/micromamba/bin/micromamba run -n thinksoft poetry config virtualenvs.path /thinksoft/poetry && "
             + " ".join(start_command)
         )
         entrypoint = f"sudo bash -c '{start_command_str}'"
@@ -114,7 +114,7 @@ class RunloopRuntime(ActionExecutionClient):
             entrypoint=entrypoint,
             name=self.sid,
             environment_variables={"DEBUG": "true"} if self.config.debug else {},
-            prebuilt="openhands",
+            prebuilt="thinksoft",
             launch_parameters=LaunchParameters(
                 available_ports=[self._sandbox_port, self._vscode_port],
                 resource_size_request="LARGE",

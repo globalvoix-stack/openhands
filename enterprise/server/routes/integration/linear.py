@@ -15,8 +15,8 @@ from server.auth.token_manager import TokenManager
 from server.constants import WEB_HOST
 from storage.redis import create_redis_client
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.server.user_auth.user_auth import get_user_auth
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.server.user_auth.user_auth import get_user_auth
 
 # Environment variable to disable Linear webhooks
 LINEAR_WEBHOOKS_ENABLED = os.environ.get('LINEAR_WEBHOOKS_ENABLED', '0') in (

@@ -18,31 +18,31 @@ from evaluation.utils.shared import (
     EvalOutput,
     compatibility_for_eval_history_pairs,
     get_metrics,
-    get_openhands_config_for_eval,
+    get_thinksoft_config_for_eval,
     make_metadata,
     prepare_dataset,
     reset_logger_for_multiprocessing,
     run_evaluation,
 )
-from openhands.controller.state.state import State
-from openhands.core.config import (
-    OpenHandsConfig,
+from thinksoft.controller.state.state import State
+from thinksoft.core.config import (
+    ThinksoftConfig,
     get_llm_config_arg,
     parse_arguments,
 )
-from openhands.core.logger import openhands_logger as logger
-from openhands.core.main import create_runtime, run_controller
-from openhands.events.action import AgentFinishAction, CmdRunAction, MessageAction
-from openhands.events.observation import CmdOutputObservation
-from openhands.runtime.base import Runtime
-from openhands.utils.async_utils import call_async_from_sync
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.core.main import create_runtime, run_controller
+from thinksoft.events.action import AgentFinishAction, CmdRunAction, MessageAction
+from thinksoft.events.observation import CmdOutputObservation
+from thinksoft.runtime.base import Runtime
+from thinksoft.utils.async_utils import call_async_from_sync
 
 
 def get_config(
     metadata: EvalMetadata,
-) -> OpenHandsConfig:
+) -> ThinksoftConfig:
     # Create config with agent_bench-specific container image
-    config = get_openhands_config_for_eval(metadata=metadata)
+    config = get_thinksoft_config_for_eval(metadata=metadata)
 
     # Override the container image for agent_bench
     config.sandbox.base_container_image = 'python:3.12-slim'

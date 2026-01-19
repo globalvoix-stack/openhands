@@ -1,12 +1,12 @@
 from server.logger import logger
 
-from openhands.core.config.openhands_config import OpenHandsConfig
-from openhands.core.schema.agent import AgentState
-from openhands.events.event import Event
-from openhands.events.observation import (
+from thinksoft.core.config.thinksoft_config import ThinksoftConfig
+from thinksoft.core.schema.agent import AgentState
+from thinksoft.events.event import Event
+from thinksoft.events.observation import (
     AgentStateChangedObservation,
 )
-from openhands.server.monitoring import MonitoringListener
+from thinksoft.server.monitoring import MonitoringListener
 
 
 class SaaSMonitoringListener(MonitoringListener):
@@ -50,6 +50,6 @@ class SaaSMonitoringListener(MonitoringListener):
     @classmethod
     def get_instance(
         cls,
-        config: OpenHandsConfig,
+        config: ThinksoftConfig,
     ) -> 'SaaSMonitoringListener':
         return cls()

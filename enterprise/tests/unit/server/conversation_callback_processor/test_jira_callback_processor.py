@@ -5,9 +5,9 @@ from server.conversation_callback_processor.jira_callback_processor import (
     JiraCallbackProcessor,
 )
 
-from openhands.core.schema.agent import AgentState
-from openhands.events.action import MessageAction
-from openhands.events.observation.agent import AgentStateChangedObservation
+from thinksoft.core.schema.agent import AgentState
+from thinksoft.events.action import MessageAction
+from thinksoft.events.observation.agent import AgentStateChangedObservation
 
 
 @pytest.fixture

@@ -1,4 +1,4 @@
-ARG OPENHANDS_BUILD_VERSION=dev
+ARG THINKSOFT_BUILD_VERSION=dev
 FROM node:25.2-trixie-slim AS frontend-builder
 
 WORKDIR /app
@@ -28,23 +28,23 @@ COPY pyproject.toml poetry.lock ./
 RUN touch README.md
 RUN export POETRY_CACHE_DIR && poetry install --no-root && rm -rf $POETRY_CACHE_DIR
 
-FROM base AS openhands-app
+FROM base AS thinksoft-app
 
 WORKDIR /app
 
 # re-declare for this section
-ARG OPENHANDS_BUILD_VERSION
+ARG THINKSOFT_BUILD_VERSION
 
-ENV RUN_AS_OPENHANDS=true
+ENV RUN_AS_THINKSOFT=true
 # A random number--we need this to be different from the user's UID on the host machine
-ENV OPENHANDS_USER_ID=42420
+ENV THINKSOFT_USER_ID=42420
 ENV SANDBOX_LOCAL_RUNTIME_URL=http://host.docker.internal
 ENV USE_HOST_NETWORK=false
 ENV WORKSPACE_BASE=/opt/workspace_base
-ENV OPENHANDS_BUILD_VERSION=$OPENHANDS_BUILD_VERSION
+ENV THINKSOFT_BUILD_VERSION=$THINKSOFT_BUILD_VERSION
 ENV SANDBOX_USER_ID=0
 ENV FILE_STORE=local
-ENV FILE_STORE_PATH=/.openhands
+ENV FILE_STORE_PATH=/.thinksoft
 ENV INIT_GIT_IN_EMPTY_WORKSPACE=1
 RUN mkdir -p $FILE_STORE_PATH
 RUN mkdir -p $WORKSPACE_BASE
@@ -58,38 +58,38 @@ RUN sed -i 's/^UID_MIN.*/UID_MIN 499/' /etc/login.defs
 # Default is 60000, but we've seen up to 200000
 RUN sed -i 's/^UID_MAX.*/UID_MAX 1000000/' /etc/login.defs
 
-RUN groupadd --gid $OPENHANDS_USER_ID openhands
-RUN useradd -l -m -u $OPENHANDS_USER_ID --gid $OPENHANDS_USER_ID -s /bin/bash openhands && \
-    usermod -aG openhands openhands && \
-    usermod -aG sudo openhands && \
+RUN groupadd --gid $THINKSOFT_USER_ID thinksoft
+RUN useradd -l -m -u $THINKSOFT_USER_ID --gid $THINKSOFT_USER_ID -s /bin/bash thinksoft && \
+    usermod -aG thinksoft thinksoft && \
+    usermod -aG sudo thinksoft && \
     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-RUN chown -R openhands:openhands /app && chmod -R 770 /app
-RUN sudo chown -R openhands:openhands $WORKSPACE_BASE && sudo chmod -R 770 $WORKSPACE_BASE
-USER openhands
+RUN chown -R thinksoft:thinksoft /app && chmod -R 770 /app
+RUN sudo chown -R thinksoft:thinksoft $WORKSPACE_BASE && sudo chmod -R 770 $WORKSPACE_BASE
+USER thinksoft
 
 ENV VIRTUAL_ENV=/app/.venv \
     PATH="/app/.venv/bin:$PATH" \
     PYTHONPATH='/app'
 
-COPY --chown=openhands:openhands --chmod=770 --from=backend-builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
+COPY --chown=thinksoft:thinksoft --chmod=770 --from=backend-builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
-COPY --chown=openhands:openhands --chmod=770 ./skills ./skills
-COPY --chown=openhands:openhands --chmod=770 ./openhands ./openhands
-COPY --chown=openhands:openhands --chmod=777 ./openhands/runtime/plugins ./openhands/runtime/plugins
-COPY --chown=openhands:openhands pyproject.toml poetry.lock README.md MANIFEST.in LICENSE ./
+COPY --chown=thinksoft:thinksoft --chmod=770 ./skills ./skills
+COPY --chown=thinksoft:thinksoft --chmod=770 ./thinksoft ./thinksoft
+COPY --chown=thinksoft:thinksoft --chmod=777 ./thinksoft/runtime/plugins ./thinksoft/runtime/plugins
+COPY --chown=thinksoft:thinksoft pyproject.toml poetry.lock README.md MANIFEST.in LICENSE ./
 
-# This is run as "openhands" user, and will create __pycache__ with openhands:openhands ownership
-RUN python openhands/core/download.py # No-op to download assets
+# This is run as "thinksoft" user, and will create __pycache__ with thinksoft:thinksoft ownership
+RUN python thinksoft/core/download.py # No-op to download assets
 # Add this line to set group ownership of all files/directories not already in "app" group
-# openhands:openhands -> openhands:openhands
-RUN find /app \! -group openhands -exec chgrp openhands {} +
+# thinksoft:thinksoft -> thinksoft:thinksoft
+RUN find /app \! -group thinksoft -exec chgrp thinksoft {} +
 
-COPY --chown=openhands:openhands --chmod=770 --from=frontend-builder /app/build ./frontend/build
-COPY --chown=openhands:openhands --chmod=770 ./containers/app/entrypoint.sh /app/entrypoint.sh
+COPY --chown=thinksoft:thinksoft --chmod=770 --from=frontend-builder /app/build ./frontend/build
+COPY --chown=thinksoft:thinksoft --chmod=770 ./containers/app/entrypoint.sh /app/entrypoint.sh
 
 USER root
 
 WORKDIR /app
 
 ENTRYPOINT ["/app/entrypoint.sh"]
-CMD ["uvicorn", "openhands.server.listen:app", "--host", "0.0.0.0", "--port", "3000"]
+CMD ["uvicorn", "thinksoft.server.listen:app", "--host", "0.0.0.0", "--port", "3000"]

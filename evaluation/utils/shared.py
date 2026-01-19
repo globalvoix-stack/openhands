@@ -15,14 +15,14 @@ import pandas as pd
 from pydantic import BaseModel
 from tqdm import tqdm
 
-from openhands.controller.state.state import State
-from openhands.core.config import LLMConfig, SandboxConfig
-from openhands.core.config.agent_config import AgentConfig
-from openhands.core.config.condenser_config import (
+from thinksoft.controller.state.state import State
+from thinksoft.core.config import LLMConfig, SandboxConfig
+from thinksoft.core.config.agent_config import AgentConfig
+from thinksoft.core.config.condenser_config import (
     CondenserConfig,
     NoOpCondenserConfig,
 )
-from openhands.core.exceptions import (
+from thinksoft.core.exceptions import (
     AgentRuntimeBuildError,
     AgentRuntimeDisconnectedError,
     AgentRuntimeError,
@@ -31,14 +31,14 @@ from openhands.core.exceptions import (
     AgentRuntimeTimeoutError,
     AgentRuntimeUnavailableError,
 )
-from openhands.core.logger import get_console_handler
-from openhands.core.logger import openhands_logger as logger
-from openhands.events.action import Action
-from openhands.events.action.message import MessageAction
-from openhands.events.event import Event
-from openhands.events.serialization.event import event_to_dict
-from openhands.events.utils import get_pairs_from_events
-from openhands.memory.condenser import get_condensation_metadata
+from thinksoft.core.logger import get_console_handler
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.events.action import Action
+from thinksoft.events.action.message import MessageAction
+from thinksoft.events.event import Event
+from thinksoft.events.serialization.event import event_to_dict
+from thinksoft.events.utils import get_pairs_from_events
+from thinksoft.memory.condenser import get_condensation_metadata
 
 
 class EvalMetadata(BaseModel):
@@ -333,7 +333,7 @@ def log_skipped_maximum_retries_exceeded(instance, metadata, error, max_retries=
     Returns:
         EvalOutput with the error information
     """
-    from openhands.core.logger import openhands_logger as logger
+    from thinksoft.core.logger import thinksoft_logger as logger
 
     # Log the error
     logger.exception(error)
@@ -378,7 +378,7 @@ def log_skipped_maximum_retries_exceeded(instance, metadata, error, max_retries=
 
 def check_maximum_retries_exceeded(eval_output_dir):
     """Check if maximum_retries_exceeded.jsonl exists and output a message."""
-    from openhands.core.logger import openhands_logger as logger
+    from thinksoft.core.logger import thinksoft_logger as logger
 
     retries_file_path = os.path.join(eval_output_dir, 'maximum_retries_exceeded.jsonl')
     if os.path.exists(retries_file_path):
@@ -712,7 +712,7 @@ def get_default_sandbox_config_for_eval() -> SandboxConfig:
     )
 
 
-def get_openhands_config_for_eval(
+def get_thinksoft_config_for_eval(
     metadata: EvalMetadata | None = None,
     sandbox_config: SandboxConfig | None = None,
     runtime: str | None = None,
@@ -722,9 +722,9 @@ def get_openhands_config_for_eval(
     workspace_base: str | None = None,
     workspace_mount_path: str | None = None,
 ):
-    """Create an OpenHandsConfig with common patterns used across evaluation scripts.
+    """Create an ThinksoftConfig with common patterns used across evaluation scripts.
 
-    This function provides a standardized way to create OpenHands configurations
+    This function provides a standardized way to create Thinksoft configurations
     for evaluation runs, with sensible defaults that match the patterns used in
     most run_infer.py scripts. Individual evaluation scripts can override specific
     attributes as needed.
@@ -740,11 +740,11 @@ def get_openhands_config_for_eval(
         workspace_mount_path: Workspace mount path. Defaults to None
 
     Returns:
-        OpenHandsConfig: Configured for evaluation with eval-specific overrides applied
+        ThinksoftConfig: Configured for evaluation with eval-specific overrides applied
     """
     # Defer import to avoid circular imports at module load time
-    from openhands.core.config.openhands_config import (
-        OpenHandsConfig as _OHConfig,  # type: ignore
+    from thinksoft.core.config.thinksoft_config import (
+        ThinksoftConfig as _OHConfig,  # type: ignore
     )
 
     # Use provided sandbox config or get default
@@ -774,7 +774,7 @@ def get_openhands_config_for_eval(
     # Create the base config with evaluation-specific overrides
     config = _OHConfig(
         default_agent=default_agent,
-        run_as_openhands=False,
+        run_as_thinksoft=False,
         runtime=runtime,
         max_iterations=max_iterations,
         enable_browser=enable_browser,

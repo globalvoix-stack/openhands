@@ -9,7 +9,7 @@ from storage.org import Org
 from storage.org_store import OrgStore
 from storage.stripe_customer import StripeCustomer
 
-from openhands.utils.async_utils import call_sync_from_async
+from thinksoft.utils.async_utils import call_sync_from_async
 
 stripe.api_key = STRIPE_API_KEY
 

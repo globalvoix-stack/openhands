@@ -17,10 +17,10 @@ from server.config import get_config
 from storage.database import session_maker
 from storage.saas_settings_store import SaasSettingsStore
 
-from openhands.core.config import LLMConfig
-from openhands.core.logger import openhands_logger as logger
-from openhands.utils.async_utils import call_sync_from_async
-from openhands.utils.utils import create_registry_and_conversation_stats
+from thinksoft.core.config import LLMConfig
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.utils.async_utils import call_sync_from_async
+from thinksoft.utils.utils import create_registry_and_conversation_stats
 
 
 def fetch_github_issue_context(

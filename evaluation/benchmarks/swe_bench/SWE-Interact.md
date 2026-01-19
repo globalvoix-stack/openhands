@@ -87,6 +87,6 @@ Where:
 - `{model}` is the model name
 - `{date}` is the run date
 - `{max_iter}` is the maximum iterations
-- `{version}` is the OpenHands version
+- `{version}` is the Thinksoft version
 - `{options}` includes any additional options (e.g., no-hint, with-browsing)
 - `{run_number}` is the run number

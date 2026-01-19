@@ -2,22 +2,22 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from openhands.controller.agent import Agent
-from openhands.controller.agent_controller import AgentController
-from openhands.controller.state.state import State
-from openhands.core.config import LLMConfig, OpenHandsConfig
-from openhands.core.config.agent_config import AgentConfig
-from openhands.events import EventStream, EventStreamSubscriber
-from openhands.integrations.service_types import ProviderType
-from openhands.llm.llm_registry import LLMRegistry
-from openhands.llm.metrics import Metrics
-from openhands.memory.memory import Memory
-from openhands.runtime.impl.action_execution.action_execution_client import (
+from thinksoft.controller.agent import Agent
+from thinksoft.controller.agent_controller import AgentController
+from thinksoft.controller.state.state import State
+from thinksoft.core.config import LLMConfig, ThinksoftConfig
+from thinksoft.core.config.agent_config import AgentConfig
+from thinksoft.events import EventStream, EventStreamSubscriber
+from thinksoft.integrations.service_types import ProviderType
+from thinksoft.llm.llm_registry import LLMRegistry
+from thinksoft.llm.metrics import Metrics
+from thinksoft.memory.memory import Memory
+from thinksoft.runtime.impl.action_execution.action_execution_client import (
     ActionExecutionClient,
 )
-from openhands.server.services.conversation_stats import ConversationStats
-from openhands.server.session.agent_session import AgentSession
-from openhands.storage.memory import InMemoryFileStore
+from thinksoft.server.services.conversation_stats import ConversationStats
+from thinksoft.server.session.agent_session import AgentSession
+from thinksoft.storage.memory import InMemoryFileStore
 
 # We'll use the DeprecatedState class from the main codebase
 
@@ -25,7 +25,7 @@ from openhands.storage.memory import InMemoryFileStore
 @pytest.fixture
 def mock_llm_registry():
     """Create a mock LLM registry that properly simulates LLM registration"""
-    config = OpenHandsConfig()
+    config = ThinksoftConfig()
     registry = LLMRegistry(config=config, agent_cls=None, retry_listener=None)
     return registry
 
@@ -125,21 +125,21 @@ async def test_agent_session_start_with_no_state(
     # Patch AgentController and State.restore_from_session to fail; patch Memory in AgentSession
     with (
         patch(
-            'openhands.server.session.agent_session.AgentController', SpyAgentController
+            'thinksoft.server.session.agent_session.AgentController', SpyAgentController
         ),
         patch(
-            'openhands.server.session.agent_session.EventStream',
+            'thinksoft.server.session.agent_session.EventStream',
             return_value=mock_event_stream,
         ),
         patch(
-            'openhands.controller.state.state.State.restore_from_session',
+            'thinksoft.controller.state.state.State.restore_from_session',
             side_effect=Exception('No state found'),
         ),
-        patch('openhands.server.session.agent_session.Memory', return_value=memory),
+        patch('thinksoft.server.session.agent_session.Memory', return_value=memory),
     ):
         await session.start(
             runtime_name='test-runtime',
-            config=OpenHandsConfig(),
+            config=ThinksoftConfig(),
             agent=mock_agent,
             max_iterations=10,
         )
@@ -226,21 +226,21 @@ async def test_agent_session_start_with_restored_state(
     # Patch AgentController and State.restore_from_session to succeed, patch Memory in AgentSession
     with (
         patch(
-            'openhands.server.session.agent_session.AgentController', SpyAgentController
+            'thinksoft.server.session.agent_session.AgentController', SpyAgentController
         ),
         patch(
-            'openhands.server.session.agent_session.EventStream',
+            'thinksoft.server.session.agent_session.EventStream',
             return_value=mock_event_stream,
         ),
         patch(
-            'openhands.controller.state.state.State.restore_from_session',
+            'thinksoft.controller.state.state.State.restore_from_session',
             return_value=mock_restored_state,
         ),
-        patch('openhands.server.session.agent_session.Memory', mock_memory),
+        patch('thinksoft.server.session.agent_session.Memory', mock_memory),
     ):
         await session.start(
             runtime_name='test-runtime',
-            config=OpenHandsConfig(),
+            config=ThinksoftConfig(),
             agent=mock_agent,
             max_iterations=10,
         )
@@ -307,18 +307,18 @@ async def test_metrics_centralization_via_conversation_stats(
     # Patch necessary components
     with (
         patch(
-            'openhands.server.session.agent_session.EventStream',
+            'thinksoft.server.session.agent_session.EventStream',
             return_value=mock_event_stream,
         ),
         patch(
-            'openhands.controller.state.state.State.restore_from_session',
+            'thinksoft.controller.state.state.State.restore_from_session',
             side_effect=Exception('No state found'),
         ),
-        patch('openhands.server.session.agent_session.Memory', return_value=memory),
+        patch('thinksoft.server.session.agent_session.Memory', return_value=memory),
     ):
         await session.start(
             runtime_name='test-runtime',
-            config=OpenHandsConfig(),
+            config=ThinksoftConfig(),
             agent=mock_agent,
             max_iterations=10,
         )
@@ -401,19 +401,19 @@ async def test_budget_control_flag_syncs_with_metrics(
     # Patch necessary components
     with (
         patch(
-            'openhands.server.session.agent_session.EventStream',
+            'thinksoft.server.session.agent_session.EventStream',
             return_value=mock_event_stream,
         ),
         patch(
-            'openhands.controller.state.state.State.restore_from_session',
+            'thinksoft.controller.state.state.State.restore_from_session',
             side_effect=Exception('No state found'),
         ),
-        patch('openhands.server.session.agent_session.Memory', return_value=memory),
+        patch('thinksoft.server.session.agent_session.Memory', return_value=memory),
     ):
         # Start the session with a budget limit
         await session.start(
             runtime_name='test-runtime',
-            config=OpenHandsConfig(),
+            config=ThinksoftConfig(),
             agent=mock_agent,
             max_iterations=10,
             max_budget_per_task=1.0,  # Set a budget limit

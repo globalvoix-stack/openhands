@@ -16,8 +16,8 @@ from storage.linear_conversation import LinearConversation
 from storage.linear_user import LinearUser
 from storage.linear_workspace import LinearWorkspace
 
-from openhands.integrations.service_types import ProviderType, Repository
-from openhands.server.user_auth.user_auth import UserAuth
+from thinksoft.integrations.service_types import ProviderType, Repository
+from thinksoft.server.user_auth.user_auth import UserAuth
 
 
 @pytest.fixture
@@ -84,7 +84,7 @@ def sample_job_context():
     return JobContext(
         issue_id='test_issue_id',
         issue_key='TEST-123',
-        user_msg='Fix this bug @openhands',
+        user_msg='Fix this bug @thinksoft',
         user_email='user@test.com',
         display_name='Test User',
         workspace_name='test-workspace',
@@ -100,7 +100,7 @@ def sample_webhook_payload():
         'action': 'create',
         'type': 'Comment',
         'data': {
-            'body': 'Please fix this @openhands',
+            'body': 'Please fix this @thinksoft',
             'issue': {
                 'id': 'test_issue_id',
                 'identifier': 'TEST-123',

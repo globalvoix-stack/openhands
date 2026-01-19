@@ -1,22 +1,22 @@
-# OpenHands Enterprise Server
+# Thinksoft Enterprise Server
 > [!WARNING]
-> This software is licensed under the [Polyform Free Trial License](./LICENSE). This is **NOT** an open source license. Usage is limited to 30 days per calendar year without a commercial license. If you would like to use it beyond 30 days, please [contact us](https://www.openhands.dev/contact).
+> This software is licensed under the [Polyform Free Trial License](./LICENSE). This is **NOT** an open source license. Usage is limited to 30 days per calendar year without a commercial license. If you would like to use it beyond 30 days, please [contact us](https://www.thinksoft.dev/contact).
 
 > [!WARNING]
 > This is a work in progress and may contain bugs, incomplete features, or breaking changes.
 
-This directory contains the enterprise server used by [OpenHands Cloud](https://github.com/All-Hands-AI/OpenHands-Cloud/). The official, public version of OpenHands Cloud is available at
+This directory contains the enterprise server used by [Thinksoft Cloud](https://github.com/All-Hands-AI/Thinksoft-Cloud/). The official, public version of Thinksoft Cloud is available at
 [app.all-hands.dev](https://app.all-hands.dev).
 
-You may also want to check out the MIT-licensed [OpenHands](https://github.com/OpenHands/OpenHands)
+You may also want to check out the MIT-licensed [Thinksoft](https://github.com/Thinksoft/Thinksoft)
 
-## Extension of OpenHands
+## Extension of Thinksoft
 
-The code in `/enterprise` builds on top of OpenHands (MIT-licensed), extending its functionality. The enterprise code is entangled with OpenHands in two ways:
+The code in `/enterprise` builds on top of Thinksoft (MIT-licensed), extending its functionality. The enterprise code is entangled with Thinksoft in two ways:
 
-- Enterprise stacks on top of OpenHands. For example, the middleware in enterprise is stacked right on top of the middlewares in OpenHands. In `SAAS`, the middleware from BOTH repos will be present and running (which can sometimes cause conflicts)
+- Enterprise stacks on top of Thinksoft. For example, the middleware in enterprise is stacked right on top of the middlewares in Thinksoft. In `SAAS`, the middleware from BOTH repos will be present and running (which can sometimes cause conflicts)
 
-- Enterprise overrides the implementation in OpenHands (only one is present at a time). For example, the server config SaasServerConfig overrides [`ServerConfig`](https://github.com/OpenHands/OpenHands/blob/main/openhands/server/config/server_config.py#L8) in OpenHands. This is done through dynamic imports ([see here](https://github.com/OpenHands/OpenHands/blob/main/openhands/server/config/server_config.py#L37-#L45))
+- Enterprise overrides the implementation in Thinksoft (only one is present at a time). For example, the server config SaasServerConfig overrides [`ServerConfig`](https://github.com/Thinksoft/Thinksoft/blob/main/thinksoft/server/config/server_config.py#L8) in Thinksoft. This is done through dynamic imports ([see here](https://github.com/Thinksoft/Thinksoft/blob/main/thinksoft/server/config/server_config.py#L37-#L45))
 
 Key areas that change on `SAAS` are
 
@@ -26,7 +26,7 @@ Key areas that change on `SAAS` are
 
 ### Authentication
 
-| Aspect                    | OpenHands                                              | Enterprise                                                                                                                                 |
+| Aspect                    | Thinksoft                                              | Enterprise                                                                                                                                 |
 | ------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
 | **Authentication Method** | User adds a personal access token (PAT) through the UI | User performs OAuth through the UI. The GitHub app provides a short-lived access token and refresh token                            |
 | **Token Storage**         | PAT is stored in **Settings**                          | Token is stored in **GithubTokenManager** (a file store in our backend)                                                             |
@@ -38,7 +38,7 @@ Note that in the future, authentication will happen via keycloak. All modificati
 
 The github service is responsible for interacting with Github APIs. As a consequence, it uses the user's token and refreshes it if need be
 
-| Aspect                    | OpenHands                               | Enterprise                                            |
+| Aspect                    | Thinksoft                               | Enterprise                                            |
 | ------------------------- | -------------------------------------- | ---------------------------------------------- |
 | **Class used**            | `GitHubService`                        | `SaaSGitHubService`                            |
 | **Token used**            | User's PAT fetched from `Settings`     | User's token fetched from `GitHubTokenManager` |
@@ -50,7 +50,7 @@ NOTE: in the future we will simply replace the `GithubTokenManager` with keycloa
 
 ## User ID vs User Token
 
-- In OpenHands, the entire app revolves around the GitHub token the user sets. `openhands/server` uses `request.state.github_token` for the entire app
-- On Enterprise, the entire APP resolves around the Github User ID. This is because the cookie sets it, so `openhands/server` AND `enterprise/server` depend on it and completly ignore `request.state.github_token` (token is fetched from `GithubTokenManager` instead)
+- In Thinksoft, the entire app revolves around the GitHub token the user sets. `thinksoft/server` uses `request.state.github_token` for the entire app
+- On Enterprise, the entire APP resolves around the Github User ID. This is because the cookie sets it, so `thinksoft/server` AND `enterprise/server` depend on it and completly ignore `request.state.github_token` (token is fetched from `GithubTokenManager` instead)
 
-Note that introducing GitHub User ID in OpenHands, for instance, will cause large breakages.
+Note that introducing GitHub User ID in Thinksoft, for instance, will cause large breakages.

@@ -434,5 +434,5 @@ class TestInstallWebhookOnResource:
 
         # Assert
         call_args = mock_gitlab_service.install_webhook.call_args
-        assert call_args[1]['webhook_name'] == 'OpenHands Resolver'
+        assert call_args[1]['webhook_name'] == 'Thinksoft Resolver'
         assert call_args[1]['webhook_url'] == GITLAB_WEBHOOK_URL

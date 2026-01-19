@@ -3,9 +3,9 @@ from storage.stored_repository import StoredRepository
 from storage.user_repo_map import UserRepositoryMap
 from storage.user_repo_map_store import UserRepositoryMapStore
 
-from openhands.core.config.openhands_config import OpenHandsConfig
-from openhands.core.logger import openhands_logger as logger
-from openhands.integrations.service_types import Repository
+from thinksoft.core.config.thinksoft_config import ThinksoftConfig
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.integrations.service_types import Repository
 
 
 async def store_repositories_in_db(repos: list[Repository], user_id: str) -> None:
@@ -37,7 +37,7 @@ async def store_repositories_in_db(repos: list[Repository], user_id: str) -> Non
         user_repos.append(user_repo_map)
 
     # Get config instance
-    config = OpenHandsConfig()
+    config = ThinksoftConfig()
 
     try:
         # Store repositories in the repos table

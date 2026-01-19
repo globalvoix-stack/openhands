@@ -5,7 +5,7 @@ from jinja2 import Environment
 from storage.linear_user import LinearUser
 from storage.linear_workspace import LinearWorkspace
 
-from openhands.server.user_auth.user_auth import UserAuth
+from thinksoft.server.user_auth.user_auth import UserAuth
 
 
 class LinearViewInterface(ABC):

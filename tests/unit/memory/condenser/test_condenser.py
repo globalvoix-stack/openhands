@@ -4,8 +4,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from openhands.controller.state.state import State
-from openhands.core.config.condenser_config import (
+from thinksoft.controller.state.state import State
+from thinksoft.core.config.condenser_config import (
     AmortizedForgettingCondenserConfig,
     BrowserOutputCondenserConfig,
     CondenserPipelineConfig,
@@ -16,19 +16,19 @@ from openhands.core.config.condenser_config import (
     RecentEventsCondenserConfig,
     StructuredSummaryCondenserConfig,
 )
-from openhands.core.config.llm_config import LLMConfig
-from openhands.core.config.openhands_config import OpenHandsConfig
-from openhands.core.message import Message, TextContent
-from openhands.core.schema.action import ActionType
-from openhands.events.event import Event, EventSource
-from openhands.events.observation import BrowserOutputObservation
-from openhands.events.observation.agent import AgentCondensationObservation
-from openhands.events.observation.observation import Observation
-from openhands.llm import LLM
-from openhands.llm.llm_registry import LLMRegistry
-from openhands.memory.condenser import Condenser
-from openhands.memory.condenser.condenser import Condensation, RollingCondenser, View
-from openhands.memory.condenser.impl import (
+from thinksoft.core.config.llm_config import LLMConfig
+from thinksoft.core.config.thinksoft_config import ThinksoftConfig
+from thinksoft.core.message import Message, TextContent
+from thinksoft.core.schema.action import ActionType
+from thinksoft.events.event import Event, EventSource
+from thinksoft.events.observation import BrowserOutputObservation
+from thinksoft.events.observation.agent import AgentCondensationObservation
+from thinksoft.events.observation.observation import Observation
+from thinksoft.llm import LLM
+from thinksoft.llm.llm_registry import LLMRegistry
+from thinksoft.memory.condenser import Condenser
+from thinksoft.memory.condenser.condenser import Condensation, RollingCondenser, View
+from thinksoft.memory.condenser.impl import (
     AmortizedForgettingCondenser,
     BrowserOutputCondenser,
     ImportantEventSelection,
@@ -39,8 +39,8 @@ from openhands.memory.condenser.impl import (
     RecentEventsCondenser,
     StructuredSummaryCondenser,
 )
-from openhands.memory.condenser.impl.pipeline import CondenserPipeline
-from openhands.server.services.conversation_stats import ConversationStats
+from thinksoft.memory.condenser.impl.pipeline import CondenserPipeline
+from thinksoft.server.services.conversation_stats import ConversationStats
 
 
 def create_test_event(
@@ -111,8 +111,8 @@ def mock_conversation_stats() -> ConversationStats:
 @pytest.fixture
 def mock_llm_registry(mock_llm, mock_conversation_stats) -> LLMRegistry:
     """Creates an actual LLMRegistry that returns real LLMs."""
-    # Create an actual LLMRegistry with a basic OpenHandsConfig
-    config = OpenHandsConfig()
+    # Create an actual LLMRegistry with a basic ThinksoftConfig
+    config = ThinksoftConfig()
     registry = LLMRegistry(config=config, agent_cls=None, retry_listener=None)
 
     return registry

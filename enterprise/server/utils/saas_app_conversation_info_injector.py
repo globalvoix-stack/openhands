@@ -10,19 +10,19 @@ from storage.stored_conversation_metadata import StoredConversationMetadata
 from storage.stored_conversation_metadata_saas import StoredConversationMetadataSaas
 from storage.user import User
 
-from openhands.app_server.app_conversation.app_conversation_info_service import (
+from thinksoft.app_server.app_conversation.app_conversation_info_service import (
     AppConversationInfoService,
     AppConversationInfoServiceInjector,
 )
-from openhands.app_server.app_conversation.app_conversation_models import (
+from thinksoft.app_server.app_conversation.app_conversation_models import (
     AppConversationInfo,
     AppConversationInfoPage,
     AppConversationSortOrder,
 )
-from openhands.app_server.app_conversation.sql_app_conversation_info_service import (
+from thinksoft.app_server.app_conversation.sql_app_conversation_info_service import (
     SQLAppConversationInfoService,
 )
-from openhands.app_server.services.injector import InjectorState
+from thinksoft.app_server.services.injector import InjectorState
 
 
 class SaasSQLAppConversationInfoService(SQLAppConversationInfoService):
@@ -335,7 +335,7 @@ class SaasAppConversationInfoServiceInjector(AppConversationInfoServiceInjector)
     async def inject(
         self, state: InjectorState, request: Request | None = None
     ) -> AsyncGenerator[AppConversationInfoService, None]:
-        from openhands.app_server.config import (
+        from thinksoft.app_server.config import (
             get_db_session,
             get_user_context,
         )

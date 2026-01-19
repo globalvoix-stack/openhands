@@ -36,7 +36,7 @@ instance_id_to_status = defaultdict(
 swebench_official_report_json = os.path.join(
     dirname, 'eval_files/dataset/final_report.json'
 )
-openhands_remote_report_jsonl = args.input_file.replace(
+thinksoft_remote_report_jsonl = args.input_file.replace(
     '.jsonl', '.swebench_eval.jsonl'
 )
 
@@ -124,7 +124,7 @@ if os.path.exists(swebench_official_report_json):
 
 else:
     print(
-        f'No report file found: Both {swebench_official_report_json} and {openhands_remote_report_jsonl} do not exist.'
+        f'No report file found: Both {swebench_official_report_json} and {thinksoft_remote_report_jsonl} do not exist.'
     )
     exit()
 

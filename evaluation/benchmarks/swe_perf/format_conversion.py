@@ -25,7 +25,7 @@ dataset = load_jsonl(input_path)
 ooutput_dataset = []
 for data in dataset:
     instance_id = data['instance_id']
-    model_name_or_path = 'openhands'
+    model_name_or_path = 'thinksoft'
     model_patch = (
         data['test_result']['git_patch']
         if 'test_result' in data and 'git_patch' in data['test_result']

@@ -11,7 +11,7 @@ from sqlalchemy import Enum as SQLEnum
 from sqlalchemy.dialects.postgresql import JSON
 from storage.base import Base
 
-from openhands.utils.import_utils import get_impl
+from thinksoft.utils.import_utils import get_impl
 
 
 class MaintenanceTaskProcessor(BaseModel, ABC):

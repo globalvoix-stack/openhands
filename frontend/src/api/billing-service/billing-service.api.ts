@@ -1,4 +1,4 @@
-import { openHands } from "../open-hands-axios";
+import { thinksoft } from "../thinksoft-axios";
 import {
   CancelSubscriptionResponse,
   SubscriptionAccess,
@@ -14,7 +14,7 @@ class BillingService {
    * @returns The redirect URL for the checkout session
    */
   static async createCheckoutSession(amount: number): Promise<string> {
-    const { data } = await openHands.post(
+    const { data } = await thinksoft.post(
       "/api/billing/create-checkout-session",
       {
         amount,
@@ -28,7 +28,7 @@ class BillingService {
    * @returns The redirect URL for the customer setup session
    */
   static async createBillingSessionResponse(): Promise<string> {
-    const { data } = await openHands.post(
+    const { data } = await thinksoft.post(
       "/api/billing/create-customer-setup-session",
     );
     return data.redirect_url;
@@ -39,7 +39,7 @@ class BillingService {
    * @returns The user's credit balance as a string
    */
   static async getBalance(): Promise<string> {
-    const { data } = await openHands.get<{ credits: string }>(
+    const { data } = await thinksoft.get<{ credits: string }>(
       "/api/billing/credits",
     );
     return data.credits;
@@ -50,7 +50,7 @@ class BillingService {
    * @returns The user's subscription access details or null if not available
    */
   static async getSubscriptionAccess(): Promise<SubscriptionAccess | null> {
-    const { data } = await openHands.get<SubscriptionAccess | null>(
+    const { data } = await thinksoft.get<SubscriptionAccess | null>(
       "/api/billing/subscription-access",
     );
     return data;
@@ -63,7 +63,7 @@ class BillingService {
   static async createSubscriptionCheckoutSession(): Promise<{
     redirect_url?: string;
   }> {
-    const { data } = await openHands.post(
+    const { data } = await thinksoft.post(
       "/api/billing/subscription-checkout-session",
     );
     return data;
@@ -74,7 +74,7 @@ class BillingService {
    * @returns The response indicating the result of the cancellation request
    */
   static async cancelSubscription(): Promise<CancelSubscriptionResponse> {
-    const { data } = await openHands.post<CancelSubscriptionResponse>(
+    const { data } = await thinksoft.post<CancelSubscriptionResponse>(
       "/api/billing/cancel-subscription",
     );
     return data;

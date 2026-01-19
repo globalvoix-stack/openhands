@@ -3,12 +3,12 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from openhands.core.config import LLMConfig
-from openhands.events.action.message import MessageAction
-from openhands.llm.llm import LLM
-from openhands.resolver.interfaces.gitlab import GitlabPRHandler
-from openhands.resolver.interfaces.issue import Issue, ReviewThread
-from openhands.resolver.interfaces.issue_definitions import ServiceContextPR
+from thinksoft.core.config import LLMConfig
+from thinksoft.events.action.message import MessageAction
+from thinksoft.llm.llm import LLM
+from thinksoft.resolver.interfaces.gitlab import GitlabPRHandler
+from thinksoft.resolver.interfaces.issue import Issue, ReviewThread
+from thinksoft.resolver.interfaces.issue_definitions import ServiceContextPR
 
 
 @pytest.fixture

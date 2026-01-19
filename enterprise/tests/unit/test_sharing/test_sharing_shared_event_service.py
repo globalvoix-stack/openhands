@@ -15,10 +15,10 @@ from server.sharing.shared_conversation_info_service import (
 )
 from server.sharing.shared_conversation_models import SharedConversation
 
-from openhands.agent_server.models import EventPage, EventSortOrder
-from openhands.app_server.event.event_service import EventService
-from openhands.sdk.llm import MetricsSnapshot
-from openhands.sdk.llm.utils.metrics import TokenUsage
+from thinksoft.agent_server.models import EventPage, EventSortOrder
+from thinksoft.app_server.event.event_service import EventService
+from thinksoft.sdk.llm import MetricsSnapshot
+from thinksoft.sdk.llm.utils.metrics import TokenUsage
 
 
 @pytest.fixture
@@ -462,7 +462,7 @@ class TestGoogleCloudSharedEventServiceInjector:
                 return_value=mock_storage_client,
             ),
             patch(
-                'openhands.app_server.config.get_db_session',
+                'thinksoft.app_server.config.get_db_session',
                 return_value=mock_db_context,
             ),
         ):
@@ -501,7 +501,7 @@ class TestGoogleCloudSharedEventServiceInjector:
                 return_value=mock_storage_client,
             ),
             patch(
-                'openhands.app_server.config.get_db_session',
+                'thinksoft.app_server.config.get_db_session',
                 return_value=mock_db_context,
             ),
         ):
@@ -538,7 +538,7 @@ class TestGoogleCloudSharedEventServiceInjector:
                 return_value=mock_storage_client,
             ),
             patch(
-                'openhands.app_server.config.get_db_session',
+                'thinksoft.app_server.config.get_db_session',
                 return_value=mock_db_context,
             ),
             patch(
@@ -580,7 +580,7 @@ class TestGoogleCloudSharedEventServiceInjector:
             return_value=mock_storage_client,
         ):
             with patch(
-                'openhands.app_server.config.get_db_session',
+                'thinksoft.app_server.config.get_db_session',
                 return_value=mock_db_context,
             ):
                 # Call the inject method with request=None

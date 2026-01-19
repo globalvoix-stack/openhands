@@ -18,31 +18,31 @@ from storage.slack_conversation_store import SlackConversationStore
 from storage.slack_team_store import SlackTeamStore
 from storage.slack_user import SlackUser
 
-from openhands.app_server.app_conversation.app_conversation_models import (
+from thinksoft.app_server.app_conversation.app_conversation_models import (
     AppConversationStartRequest,
     AppConversationStartTaskStatus,
     SendMessageRequest,
 )
-from openhands.app_server.config import get_app_conversation_service
-from openhands.app_server.sandbox.sandbox_models import SandboxStatus
-from openhands.app_server.services.injector import InjectorState
-from openhands.app_server.user.specifiy_user_context import USER_CONTEXT_ATTR
-from openhands.core.logger import openhands_logger as logger
-from openhands.core.schema.agent import AgentState
-from openhands.events.action import MessageAction
-from openhands.events.serialization.event import event_to_dict
-from openhands.integrations.provider import ProviderHandler, ProviderType
-from openhands.sdk import TextContent
-from openhands.server.services.conversation_service import (
+from thinksoft.app_server.config import get_app_conversation_service
+from thinksoft.app_server.sandbox.sandbox_models import SandboxStatus
+from thinksoft.app_server.services.injector import InjectorState
+from thinksoft.app_server.user.specifiy_user_context import USER_CONTEXT_ATTR
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.core.schema.agent import AgentState
+from thinksoft.events.action import MessageAction
+from thinksoft.events.serialization.event import event_to_dict
+from thinksoft.integrations.provider import ProviderHandler, ProviderType
+from thinksoft.sdk import TextContent
+from thinksoft.server.services.conversation_service import (
     create_new_conversation,
     setup_init_conversation_settings,
 )
-from openhands.server.shared import ConversationStoreImpl, config, conversation_manager
-from openhands.server.user_auth.user_auth import UserAuth
-from openhands.storage.data_models.conversation_metadata import (
+from thinksoft.server.shared import ConversationStoreImpl, config, conversation_manager
+from thinksoft.server.user_auth.user_auth import UserAuth
+from thinksoft.storage.data_models.conversation_metadata import (
     ConversationTrigger,
 )
-from openhands.utils.async_utils import GENERAL_TIMEOUT, call_async_from_sync
+from thinksoft.utils.async_utils import GENERAL_TIMEOUT, call_async_from_sync
 
 # =================================================
 # SECTION: Slack view types
@@ -63,7 +63,7 @@ class SlackUnkownUserView(SlackViewInterface):
     bot_access_token: str
     user_msg: str | None
     slack_user_id: str
-    slack_to_openhands_user: SlackUser | None
+    slack_to_thinksoft_user: SlackUser | None
     saas_user_auth: UserAuth | None
     channel_id: str
     message_ts: str
@@ -90,7 +90,7 @@ class SlackNewConversationView(SlackViewInterface):
     bot_access_token: str
     user_msg: str | None
     slack_user_id: str
-    slack_to_openhands_user: SlackUser
+    slack_to_thinksoft_user: SlackUser
     saas_user_auth: UserAuth
     channel_id: str
     message_ts: str
@@ -120,7 +120,7 @@ class SlackNewConversationView(SlackViewInterface):
 
     def _get_instructions(self, jinja_env: Environment) -> tuple[str, str]:
         """Instructions passed when conversation is first initialized"""
-        user_info: SlackUser = self.slack_to_openhands_user
+        user_info: SlackUser = self.slack_to_thinksoft_user
 
         messages = []
         if self.thread_ts:
@@ -180,8 +180,8 @@ class SlackNewConversationView(SlackViewInterface):
             )
 
     async def save_slack_convo(self, v1_enabled: bool = False):
-        if self.slack_to_openhands_user:
-            user_info: SlackUser = self.slack_to_openhands_user
+        if self.slack_to_thinksoft_user:
+            user_info: SlackUser = self.slack_to_thinksoft_user
 
             logger.info(
                 'Create slack conversation',
@@ -226,7 +226,7 @@ class SlackNewConversationView(SlackViewInterface):
 
         # Check if V1 conversations are enabled for this user
         self.v1_enabled = await is_v1_enabled_for_slack_resolver(
-            self.slack_to_openhands_user.keycloak_user_id
+            self.slack_to_thinksoft_user.keycloak_user_id
         )
 
         if self.v1_enabled:
@@ -252,7 +252,7 @@ class SlackNewConversationView(SlackViewInterface):
             git_provider = repository.git_provider
 
         agent_loop_info = await create_new_conversation(
-            user_id=self.slack_to_openhands_user.keycloak_user_id,
+            user_id=self.slack_to_thinksoft_user.keycloak_user_id,
             git_provider_tokens=provider_tokens,
             selected_repository=self.selected_repo,
             selected_branch=None,
@@ -302,7 +302,7 @@ class SlackNewConversationView(SlackViewInterface):
             initial_message=initial_message,
             selected_repository=self.selected_repo,
             git_provider=git_provider,
-            title=f'Slack conversation from {self.slack_to_openhands_user.slack_display_name}',
+            title=f'Slack conversation from {self.slack_to_thinksoft_user.slack_display_name}',
             trigger=ConversationTrigger.SLACK,
             processors=[
                 slack_callback_processor
@@ -329,7 +329,7 @@ class SlackNewConversationView(SlackViewInterface):
         await self.save_slack_convo(v1_enabled=True)
 
     def get_response_msg(self) -> str:
-        user_info: SlackUser = self.slack_to_openhands_user
+        user_info: SlackUser = self.slack_to_thinksoft_user
         conversation_link = CONVERSATION_URL.format(self.conversation_id)
         return f"I'm on it! {user_info.slack_display_name} can [track my progress here]({conversation_link})."
 
@@ -364,7 +364,7 @@ class SlackUpdateExistingConversationView(SlackNewConversationView):
         return user_message, ''
 
     async def send_message_to_v0_conversation(self, jinja: Environment):
-        user_info: SlackUser = self.slack_to_openhands_user
+        user_info: SlackUser = self.slack_to_thinksoft_user
         user_id = user_info.keycloak_user_id
         saas_user_auth: UserAuth = self.saas_user_auth
         provider_tokens = await saas_user_auth.get_provider_tokens()
@@ -410,18 +410,18 @@ class SlackUpdateExistingConversationView(SlackNewConversationView):
     async def send_message_to_v1_conversation(self, jinja: Environment):
         """Send a message to a v1 conversation using the agent server API."""
         # Import services within the method to avoid circular imports
-        from openhands.agent_server.models import SendMessageRequest
-        from openhands.app_server.config import (
+        from thinksoft.agent_server.models import SendMessageRequest
+        from thinksoft.app_server.config import (
             get_app_conversation_info_service,
             get_httpx_client,
             get_sandbox_service,
         )
-        from openhands.app_server.event_callback.util import (
+        from thinksoft.app_server.event_callback.util import (
             ensure_conversation_found,
             get_agent_server_url_from_sandbox,
         )
-        from openhands.app_server.services.injector import InjectorState
-        from openhands.app_server.user.specifiy_user_context import (
+        from thinksoft.app_server.services.injector import InjectorState
+        from thinksoft.app_server.user.specifiy_user_context import (
             ADMIN,
             USER_CONTEXT_ATTR,
         )
@@ -502,7 +502,7 @@ class SlackUpdateExistingConversationView(SlackNewConversationView):
 
     async def create_or_update_conversation(self, jinja: Environment) -> str:
         """Send new user message to converation"""
-        user_info: SlackUser = self.slack_to_openhands_user
+        user_info: SlackUser = self.slack_to_thinksoft_user
 
         user_id = user_info.keycloak_user_id
 
@@ -521,7 +521,7 @@ class SlackUpdateExistingConversationView(SlackNewConversationView):
         return self.conversation_id
 
     def get_response_msg(self):
-        user_info: SlackUser = self.slack_to_openhands_user
+        user_info: SlackUser = self.slack_to_thinksoft_user
         conversation_link = CONVERSATION_URL.format(self.conversation_id)
         return f"I'm on it! {user_info.slack_display_name} can [continue tracking my progress here]({conversation_link})."
 
@@ -571,13 +571,13 @@ class SlackFactory:
             )
             raise Exception('Did not find slack team')
 
-        # Determine if this is a known slack user by openhands
+        # Determine if this is a known slack user by thinksoft
         if not slack_user or not saas_user_auth or not channel_id:
             return SlackUnkownUserView(
                 bot_access_token=bot_access_token,
                 user_msg=user_msg,
                 slack_user_id=slack_user_id,
-                slack_to_openhands_user=slack_user,
+                slack_to_thinksoft_user=slack_user,
                 saas_user_auth=saas_user_auth,
                 channel_id=channel_id,
                 message_ts=message_ts,
@@ -607,7 +607,7 @@ class SlackFactory:
                 bot_access_token=bot_access_token,
                 user_msg=user_msg,
                 slack_user_id=slack_user_id,
-                slack_to_openhands_user=slack_user,
+                slack_to_thinksoft_user=slack_user,
                 saas_user_auth=saas_user_auth,
                 channel_id=channel_id,
                 message_ts=message_ts,
@@ -626,7 +626,7 @@ class SlackFactory:
                 bot_access_token=bot_access_token,
                 user_msg=user_msg,
                 slack_user_id=slack_user_id,
-                slack_to_openhands_user=slack_user,
+                slack_to_thinksoft_user=slack_user,
                 saas_user_auth=saas_user_auth,
                 channel_id=channel_id,
                 message_ts=message_ts,
@@ -644,7 +644,7 @@ class SlackFactory:
                 bot_access_token=bot_access_token,
                 user_msg=user_msg,
                 slack_user_id=slack_user_id,
-                slack_to_openhands_user=slack_user,
+                slack_to_thinksoft_user=slack_user,
                 saas_user_auth=saas_user_auth,
                 channel_id=channel_id,
                 message_ts=message_ts,

@@ -9,9 +9,9 @@ from server.auth.saas_user_auth import SaasUserAuth
 from server.routes.auth import set_response_cookie
 from server.utils.rate_limit_utils import check_rate_limit_by_user_id
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.server.user_auth import get_user_id
-from openhands.server.user_auth.user_auth import get_user_auth
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.server.user_auth import get_user_id
+from thinksoft.server.user_auth.user_auth import get_user_auth
 
 # Email validation regex pattern
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')

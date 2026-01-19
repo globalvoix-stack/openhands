@@ -6,14 +6,14 @@ from fastapi import Request
 from fastapi.testclient import TestClient
 from pydantic import SecretStr
 
-from openhands.integrations.provider import ProviderToken, ProviderType
-from openhands.server.app import app
-from openhands.server.user_auth.user_auth import UserAuth
-from openhands.storage.data_models.secrets import Secrets
-from openhands.storage.memory import InMemoryFileStore
-from openhands.storage.secrets.secrets_store import SecretsStore
-from openhands.storage.settings.file_settings_store import FileSettingsStore
-from openhands.storage.settings.settings_store import SettingsStore
+from thinksoft.integrations.provider import ProviderToken, ProviderType
+from thinksoft.server.app import app
+from thinksoft.server.user_auth.user_auth import UserAuth
+from thinksoft.storage.data_models.secrets import Secrets
+from thinksoft.storage.memory import InMemoryFileStore
+from thinksoft.storage.secrets.secrets_store import SecretsStore
+from thinksoft.storage.settings.file_settings_store import FileSettingsStore
+from thinksoft.storage.settings.settings_store import SettingsStore
 
 
 class MockUserAuth(UserAuth):
@@ -65,13 +65,13 @@ def test_client():
     # Create a test client
     with (
         patch.dict(os.environ, {'SESSION_API_KEY': ''}, clear=False),
-        patch('openhands.server.dependencies._SESSION_API_KEY', None),
+        patch('thinksoft.server.dependencies._SESSION_API_KEY', None),
         patch(
-            'openhands.server.user_auth.user_auth.UserAuth.get_instance',
+            'thinksoft.server.user_auth.user_auth.UserAuth.get_instance',
             return_value=MockUserAuth(),
         ),
         patch(
-            'openhands.storage.settings.file_settings_store.FileSettingsStore.get_instance',
+            'thinksoft.storage.settings.file_settings_store.FileSettingsStore.get_instance',
             AsyncMock(return_value=FileSettingsStore(InMemoryFileStore())),
         ),
     ):

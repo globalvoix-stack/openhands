@@ -1,23 +1,23 @@
 from unittest.mock import MagicMock
 
-from openhands.events.action import (
+from thinksoft.events.action import (
     Action,
     ChangeAgentStateAction,
     CmdRunAction,
     MessageAction,
     NullAction,
 )
-from openhands.events.event import Event, EventSource
-from openhands.events.event_filter import (
+from thinksoft.events.event import Event, EventSource
+from thinksoft.events.event_filter import (
     EventFilter,  # Needed for ANY matcher type check
 )
-from openhands.events.observation import (
+from thinksoft.events.observation import (
     AgentStateChangedObservation,
     CmdOutputObservation,
     NullObservation,
 )
-from openhands.events.stream import EventStream
-from openhands.server.routes.manage_conversations import _get_contextual_events
+from thinksoft.events.stream import EventStream
+from thinksoft.server.routes.manage_conversations import _get_contextual_events
 
 
 # Helper to create event instances for testing, inspired by test_agent_history.py

@@ -7,7 +7,7 @@ from typing import Any, Union
 import pandas as pd
 from datasets import load_dataset
 
-from openhands.runtime.base import Runtime
+from thinksoft.runtime.base import Runtime
 
 
 @dataclass
@@ -93,7 +93,7 @@ class LocMeta:
 
     This class handles loading SWE-Bench datasets and extracting ground-truth
     localization information from patches for code localization evaluation.
-    Works with both standalone Docker containers and OpenHands runtime.
+    Works with both standalone Docker containers and Thinksoft runtime.
     """
 
     def __init__(
@@ -508,13 +508,13 @@ class LocMeta:
     def _parse_patch_localization_with_runtime(
         self, patch_content: str, instance_id: str, runtime: Runtime
     ) -> LocalizationInfo:
-        """Parse localization information from a git patch using OpenHands runtime.
+        """Parse localization information from a git patch using Thinksoft runtime.
         This is the superior method when runtime is available.
 
         Args:
             patch_content: The git patch content
             instance_id: Instance ID for logging
-            runtime: OpenHands runtime object
+            runtime: Thinksoft runtime object
 
         Returns:
             LocalizationInfo object with extracted data
@@ -547,7 +547,7 @@ class LocMeta:
             for start, end in line_ranges:
                 affected_lines.extend(range(start, end + 1))
 
-            # Analyze source code using OpenHands runtime for accurate function/class mapping
+            # Analyze source code using Thinksoft runtime for accurate function/class mapping
             if affected_lines and (
                 file_path.endswith('.py') or file_path.endswith('.pyx')
             ):
@@ -584,11 +584,11 @@ class LocMeta:
     def parse_instance_loc_with_runtime(
         self, instance: Union[pd.Series, str], runtime: Runtime = None
     ) -> LocalizationInfo:
-        """Parse ground-truth localization information using OpenHands runtime.
+        """Parse ground-truth localization information using Thinksoft runtime.
 
         Args:
             instance: Either a pandas Series with instance data or an instance_id string
-            runtime: OpenHands runtime object
+            runtime: Thinksoft runtime object
 
         Returns:
             LocalizationInfo object containing extracted localization data
@@ -621,10 +621,10 @@ class LocMeta:
     def _analyze_source_code_with_runtime(
         self, runtime: Runtime, file_path: str, affected_lines: list[int]
     ) -> tuple[list[str], list[str], dict[int, str], dict[int, str]]:
-        """Analyze source code using OpenHands runtime to find functions and classes.
+        """Analyze source code using Thinksoft runtime to find functions and classes.
 
         Args:
-            runtime: OpenHands runtime object
+            runtime: Thinksoft runtime object
             file_path: Path to the file being analyzed
             affected_lines: List of line numbers that were changed
 
@@ -638,7 +638,7 @@ class LocMeta:
                 return [], [], {}, {}
 
             # Read the file content using runtime
-            from openhands.events.action import CmdRunAction
+            from thinksoft.events.action import CmdRunAction
 
             # First check if file exists
             check_action = CmdRunAction(

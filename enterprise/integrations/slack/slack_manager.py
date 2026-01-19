@@ -13,7 +13,7 @@ from integrations.slack.slack_view import (
 )
 from integrations.utils import (
     HOST_URL,
-    OPENHANDS_RESOLVER_TEMPLATES_DIR,
+    THINKSOFT_RESOLVER_TEMPLATES_DIR,
     get_session_expired_message,
 )
 from integrations.v1_utils import get_saas_user_auth
@@ -25,16 +25,16 @@ from slack_sdk.web.async_client import AsyncWebClient
 from storage.database import session_maker
 from storage.slack_user import SlackUser
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.integrations.provider import ProviderHandler
-from openhands.integrations.service_types import Repository
-from openhands.server.shared import config, server_config
-from openhands.server.types import (
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.integrations.provider import ProviderHandler
+from thinksoft.integrations.service_types import Repository
+from thinksoft.server.shared import config, server_config
+from thinksoft.server.types import (
     LLMAuthenticationError,
     MissingSettingsError,
     SessionExpiredError,
 )
-from openhands.server.user_auth.user_auth import UserAuth
+from thinksoft.server.user_auth.user_auth import UserAuth
 
 authorize_url_generator = AuthorizeUrlGenerator(
     client_id=SLACK_CLIENT_ID,
@@ -47,11 +47,11 @@ class SlackManager(Manager):
     def __init__(self, token_manager):
         self.token_manager = token_manager
         self.login_link = (
-            'User has not yet authenticated: [Click here to Login to OpenHands]({}).'
+            'User has not yet authenticated: [Click here to Login to Thinksoft]({}).'
         )
 
         self.jinja_env = Environment(
-            loader=FileSystemLoader(OPENHANDS_RESOLVER_TEMPLATES_DIR + 'slack')
+            loader=FileSystemLoader(THINKSOFT_RESOLVER_TEMPLATES_DIR + 'slack')
         )
 
     def _confirm_incoming_source_type(self, message: Message):
@@ -61,7 +61,7 @@ class SlackManager(Manager):
     async def authenticate_user(
         self, slack_user_id: str
     ) -> tuple[SlackUser | None, UserAuth | None]:
-        # We get the user and correlate them back to a user in OpenHands - if we can
+        # We get the user and correlate them back to a user in Thinksoft - if we can
         slack_user = None
         with session_maker() as session:
             slack_user = (
@@ -70,19 +70,19 @@ class SlackManager(Manager):
                 .first()
             )
 
-            # slack_view.slack_to_openhands_user = slack_user # attach user auth info to view
+            # slack_view.slack_to_thinksoft_user = slack_user # attach user auth info to view
 
         saas_user_auth = None
         if slack_user:
             saas_user_auth = await get_saas_user_auth(
                 slack_user.keycloak_user_id, self.token_manager
             )
-            # slack_view.saas_user_auth = await self._get_user_auth(slack_view.slack_to_openhands_user.keycloak_user_id)
+            # slack_view.saas_user_auth = await self._get_user_auth(slack_view.slack_to_thinksoft_user.keycloak_user_id)
 
         return slack_user, saas_user_auth
 
     def _infer_repo_from_message(self, user_msg: str) -> str | None:
-        # Regular expression to match patterns like "OpenHands/OpenHands" or "deploy repo"
+        # Regular expression to match patterns like "Thinksoft/Thinksoft" or "deploy repo"
         pattern = r'([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)|([a-zA-Z0-9_-]+)(?=\s+repo)'
         match = re.search(pattern, user_msg)
 
@@ -250,7 +250,7 @@ class SlackManager(Manager):
         elif isinstance(slack_view, SlackNewConversationFromRepoFormView):
             return True
         elif isinstance(slack_view, SlackNewConversationView):
-            user = slack_view.slack_to_openhands_user
+            user = slack_view.slack_to_thinksoft_user
             user_repos: list[Repository] = await self._get_repositories(
                 slack_view.saas_user_auth
             )
@@ -296,7 +296,7 @@ class SlackManager(Manager):
 
         try:
             msg_info = None
-            user_info: SlackUser = slack_view.slack_to_openhands_user
+            user_info: SlackUser = slack_view.slack_to_thinksoft_user
             try:
                 logger.info(
                     f'[Slack] Starting job for user {user_info.slack_display_name} (id={user_info.slack_user_id})',
@@ -349,14 +349,14 @@ class SlackManager(Manager):
                     f'[Slack] Missing settings error for user {user_info.slack_display_name}: {str(e)}'
                 )
 
-                msg_info = f'{user_info.slack_display_name} please re-login into [OpenHands Cloud]({HOST_URL}) before starting a job.'
+                msg_info = f'{user_info.slack_display_name} please re-login into [Thinksoft Cloud]({HOST_URL}) before starting a job.'
 
             except LLMAuthenticationError as e:
                 logger.warning(
                     f'[Slack] LLM authentication error for user {user_info.slack_display_name}: {str(e)}'
                 )
 
-                msg_info = f'@{user_info.slack_display_name} please set a valid LLM API key in [OpenHands Cloud]({HOST_URL}) before starting a job.'
+                msg_info = f'@{user_info.slack_display_name} please set a valid LLM API key in [Thinksoft Cloud]({HOST_URL}) before starting a job.'
 
             except SessionExpiredError as e:
                 logger.warning(

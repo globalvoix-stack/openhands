@@ -1,6 +1,6 @@
 from typing import Protocol
 
-from openhands.storage.files import FileStore
+from thinksoft.storage.files import FileStore
 
 
 class SupportsFilesystemOperations(Protocol):

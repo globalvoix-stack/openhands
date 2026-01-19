@@ -12,12 +12,12 @@ from pydantic import SecretStr
 from enterprise.integrations.resolver_context import ResolverUserContext
 
 # Import the real classes we want to test
-from openhands.integrations.provider import CustomSecret, ProviderToken
-from openhands.integrations.service_types import ProviderType
+from thinksoft.integrations.provider import CustomSecret, ProviderToken
+from thinksoft.integrations.service_types import ProviderType
 
 # Import the SDK types we need for testing
-from openhands.sdk.secret import SecretSource, StaticSecret
-from openhands.storage.data_models.secrets import Secrets
+from thinksoft.sdk.secret import SecretSource, StaticSecret
+from thinksoft.storage.data_models.secrets import Secrets
 
 
 @pytest.fixture

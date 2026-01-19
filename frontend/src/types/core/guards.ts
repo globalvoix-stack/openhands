@@ -1,8 +1,8 @@
-import { OpenHandsParsedEvent } from ".";
+import { ThinksoftParsedEvent } from ".";
 import {
   UserMessageAction,
   AssistantMessageAction,
-  OpenHandsAction,
+  ThinksoftAction,
   SystemMessageAction,
   CommandAction,
   FinishAction,
@@ -13,14 +13,14 @@ import {
   CommandObservation,
   ErrorObservation,
   MCPObservation,
-  OpenHandsObservation,
+  ThinksoftObservation,
   TaskTrackingObservation,
 } from "./observations";
 import { StatusUpdate } from "./variances";
 
-export const isOpenHandsEvent = (
+export const isThinksoftEvent = (
   event: unknown,
-): event is OpenHandsParsedEvent =>
+): event is ThinksoftParsedEvent =>
   typeof event === "object" &&
   event !== null &&
   "id" in event &&
@@ -28,76 +28,76 @@ export const isOpenHandsEvent = (
   "message" in event &&
   "timestamp" in event;
 
-export const isOpenHandsAction = (
-  event: OpenHandsParsedEvent,
-): event is OpenHandsAction => "action" in event;
+export const isThinksoftAction = (
+  event: ThinksoftParsedEvent,
+): event is ThinksoftAction => "action" in event;
 
-export const isOpenHandsObservation = (
-  event: OpenHandsParsedEvent,
-): event is OpenHandsObservation => "observation" in event;
+export const isThinksoftObservation = (
+  event: ThinksoftParsedEvent,
+): event is ThinksoftObservation => "observation" in event;
 
 export const isUserMessage = (
-  event: OpenHandsParsedEvent,
+  event: ThinksoftParsedEvent,
 ): event is UserMessageAction =>
-  isOpenHandsAction(event) &&
+  isThinksoftAction(event) &&
   event.source === "user" &&
   event.action === "message";
 
 export const isAssistantMessage = (
-  event: OpenHandsParsedEvent,
+  event: ThinksoftParsedEvent,
 ): event is AssistantMessageAction =>
-  isOpenHandsAction(event) &&
+  isThinksoftAction(event) &&
   event.source === "agent" &&
   (event.action === "message" || event.action === "finish");
 
 export const isErrorObservation = (
-  event: OpenHandsParsedEvent,
+  event: ThinksoftParsedEvent,
 ): event is ErrorObservation =>
-  isOpenHandsObservation(event) && event.observation === "error";
+  isThinksoftObservation(event) && event.observation === "error";
 
 export const isCommandAction = (
-  event: OpenHandsParsedEvent,
-): event is CommandAction => isOpenHandsAction(event) && event.action === "run";
+  event: ThinksoftParsedEvent,
+): event is CommandAction => isThinksoftAction(event) && event.action === "run";
 
 export const isAgentStateChangeObservation = (
-  event: OpenHandsParsedEvent,
+  event: ThinksoftParsedEvent,
 ): event is AgentStateChangeObservation =>
-  isOpenHandsObservation(event) && event.observation === "agent_state_changed";
+  isThinksoftObservation(event) && event.observation === "agent_state_changed";
 
 export const isCommandObservation = (
-  event: OpenHandsParsedEvent,
+  event: ThinksoftParsedEvent,
 ): event is CommandObservation =>
-  isOpenHandsObservation(event) && event.observation === "run";
+  isThinksoftObservation(event) && event.observation === "run";
 
 export const isFinishAction = (
-  event: OpenHandsParsedEvent,
+  event: ThinksoftParsedEvent,
 ): event is FinishAction =>
-  isOpenHandsAction(event) && event.action === "finish";
+  isThinksoftAction(event) && event.action === "finish";
 
 export const isSystemMessage = (
-  event: OpenHandsParsedEvent,
+  event: ThinksoftParsedEvent,
 ): event is SystemMessageAction =>
-  isOpenHandsAction(event) && event.action === "system";
+  isThinksoftAction(event) && event.action === "system";
 
 export const isRejectObservation = (
-  event: OpenHandsParsedEvent,
-): event is OpenHandsObservation =>
-  isOpenHandsObservation(event) && event.observation === "user_rejected";
+  event: ThinksoftParsedEvent,
+): event is ThinksoftObservation =>
+  isThinksoftObservation(event) && event.observation === "user_rejected";
 
 export const isMcpObservation = (
-  event: OpenHandsParsedEvent,
+  event: ThinksoftParsedEvent,
 ): event is MCPObservation =>
-  isOpenHandsObservation(event) && event.observation === "mcp";
+  isThinksoftObservation(event) && event.observation === "mcp";
 
 export const isTaskTrackingAction = (
-  event: OpenHandsParsedEvent,
+  event: ThinksoftParsedEvent,
 ): event is TaskTrackingAction =>
-  isOpenHandsAction(event) && event.action === "task_tracking";
+  isThinksoftAction(event) && event.action === "task_tracking";
 
 export const isTaskTrackingObservation = (
-  event: OpenHandsParsedEvent,
+  event: ThinksoftParsedEvent,
 ): event is TaskTrackingObservation =>
-  isOpenHandsObservation(event) && event.observation === "task_tracking";
+  isThinksoftObservation(event) && event.observation === "task_tracking";
 
 export const isStatusUpdate = (event: unknown): event is StatusUpdate =>
   typeof event === "object" &&
@@ -107,6 +107,6 @@ export const isStatusUpdate = (event: unknown): event is StatusUpdate =>
   "id" in event;
 
 export const isActionOrObservation = (
-  event: OpenHandsParsedEvent,
-): event is OpenHandsAction | OpenHandsObservation =>
-  isOpenHandsAction(event) || isOpenHandsObservation(event);
+  event: ThinksoftParsedEvent,
+): event is ThinksoftAction | ThinksoftObservation =>
+  isThinksoftAction(event) || isThinksoftObservation(event);

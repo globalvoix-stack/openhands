@@ -1,20 +1,20 @@
 import pytest
 from pydantic import SecretStr
 
-from openhands.core.config import LLMConfig
-from openhands.integrations.provider import ProviderType
-from openhands.resolver.interfaces.azure_devops import AzureDevOpsIssueHandler
-from openhands.resolver.interfaces.forgejo import (
+from thinksoft.core.config import LLMConfig
+from thinksoft.integrations.provider import ProviderType
+from thinksoft.resolver.interfaces.azure_devops import AzureDevOpsIssueHandler
+from thinksoft.resolver.interfaces.forgejo import (
     ForgejoIssueHandler,
     ForgejoPRHandler,
 )
-from openhands.resolver.interfaces.github import GithubIssueHandler, GithubPRHandler
-from openhands.resolver.interfaces.gitlab import GitlabIssueHandler, GitlabPRHandler
-from openhands.resolver.interfaces.issue_definitions import (
+from thinksoft.resolver.interfaces.github import GithubIssueHandler, GithubPRHandler
+from thinksoft.resolver.interfaces.gitlab import GitlabIssueHandler, GitlabPRHandler
+from thinksoft.resolver.interfaces.issue_definitions import (
     ServiceContextIssue,
     ServiceContextPR,
 )
-from openhands.resolver.issue_handler_factory import IssueHandlerFactory
+from thinksoft.resolver.issue_handler_factory import IssueHandlerFactory
 
 
 @pytest.fixture

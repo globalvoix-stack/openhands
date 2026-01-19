@@ -1,4 +1,4 @@
-import { openHands } from "../open-hands-axios";
+import { thinksoft } from "../thinksoft-axios";
 import {
   GitLabResourcesResponse,
   ReinstallWebhookRequest,
@@ -12,7 +12,7 @@ export const integrationService = {
    * @returns Promise with list of resources and their webhook status
    */
   getGitLabResources: async (): Promise<GitLabResourcesResponse> => {
-    const { data } = await openHands.get<GitLabResourcesResponse>(
+    const { data } = await thinksoft.get<GitLabResourcesResponse>(
       "/integration/gitlab/resources",
     );
     return data;
@@ -29,7 +29,7 @@ export const integrationService = {
     resource: ResourceIdentifier;
   }): Promise<ResourceInstallationResult> => {
     const requestBody: ReinstallWebhookRequest = { resource };
-    const { data } = await openHands.post<ResourceInstallationResult>(
+    const { data } = await thinksoft.post<ResourceInstallationResult>(
       "/integration/gitlab/reinstall-webhook",
       requestBody,
     );

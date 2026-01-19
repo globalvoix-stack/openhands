@@ -1,4 +1,4 @@
-import { ConversationTrigger } from "../open-hands.types";
+import { ConversationTrigger } from "../thinksoft.types";
 import { Provider } from "#/types/settings";
 import { V1SandboxStatus } from "../sandbox-service/sandbox-service.types";
 

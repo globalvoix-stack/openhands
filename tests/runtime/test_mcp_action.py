@@ -11,12 +11,12 @@ from conftest import (
     _load_runtime,
 )
 
-import openhands
-from openhands.core.config import MCPConfig
-from openhands.core.config.mcp_config import MCPSSEServerConfig, MCPStdioServerConfig
-from openhands.core.logger import openhands_logger as logger
-from openhands.events.action import CmdRunAction, MCPAction
-from openhands.events.observation import CmdOutputObservation, MCPObservation
+import thinksoft
+from thinksoft.core.config import MCPConfig
+from thinksoft.core.config.mcp_config import MCPSSEServerConfig, MCPStdioServerConfig
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.events.action import CmdRunAction, MCPAction
+from thinksoft.events.observation import CmdOutputObservation, MCPObservation
 
 # ============================================================================================================================
 # Bash-specific tests
@@ -55,7 +55,7 @@ def sse_mcp_docker_server():
     log_streamer = None
 
     # Import LogStreamer here as it's specific to this fixture's needs
-    from openhands.runtime.utils.log_streamer import LogStreamer
+    from thinksoft.runtime.utils.log_streamer import LogStreamer
 
     try:
         logger.info(
@@ -114,7 +114,7 @@ def test_default_activated_tools():
     # This works both when running from source and from installed package
     try:
         with importlib.resources.as_file(
-            importlib.resources.files('openhands').joinpath(
+            importlib.resources.files('thinksoft').joinpath(
                 'runtime', 'mcp', 'config.json'
             )
         ) as config_path:
@@ -123,7 +123,7 @@ def test_default_activated_tools():
                 mcp_config = json.load(f)
     except (FileNotFoundError, ImportError):
         # Fallback to the old method for development environments
-        project_root = os.path.dirname(openhands.__file__)
+        project_root = os.path.dirname(thinksoft.__file__)
         mcp_config_path = os.path.join(project_root, 'runtime', 'mcp', 'config.json')
         assert os.path.exists(mcp_config_path), (
             f'MCP config file not found at {mcp_config_path}'
@@ -141,7 +141,7 @@ def test_default_activated_tools():
 @pytest.mark.skip('This test is flaky')
 @pytest.mark.asyncio
 async def test_fetch_mcp_via_stdio(
-    temp_dir, runtime_cls, run_as_openhands, dynamic_port
+    temp_dir, runtime_cls, run_as_thinksoft, dynamic_port
 ):
     mcp_stdio_server_config = MCPStdioServerConfig(
         name='fetch', command='uvx', args=['mcp-server-fetch']
@@ -150,7 +150,7 @@ async def test_fetch_mcp_via_stdio(
     runtime, config = _load_runtime(
         temp_dir,
         runtime_cls,
-        run_as_openhands,
+        run_as_thinksoft,
         override_mcp_config=override_mcp_config,
         enable_browser=True,
     )
@@ -197,7 +197,7 @@ async def test_fetch_mcp_via_stdio(
 @pytest.mark.skip('This test is flaky')
 @pytest.mark.asyncio
 async def test_filesystem_mcp_via_sse(
-    temp_dir, runtime_cls, run_as_openhands, sse_mcp_docker_server
+    temp_dir, runtime_cls, run_as_thinksoft, sse_mcp_docker_server
 ):
     sse_server_info = sse_mcp_docker_server
     sse_url = sse_server_info['url']
@@ -208,7 +208,7 @@ async def test_filesystem_mcp_via_sse(
         runtime, config = _load_runtime(
             temp_dir,
             runtime_cls,
-            run_as_openhands,
+            run_as_thinksoft,
             override_mcp_config=override_mcp_config,
         )
 
@@ -229,7 +229,7 @@ async def test_filesystem_mcp_via_sse(
 @pytest.mark.skip('This test is flaky')
 @pytest.mark.asyncio
 async def test_both_stdio_and_sse_mcp(
-    temp_dir, runtime_cls, run_as_openhands, sse_mcp_docker_server, dynamic_port
+    temp_dir, runtime_cls, run_as_thinksoft, sse_mcp_docker_server, dynamic_port
 ):
     sse_server_info = sse_mcp_docker_server
     sse_url = sse_server_info['url']
@@ -248,7 +248,7 @@ async def test_both_stdio_and_sse_mcp(
         runtime, config = _load_runtime(
             temp_dir,
             runtime_cls,
-            run_as_openhands,
+            run_as_thinksoft,
             override_mcp_config=override_mcp_config,
             enable_browser=True,
         )
@@ -311,7 +311,7 @@ async def test_both_stdio_and_sse_mcp(
 @pytest.mark.skip('This test is flaky')
 @pytest.mark.asyncio
 async def test_microagent_and_one_stdio_mcp_in_config(
-    temp_dir, runtime_cls, run_as_openhands, dynamic_port
+    temp_dir, runtime_cls, run_as_thinksoft, dynamic_port
 ):
     runtime = None
     try:
@@ -327,7 +327,7 @@ async def test_microagent_and_one_stdio_mcp_in_config(
         runtime, config = _load_runtime(
             temp_dir,
             runtime_cls,
-            run_as_openhands,
+            run_as_thinksoft,
             override_mcp_config=override_mcp_config,
             enable_browser=True,
         )

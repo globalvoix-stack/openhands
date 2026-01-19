@@ -11,11 +11,11 @@ import pytest
 import toml
 from pytest import TempPathFactory
 
-import openhands
-from openhands import __version__ as oh_version
-from openhands.core.logger import openhands_logger as logger
-from openhands.runtime.builder.docker import DockerRuntimeBuilder
-from openhands.runtime.utils.runtime_build import (
+import thinksoft
+from thinksoft import __version__ as oh_version
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.runtime.builder.docker import DockerRuntimeBuilder
+from thinksoft.runtime.utils.runtime_build import (
     BuildFromImageType,
     _generate_dockerfile,
     build_runtime_image,
@@ -61,22 +61,22 @@ def _check_source_code_in_dir(temp_dir):
     # check the source file is the same as the current code base
     assert os.path.exists(os.path.join(code_dir, 'pyproject.toml'))
 
-    # The source code should only include the `openhands` folder,
+    # The source code should only include the `thinksoft` folder,
     # and pyproject.toml & poetry.lock that are needed to build the runtime image
     assert set(os.listdir(code_dir)) == {
-        'openhands',
+        'thinksoft',
         'pyproject.toml',
         'poetry.lock',
     }
-    assert os.path.exists(os.path.join(code_dir, 'openhands'))
-    assert os.path.isdir(os.path.join(code_dir, 'openhands'))
+    assert os.path.exists(os.path.join(code_dir, 'thinksoft'))
+    assert os.path.isdir(os.path.join(code_dir, 'thinksoft'))
 
     # make sure the version from the pyproject.toml is the same as the current version
     with open(os.path.join(code_dir, 'pyproject.toml'), 'r') as f:
         pyproject = toml.load(f)
 
     _pyproject_version = pyproject['tool']['poetry']['version']
-    assert _pyproject_version == version('openhands-ai')
+    assert _pyproject_version == version('thinksoft-ai')
 
 
 def test_prep_build_folder(temp_dir):
@@ -89,7 +89,7 @@ def test_prep_build_folder(temp_dir):
             extra_deps=None,
         )
 
-    # make sure that the code (openhands/) and microagents folder were copied
+    # make sure that the code (thinksoft/) and microagents folder were copied
     assert shutil_mock.copytree.call_count == 2
     assert shutil_mock.copy2.call_count == 2
 
@@ -143,7 +143,7 @@ def test_get_hash_for_source_files():
         result = get_hash_for_source_files()
         assert result == truncate_hash(dirhash_mock.return_value)
         dirhash_mock.assert_called_once_with(
-            Path(openhands.__file__).parent,
+            Path(thinksoft.__file__).parent,
             'md5',
             ignore=[
                 '.*/',  # hidden directories
@@ -167,11 +167,11 @@ def test_generate_dockerfile_build_from_scratch():
 
     # Check the update command
     assert (
-        'COPY --chown=openhands:openhands ./code/openhands /openhands/code/openhands'
+        'COPY --chown=thinksoft:thinksoft ./code/thinksoft /thinksoft/code/thinksoft'
         in dockerfile_content
     )
     assert (
-        '/openhands/micromamba/bin/micromamba run -n openhands poetry install'
+        '/thinksoft/micromamba/bin/micromamba run -n thinksoft poetry install'
         in dockerfile_content
     )
 
@@ -192,7 +192,7 @@ def test_generate_dockerfile_build_from_lock():
 
     # These update commands SHOULD still in the dockerfile
     assert (
-        'COPY --chown=openhands:openhands ./code/openhands /openhands/code/openhands'
+        'COPY --chown=thinksoft:thinksoft ./code/thinksoft /thinksoft/code/thinksoft'
         in dockerfile_content
     )
 
@@ -213,7 +213,7 @@ def test_generate_dockerfile_build_from_versioned():
     # this SHOULD exist when build from versioned
     assert 'poetry install' in dockerfile_content
     assert (
-        'COPY --chown=openhands:openhands ./code/openhands /openhands/code/openhands'
+        'COPY --chown=thinksoft:thinksoft ./code/thinksoft /thinksoft/code/thinksoft'
         in dockerfile_content
     )
 
@@ -235,7 +235,7 @@ def test_generate_dockerfile_channel_alias(monkeypatch):
     assert 'https://conda.anaconda.org' not in dockerfile_content
     # The micromamba install should use the named channel, not a URL
     install_snippet = (
-        '/openhands/micromamba/bin/micromamba install -n openhands -c conda-forge'
+        '/thinksoft/micromamba/bin/micromamba install -n thinksoft -c conda-forge'
     )
     assert install_snippet in dockerfile_content
 
@@ -542,10 +542,10 @@ def live_docker_image():
     RUN apt-get update && apt-get install -y wget curl sudo apt-utils
 
     FROM base AS intermediate
-    RUN mkdir -p /openhands
+    RUN mkdir -p /thinksoft
 
     FROM intermediate AS final
-    RUN echo "Hello, OpenHands!" > /openhands/hello.txt
+    RUN echo "Hello, Thinksoft!" > /thinksoft/hello.txt
     """
 
     with tempfile.TemporaryDirectory() as temp_dir:

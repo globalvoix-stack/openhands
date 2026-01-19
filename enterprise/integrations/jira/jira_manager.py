@@ -14,7 +14,7 @@ from integrations.manager import Manager
 from integrations.models import JobContext, Message
 from integrations.utils import (
     HOST_URL,
-    OPENHANDS_RESOLVER_TEMPLATES_DIR,
+    THINKSOFT_RESOLVER_TEMPLATES_DIR,
     filter_potential_repos_by_user_msg,
     get_session_expired_message,
 )
@@ -26,17 +26,17 @@ from storage.jira_integration_store import JiraIntegrationStore
 from storage.jira_user import JiraUser
 from storage.jira_workspace import JiraWorkspace
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.integrations.provider import ProviderHandler
-from openhands.integrations.service_types import Repository
-from openhands.server.shared import server_config
-from openhands.server.types import (
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.integrations.provider import ProviderHandler
+from thinksoft.integrations.service_types import Repository
+from thinksoft.server.shared import server_config
+from thinksoft.server.types import (
     LLMAuthenticationError,
     MissingSettingsError,
     SessionExpiredError,
 )
-from openhands.server.user_auth.user_auth import UserAuth
-from openhands.utils.http_session import httpx_verify_option
+from thinksoft.server.user_auth.user_auth import UserAuth
+from thinksoft.utils.http_session import httpx_verify_option
 
 JIRA_CLOUD_API_URL = 'https://api.atlassian.com/ex/jira'
 
@@ -46,13 +46,13 @@ class JiraManager(Manager):
         self.token_manager = token_manager
         self.integration_store = JiraIntegrationStore.get_instance()
         self.jinja_env = Environment(
-            loader=FileSystemLoader(OPENHANDS_RESOLVER_TEMPLATES_DIR + 'jira')
+            loader=FileSystemLoader(THINKSOFT_RESOLVER_TEMPLATES_DIR + 'jira')
         )
 
     async def authenticate_user(
         self, jira_user_id: str, workspace_id: int
     ) -> tuple[JiraUser | None, UserAuth | None]:
-        """Authenticate Jira user and get their OpenHands user auth."""
+        """Authenticate Jira user and get their Thinksoft user auth."""
 
         # Find active Jira user by Keycloak user ID and workspace ID
         jira_user = await self.integration_store.get_active_user(
@@ -142,7 +142,7 @@ class JiraManager(Manager):
             comment_data = payload.get('comment', {})
             comment = comment_data.get('body', '')
 
-            if '@openhands' not in comment:
+            if '@thinksoft' not in comment:
                 return None
 
             issue_data = payload.get('issue', {})
@@ -163,7 +163,7 @@ class JiraManager(Manager):
                 if item.get('field') == 'labels' and 'toString' in item
             ]
 
-            if 'openhands' not in labels:
+            if 'thinksoft' not in labels:
                 return None
 
             issue_data = payload.get('issue', {})
@@ -375,11 +375,11 @@ class JiraManager(Manager):
 
         except MissingSettingsError as e:
             logger.warning(f'[Jira] Missing settings error: {str(e)}')
-            msg_info = f'Please re-login into [OpenHands Cloud]({HOST_URL}) before starting a job.'
+            msg_info = f'Please re-login into [Thinksoft Cloud]({HOST_URL}) before starting a job.'
 
         except LLMAuthenticationError as e:
             logger.warning(f'[Jira] LLM authentication error: {str(e)}')
-            msg_info = f'Please set a valid LLM API key in [OpenHands Cloud]({HOST_URL}) before starting a job.'
+            msg_info = f'Please set a valid LLM API key in [Thinksoft Cloud]({HOST_URL}) before starting a job.'
 
         except SessionExpiredError as e:
             logger.warning(f'[Jira] Session expired: {str(e)}')

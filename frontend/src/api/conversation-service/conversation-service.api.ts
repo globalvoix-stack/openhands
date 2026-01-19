@@ -11,8 +11,8 @@ import {
   CreateMicroagent,
   FileUploadSuccessResponse,
   GetFilesResponse,
-} from "../open-hands.types";
-import { openHands } from "../open-hands-axios";
+} from "../thinksoft.types";
+import { thinksoft } from "../thinksoft-axios";
 import { Provider } from "#/types/settings";
 import { SuggestedTask } from "#/utils/types";
 import { BatchFeedbackData } from "#/hooks/query/use-batch-feedback";
@@ -69,7 +69,7 @@ class ConversationService {
     feedback: Feedback,
   ): Promise<FeedbackResponse> {
     const url = `/api/conversations/${conversationId}/submit-feedback`;
-    const { data } = await openHands.post<FeedbackResponse>(url, feedback);
+    const { data } = await thinksoft.post<FeedbackResponse>(url, feedback);
     return data;
   }
 
@@ -95,7 +95,7 @@ class ConversationService {
       reason,
       metadata: { source: "likert-scale" },
     };
-    const { data } = await openHands.post<{ status: string; message: string }>(
+    const { data } = await thinksoft.post<{ status: string; message: string }>(
       url,
       payload,
     );
@@ -114,7 +114,7 @@ class ConversationService {
   ): Promise<{ exists: boolean; rating?: number; reason?: string }> {
     try {
       const url = `/feedback/conversation/${conversationId}/${eventId}`;
-      const { data } = await openHands.get<{
+      const { data } = await thinksoft.get<{
         exists: boolean;
         rating?: number;
         reason?: string;
@@ -143,7 +143,7 @@ class ConversationService {
     >
   > {
     const url = `/feedback/conversation/${conversationId}/batch`;
-    const { data } = await openHands.get<
+    const { data } = await thinksoft.get<
       Record<
         string,
         {
@@ -164,7 +164,7 @@ class ConversationService {
    */
   static async getWebHosts(conversationId: string): Promise<string[]> {
     const url = `${this.getConversationUrl(conversationId)}/web-hosts`;
-    const response = await openHands.get(url, {
+    const response = await thinksoft.get(url, {
       headers: this.getConversationHeaders(),
     });
     return Object.keys(response.data.hosts);
@@ -178,7 +178,7 @@ class ConversationService {
     conversationId: string,
   ): Promise<GetVSCodeUrlResponse> {
     const url = `${this.getConversationUrl(conversationId)}/vscode-url`;
-    const { data } = await openHands.get<GetVSCodeUrlResponse>(url, {
+    const { data } = await thinksoft.get<GetVSCodeUrlResponse>(url, {
       headers: this.getConversationHeaders(),
     });
     return data;
@@ -188,7 +188,7 @@ class ConversationService {
     conversationId: string,
   ): Promise<{ runtime_id: string }> {
     const url = `${this.getConversationUrl(conversationId)}/config`;
-    const { data } = await openHands.get<{ runtime_id: string }>(url, {
+    const { data } = await thinksoft.get<{ runtime_id: string }>(url, {
       headers: this.getConversationHeaders(),
     });
     return data;
@@ -205,7 +205,7 @@ class ConversationService {
       params.append("page_id", pageId);
     }
 
-    const { data } = await openHands.get<ResultSet<Conversation>>(
+    const { data } = await thinksoft.get<ResultSet<Conversation>>(
       `/api/conversations?${params.toString()}`,
     );
     return data;
@@ -227,14 +227,14 @@ class ConversationService {
       params.append("conversation_trigger", conversationTrigger);
     }
 
-    const { data } = await openHands.get<ResultSet<Conversation>>(
+    const { data } = await thinksoft.get<ResultSet<Conversation>>(
       `/api/conversations?${params.toString()}`,
     );
     return data.results;
   }
 
   static async deleteUserConversation(conversationId: string): Promise<void> {
-    await openHands.delete(`/api/conversations/${conversationId}`);
+    await thinksoft.delete(`/api/conversations/${conversationId}`);
   }
 
   static async createConversation(
@@ -256,7 +256,7 @@ class ConversationService {
       create_microagent: createMicroagent,
     };
 
-    const { data } = await openHands.post<Conversation>(
+    const { data } = await thinksoft.post<Conversation>(
       "/api/conversations",
       body,
     );
@@ -267,7 +267,7 @@ class ConversationService {
   static async getConversation(
     conversationId: string,
   ): Promise<Conversation | null> {
-    const { data } = await openHands.get<Conversation | null>(
+    const { data } = await thinksoft.get<Conversation | null>(
       `/api/conversations/${conversationId}`,
     );
 
@@ -278,7 +278,7 @@ class ConversationService {
     conversationId: string,
     providers?: Provider[],
   ): Promise<Conversation | null> {
-    const { data } = await openHands.post<Conversation | null>(
+    const { data } = await thinksoft.post<Conversation | null>(
       `/api/conversations/${conversationId}/start`,
       providers ? { providers_set: providers } : {},
     );
@@ -289,7 +289,7 @@ class ConversationService {
   static async stopConversation(
     conversationId: string,
   ): Promise<Conversation | null> {
-    const { data } = await openHands.post<Conversation | null>(
+    const { data } = await thinksoft.post<Conversation | null>(
       `/api/conversations/${conversationId}/stop`,
     );
 
@@ -300,7 +300,7 @@ class ConversationService {
     conversationId: string,
   ): Promise<GetTrajectoryResponse> {
     const url = `${this.getConversationUrl(conversationId)}/trajectory`;
-    const { data } = await openHands.get<GetTrajectoryResponse>(url, {
+    const { data } = await thinksoft.get<GetTrajectoryResponse>(url, {
       headers: this.getConversationHeaders(),
     });
     return data;
@@ -315,7 +315,7 @@ class ConversationService {
     conversationId: string,
   ): Promise<GetMicroagentsResponse> {
     const url = `${this.getConversationUrl(conversationId)}/microagents`;
-    const { data } = await openHands.get<GetMicroagentsResponse>(url, {
+    const { data } = await thinksoft.get<GetMicroagentsResponse>(url, {
       headers: this.getConversationHeaders(),
     });
     return data;
@@ -326,7 +326,7 @@ class ConversationService {
     eventId: number,
   ): Promise<string> {
     const url = `${this.getConversationUrl(conversationId)}/remember-prompt`;
-    const { data } = await openHands.get<GetMicroagentPromptResponse>(url, {
+    const { data } = await thinksoft.get<GetMicroagentPromptResponse>(url, {
       params: { event_id: eventId },
       headers: this.getConversationHeaders(),
     });
@@ -338,7 +338,7 @@ class ConversationService {
     conversationId: string,
     updates: { title: string },
   ): Promise<boolean> {
-    const { data } = await openHands.patch<boolean>(
+    const { data } = await thinksoft.patch<boolean>(
       `/api/conversations/${conversationId}`,
       updates,
     );
@@ -357,7 +357,7 @@ class ConversationService {
     path?: string,
   ): Promise<GetFilesResponse> {
     const url = `${this.getConversationUrl(conversationId)}/list-files`;
-    const { data } = await openHands.get<GetFilesResponse>(url, {
+    const { data } = await thinksoft.get<GetFilesResponse>(url, {
       params: { path },
       headers: this.getConversationHeaders(),
     });
@@ -380,7 +380,7 @@ class ConversationService {
       formData.append("files", file);
     }
     const url = `${this.getConversationUrl(conversationId)}/upload-files`;
-    const response = await openHands.post<FileUploadSuccessResponse>(
+    const response = await thinksoft.post<FileUploadSuccessResponse>(
       url,
       formData,
       {

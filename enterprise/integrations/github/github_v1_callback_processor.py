@@ -8,22 +8,22 @@ from integrations.utils import CONVERSATION_URL, get_summary_instruction
 from pydantic import Field
 from server.auth.constants import GITHUB_APP_CLIENT_ID, GITHUB_APP_PRIVATE_KEY
 
-from openhands.agent_server.models import AskAgentRequest, AskAgentResponse
-from openhands.app_server.event_callback.event_callback_models import (
+from thinksoft.agent_server.models import AskAgentRequest, AskAgentResponse
+from thinksoft.app_server.event_callback.event_callback_models import (
     EventCallback,
     EventCallbackProcessor,
 )
-from openhands.app_server.event_callback.event_callback_result_models import (
+from thinksoft.app_server.event_callback.event_callback_result_models import (
     EventCallbackResult,
     EventCallbackResultStatus,
 )
-from openhands.app_server.event_callback.util import (
+from thinksoft.app_server.event_callback.util import (
     ensure_conversation_found,
     ensure_running_sandbox,
     get_agent_server_url_from_sandbox,
 )
-from openhands.sdk import Event
-from openhands.sdk.event import ConversationStateUpdateEvent
+from thinksoft.sdk import Event
+from thinksoft.sdk.event import ConversationStateUpdateEvent
 
 _logger = logging.getLogger(__name__)
 
@@ -89,7 +89,7 @@ class GithubV1CallbackProcessor(EventCallbackProcessor):
                     and GITHUB_APP_PRIVATE_KEY
                 ):
                     await self._post_summary_to_github(
-                        f'OpenHands encountered an error: **{str(e)}**.\n\n'
+                        f'Thinksoft encountered an error: **{str(e)}**.\n\n'
                         f'[See the conversation]({CONVERSATION_URL.format(conversation_id)})'
                         'for more information.'
                     )
@@ -238,13 +238,13 @@ class GithubV1CallbackProcessor(EventCallbackProcessor):
         is handled by __call__.
         """
         # Import services within the method to avoid circular imports
-        from openhands.app_server.config import (
+        from thinksoft.app_server.config import (
             get_app_conversation_info_service,
             get_httpx_client,
             get_sandbox_service,
         )
-        from openhands.app_server.services.injector import InjectorState
-        from openhands.app_server.user.specifiy_user_context import (
+        from thinksoft.app_server.services.injector import InjectorState
+        from thinksoft.app_server.user.specifiy_user_context import (
             ADMIN,
             USER_CONTEXT_ATTR,
         )

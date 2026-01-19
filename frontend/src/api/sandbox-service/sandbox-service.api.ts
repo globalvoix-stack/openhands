@@ -1,7 +1,7 @@
 // sandbox-service.api.ts
 // This file contains API methods for /api/v1/sandboxes endpoints.
 
-import { openHands } from "../open-hands-axios";
+import { thinksoft } from "../thinksoft-axios";
 import type { V1SandboxInfo } from "./sandbox-service.types";
 
 export class SandboxService {
@@ -10,7 +10,7 @@ export class SandboxService {
    * Calls the /api/v1/sandboxes/{id}/pause endpoint
    */
   static async pauseSandbox(sandboxId: string): Promise<{ success: boolean }> {
-    const { data } = await openHands.post<{ success: boolean }>(
+    const { data } = await thinksoft.post<{ success: boolean }>(
       `/api/v1/sandboxes/${sandboxId}/pause`,
       {},
     );
@@ -22,7 +22,7 @@ export class SandboxService {
    * Calls the /api/v1/sandboxes/{id}/resume endpoint
    */
   static async resumeSandbox(sandboxId: string): Promise<{ success: boolean }> {
-    const { data } = await openHands.post<{ success: boolean }>(
+    const { data } = await thinksoft.post<{ success: boolean }>(
       `/api/v1/sandboxes/${sandboxId}/resume`,
       {},
     );
@@ -44,7 +44,7 @@ export class SandboxService {
     }
     const params = new URLSearchParams();
     ids.forEach((id) => params.append("id", id));
-    const { data } = await openHands.get<(V1SandboxInfo | null)[]>(
+    const { data } = await thinksoft.get<(V1SandboxInfo | null)[]>(
       `/api/v1/sandboxes?${params.toString()}`,
     );
     return data;

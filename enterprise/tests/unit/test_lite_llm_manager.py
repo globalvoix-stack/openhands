@@ -14,7 +14,7 @@ from server.constants import (
 from storage.lite_llm_manager import LiteLlmManager
 from storage.user_settings import UserSettings
 
-from openhands.server.settings import Settings
+from thinksoft.server.settings import Settings
 
 
 class TestLiteLlmManager:

@@ -9,9 +9,9 @@ from types import MappingProxyType
 import pytest
 from pydantic import SecretStr
 
-from openhands.integrations.provider import CustomSecret, ProviderToken, ProviderType
-from openhands.server.session.conversation_init_data import ConversationInitData
-from openhands.storage.data_models.settings import Settings
+from thinksoft.integrations.provider import CustomSecret, ProviderToken, ProviderType
+from thinksoft.server.session.conversation_init_data import ConversationInitData
+from thinksoft.storage.data_models.settings import Settings
 
 
 @pytest.fixture

@@ -5,41 +5,41 @@ from uuid import uuid4
 
 import pytest
 
-from openhands.controller.agent import Agent
-from openhands.controller.agent_controller import AgentController
-from openhands.controller.state.control_flags import (
+from thinksoft.controller.agent import Agent
+from thinksoft.controller.agent_controller import AgentController
+from thinksoft.controller.state.control_flags import (
     BudgetControlFlag,
     IterationControlFlag,
 )
-from openhands.controller.state.state import State
-from openhands.core.config import OpenHandsConfig
-from openhands.core.config.agent_config import AgentConfig
-from openhands.core.config.llm_config import LLMConfig
-from openhands.core.schema import AgentState
-from openhands.events import EventSource, EventStream
-from openhands.events.action import (
+from thinksoft.controller.state.state import State
+from thinksoft.core.config import ThinksoftConfig
+from thinksoft.core.config.agent_config import AgentConfig
+from thinksoft.core.config.llm_config import LLMConfig
+from thinksoft.core.schema import AgentState
+from thinksoft.events import EventSource, EventStream
+from thinksoft.events.action import (
     AgentDelegateAction,
     AgentFinishAction,
     MessageAction,
 )
-from openhands.events.action.agent import RecallAction
-from openhands.events.action.commands import CmdRunAction
-from openhands.events.action.message import SystemMessageAction
-from openhands.events.event import Event
-from openhands.events.observation.agent import RecallObservation
-from openhands.events.recall_type import RecallType
-from openhands.events.stream import EventStreamSubscriber
-from openhands.llm.llm import LLM
-from openhands.llm.llm_registry import LLMRegistry
-from openhands.llm.metrics import Metrics
-from openhands.memory.memory import Memory
-from openhands.server.services.conversation_stats import ConversationStats
-from openhands.storage.memory import InMemoryFileStore
+from thinksoft.events.action.agent import RecallAction
+from thinksoft.events.action.commands import CmdRunAction
+from thinksoft.events.action.message import SystemMessageAction
+from thinksoft.events.event import Event
+from thinksoft.events.observation.agent import RecallObservation
+from thinksoft.events.recall_type import RecallType
+from thinksoft.events.stream import EventStreamSubscriber
+from thinksoft.llm.llm import LLM
+from thinksoft.llm.llm_registry import LLMRegistry
+from thinksoft.llm.metrics import Metrics
+from thinksoft.memory.memory import Memory
+from thinksoft.server.services.conversation_stats import ConversationStats
+from thinksoft.storage.memory import InMemoryFileStore
 
 
 @pytest.fixture
 def llm_registry():
-    config = OpenHandsConfig()
+    config = ThinksoftConfig()
     return LLMRegistry(config=config)
 
 

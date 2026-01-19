@@ -11,20 +11,20 @@ from daytona import (
     SessionExecuteRequest,
 )
 
-from openhands.core.config.openhands_config import OpenHandsConfig
-from openhands.events.stream import EventStream
-from openhands.integrations.provider import PROVIDER_TOKEN_TYPE
-from openhands.runtime.impl.action_execution.action_execution_client import (
+from thinksoft.core.config.thinksoft_config import ThinksoftConfig
+from thinksoft.events.stream import EventStream
+from thinksoft.integrations.provider import PROVIDER_TOKEN_TYPE
+from thinksoft.runtime.impl.action_execution.action_execution_client import (
     ActionExecutionClient,
 )
-from openhands.runtime.plugins.requirement import PluginRequirement
-from openhands.runtime.runtime_status import RuntimeStatus
-from openhands.runtime.utils.command import get_action_execution_server_startup_command
-from openhands.runtime.utils.request import RequestHTTPError
-from openhands.utils.async_utils import call_sync_from_async
-from openhands.utils.tenacity_stop import stop_if_should_exit
+from thinksoft.runtime.plugins.requirement import PluginRequirement
+from thinksoft.runtime.runtime_status import RuntimeStatus
+from thinksoft.runtime.utils.command import get_action_execution_server_startup_command
+from thinksoft.runtime.utils.request import RequestHTTPError
+from thinksoft.utils.async_utils import call_sync_from_async
+from thinksoft.utils.tenacity_stop import stop_if_should_exit
 
-OPENHANDS_SID_LABEL = "OpenHands_SID"
+THINKSOFT_SID_LABEL = "Thinksoft_SID"
 
 
 class DaytonaRuntime(ActionExecutionClient):
@@ -35,7 +35,7 @@ class DaytonaRuntime(ActionExecutionClient):
 
     def __init__(
         self,
-        config: OpenHandsConfig,
+        config: ThinksoftConfig,
         event_stream: EventStream,
         sid: str = "default",
         plugins: list[PluginRequirement] | None = None,
@@ -89,7 +89,7 @@ class DaytonaRuntime(ActionExecutionClient):
 
     def _get_sandbox(self) -> Sandbox | None:
         try:
-            sandboxes = self.daytona.list({OPENHANDS_SID_LABEL: self.sid})
+            sandboxes = self.daytona.list({THINKSOFT_SID_LABEL: self.sid})
             if len(sandboxes) == 0:
                 return None
             assert len(sandboxes) == 1, "Multiple sandboxes found for SID"
@@ -130,7 +130,7 @@ class DaytonaRuntime(ActionExecutionClient):
             snapshot=self.config.sandbox.runtime_container_image,
             public=True,
             env_vars=self._get_creation_env_vars(),
-            labels={OPENHANDS_SID_LABEL: self.sid},
+            labels={THINKSOFT_SID_LABEL: self.sid},
             auto_stop_interval=auto_stop_interval,
         )
         return self.daytona.create(sandbox_params)
@@ -151,10 +151,10 @@ class DaytonaRuntime(ActionExecutionClient):
             plugins=self.plugins,
             app_config=self.config,
             override_user_id=1000,
-            override_username="openhands",
+            override_username="thinksoft",
         )
         start_command_str: str = (
-            f"mkdir -p {self.config.workspace_mount_path_in_sandbox} && cd /openhands/code && "
+            f"mkdir -p {self.config.workspace_mount_path_in_sandbox} && cd /thinksoft/code && "
             + " ".join(start_command)
         )
 

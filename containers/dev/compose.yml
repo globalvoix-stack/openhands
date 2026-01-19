@@ -3,16 +3,16 @@ services:
   dev:
     privileged: true
     build:
-      context: ${OPENHANDS_WORKSPACE:-../../}
+      context: ${THINKSOFT_WORKSPACE:-../../}
       dockerfile: ./containers/dev/Dockerfile
-    image: openhands:dev
-    container_name: openhands-dev
+    image: thinksoft:dev
+    container_name: thinksoft-dev
     environment:
       - BACKEND_HOST=${BACKEND_HOST:-"0.0.0.0"}
       - SANDBOX_API_HOSTNAME=host.docker.internal
       - DOCKER_HOST_ADDR=host.docker.internal
       #
-      - SANDBOX_RUNTIME_CONTAINER_IMAGE=${SANDBOX_RUNTIME_CONTAINER_IMAGE:-ghcr.io/openhands/runtime:1.2-nikolaik}
+      - SANDBOX_RUNTIME_CONTAINER_IMAGE=${SANDBOX_RUNTIME_CONTAINER_IMAGE:-ghcr.io/thinksoft/runtime:1.2-nikolaik}
       - SANDBOX_USER_ID=${SANDBOX_USER_ID:-1234}
       - WORKSPACE_MOUNT_PATH=${WORKSPACE_BASE:-$PWD/workspace}
     ports:
@@ -23,7 +23,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${WORKSPACE_BASE:-$PWD/workspace}:/opt/workspace_base
       # source code
-      - ${OPENHANDS_WORKSPACE:-../../}:/app
+      - ${THINKSOFT_WORKSPACE:-../../}:/app
       # host credentials
       - $HOME/.git-credentials:/root/.git-credentials:ro
       - $HOME/.gitconfig:/root/.gitconfig:ro

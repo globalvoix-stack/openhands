@@ -51,7 +51,7 @@ def remove_setup_files(model_patch: str, instance: dict, delete_setup_changes: b
 def main(
     prediction_file: str,
 ):
-    """Main function to extract the model patches from the OpenHands prediction file and turn them into the expected SWT-Bench format."""
+    """Main function to extract the model patches from the Thinksoft prediction file and turn them into the expected SWT-Bench format."""
     with open(prediction_file) as f:
         for line in f:
             pred = json.loads(line)

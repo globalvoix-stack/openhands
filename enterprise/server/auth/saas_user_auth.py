@@ -25,15 +25,15 @@ from storage.saas_secrets_store import SaasSecretsStore
 from storage.saas_settings_store import SaasSettingsStore
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_fixed
 
-from openhands.integrations.provider import (
+from thinksoft.integrations.provider import (
     PROVIDER_TOKEN_TYPE,
     ProviderToken,
     ProviderType,
 )
-from openhands.server.settings import Settings
-from openhands.server.user_auth.user_auth import AuthType, UserAuth
-from openhands.storage.data_models.secrets import Secrets
-from openhands.storage.settings.settings_store import SettingsStore
+from thinksoft.server.settings import Settings
+from thinksoft.server.user_auth.user_auth import AuthType, UserAuth
+from thinksoft.storage.data_models.secrets import Secrets
+from thinksoft.storage.settings.settings_store import SettingsStore
 
 token_manager = TokenManager()
 

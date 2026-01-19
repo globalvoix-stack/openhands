@@ -6,7 +6,7 @@ import type {
   GitChange,
   GitChangeDiff,
   V1GitChangeStatus,
-} from "../open-hands.types";
+} from "../thinksoft.types";
 
 interface V1GitChange {
   status: V1GitChangeStatus;
@@ -35,7 +35,7 @@ class V1GitService {
    *
    * @param conversationUrl The conversation URL (e.g., "http://localhost:54928/api/conversations/...")
    * @param sessionApiKey Session API key for authentication (required for V1)
-   * @param path The git repository path (e.g., /workspace/project or /workspace/project/OpenHands)
+   * @param path The git repository path (e.g., /workspace/project or /workspace/project/Thinksoft)
    * @returns List of git changes with V0-compatible status types
    */
   static async getGitChanges(

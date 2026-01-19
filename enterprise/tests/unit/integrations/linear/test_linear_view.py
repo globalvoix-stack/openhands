@@ -12,7 +12,7 @@ from integrations.linear.linear_view import (
     LinearNewConversationView,
 )
 
-from openhands.core.schema.agent import AgentState
+from thinksoft.core.schema.agent import AgentState
 
 
 class TestLinearNewConversationView:
@@ -25,7 +25,7 @@ class TestLinearNewConversationView:
         assert instructions == 'Test instructions template'
         assert 'TEST-123' in user_msg
         assert 'Test Issue' in user_msg
-        assert 'Fix this bug @openhands' in user_msg
+        assert 'Fix this bug @thinksoft' in user_msg
 
     @patch('integrations.linear.linear_view.create_new_conversation')
     @patch('integrations.linear.linear_view.integration_store')
@@ -92,7 +92,7 @@ class TestLinearExistingConversationView:
         assert instructions == ''
         assert 'TEST-123' in user_msg
         assert 'Test Issue' in user_msg
-        assert 'Fix this bug @openhands' in user_msg
+        assert 'Fix this bug @thinksoft' in user_msg
 
     @patch('integrations.linear.linear_view.ConversationStoreImpl.get_instance')
     @patch('integrations.linear.linear_view.setup_init_conversation_settings')

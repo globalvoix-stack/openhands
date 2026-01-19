@@ -1,11 +1,11 @@
 """
 Standalone tests for the MaintenanceTaskRunner.
 
-These tests work without OpenHands dependencies and focus on testing the core
+These tests work without Thinksoft dependencies and focus on testing the core
 logic and behavior of the task runner using comprehensive mocking.
 
-To run these tests in an environment with OpenHands dependencies:
-1. Ensure OpenHands is available in the Python path
+To run these tests in an environment with Thinksoft dependencies:
+1. Ensure Thinksoft is available in the Python path
 2. Run: python -m pytest tests/unit/test_maintenance_task_runner_standalone.py -v
 """
 
@@ -17,7 +17,7 @@ import pytest
 
 
 class TestMaintenanceTaskRunnerStandalone:
-    """Standalone tests for MaintenanceTaskRunner without OpenHands dependencies."""
+    """Standalone tests for MaintenanceTaskRunner without Thinksoft dependencies."""
 
     def test_runner_initialization(self):
         """Test MaintenanceTaskRunner initialization."""
@@ -658,10 +658,10 @@ class TestMaintenanceTaskRunnerStandalone:
 # Additional integration test scenarios that would work with full dependencies
 class TestMaintenanceTaskRunnerIntegration:
     """
-    Integration test scenarios for when OpenHands dependencies are available.
+    Integration test scenarios for when Thinksoft dependencies are available.
 
     These tests would require:
-    1. OpenHands to be installed and available
+    1. Thinksoft to be installed and available
     2. Database setup with proper migrations
     3. Real MaintenanceTask and processor instances
     """

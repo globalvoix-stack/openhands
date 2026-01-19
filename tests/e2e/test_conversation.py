@@ -33,9 +33,9 @@ def get_readme_line_count():
 
 def test_conversation_start(page: Page, base_url: str):
     """
-    Test starting a conversation with the OpenHands agent:
-    1. Navigate to OpenHands (assumes GitHub token is already configured)
-    2. Select the OpenHands repository
+    Test starting a conversation with the Thinksoft agent:
+    1. Navigate to Thinksoft (assumes GitHub token is already configured)
+    2. Select the Thinksoft repository
     3. Click Launch
     4. Wait for the agent to initialize
     5. Ask a question about the README.md file
@@ -51,8 +51,8 @@ def test_conversation_start(page: Page, base_url: str):
     expected_line_count = get_readme_line_count()
     print(f'Expected README.md line count: {expected_line_count}')
 
-    # Navigate to the OpenHands application
-    print(f'Step 1: Navigating to OpenHands application at {base_url}...')
+    # Navigate to the Thinksoft application
+    print(f'Step 1: Navigating to Thinksoft application at {base_url}...')
     page.goto(base_url)
     page.wait_for_load_state('networkidle', timeout=30000)
 
@@ -60,8 +60,8 @@ def test_conversation_start(page: Page, base_url: str):
     page.screenshot(path='test-results/conv_01_initial_load.png')
     print('Screenshot saved: conv_01_initial_load.png')
 
-    # Step 2: Select the OpenHands repository
-    print('Step 2: Selecting openhands-agent/OpenHands repository...')
+    # Step 2: Select the Thinksoft repository
+    print('Step 2: Selecting thinksoft-agent/Thinksoft repository...')
 
     # Wait for the home screen to load
     home_screen = page.locator('[data-testid="home-screen"]')
@@ -80,7 +80,7 @@ def test_conversation_start(page: Page, base_url: str):
     # Type the repository name
     try:
         page.keyboard.press('Control+a')  # Select all
-        page.keyboard.type('openhands-agent/OpenHands')
+        page.keyboard.type('thinksoft-agent/Thinksoft')
         print('Used keyboard.type() for React Select component')
     except Exception as e:
         print(f'Keyboard input failed: {e}')
@@ -89,14 +89,14 @@ def test_conversation_start(page: Page, base_url: str):
 
     # Try to find and click the repository option
     option_selectors = [
-        '[data-testid="repo-dropdown"] [role="option"]:has-text("openhands-agent/OpenHands")',
-        '[data-testid="repo-dropdown"] [role="option"]:has-text("OpenHands")',
-        '[data-testid="repo-dropdown"] div[id*="option"]:has-text("openhands-agent/OpenHands")',
-        '[data-testid="repo-dropdown"] div[id*="option"]:has-text("OpenHands")',
-        '[role="option"]:has-text("openhands-agent/OpenHands")',
-        '[role="option"]:has-text("OpenHands")',
-        'div:has-text("openhands-agent/OpenHands"):not([id="aria-results"])',
-        'div:has-text("OpenHands"):not([id="aria-results"])',
+        '[data-testid="repo-dropdown"] [role="option"]:has-text("thinksoft-agent/Thinksoft")',
+        '[data-testid="repo-dropdown"] [role="option"]:has-text("Thinksoft")',
+        '[data-testid="repo-dropdown"] div[id*="option"]:has-text("thinksoft-agent/Thinksoft")',
+        '[data-testid="repo-dropdown"] div[id*="option"]:has-text("Thinksoft")',
+        '[role="option"]:has-text("thinksoft-agent/Thinksoft")',
+        '[role="option"]:has-text("Thinksoft")',
+        'div:has-text("thinksoft-agent/Thinksoft"):not([id="aria-results"])',
+        'div:has-text("Thinksoft"):not([id="aria-results"])',
     ]
 
     option_found = False

@@ -1,6 +1,6 @@
 import axios from "axios";
-import { openHands } from "../open-hands-axios";
-import { ConversationTrigger, GetVSCodeUrlResponse } from "../open-hands.types";
+import { thinksoft } from "../thinksoft-axios";
+import { ConversationTrigger, GetVSCodeUrlResponse } from "../thinksoft.types";
 import { Provider } from "#/types/settings";
 import { buildHttpBaseUrl } from "#/utils/websocket-url";
 import { buildSessionHeaders } from "#/utils/utils";
@@ -39,7 +39,7 @@ class V1ConversationService {
     conversationId: string,
     message: V1SendMessageRequest,
   ): Promise<V1SendMessageResponse> {
-    const { data } = await openHands.post<V1SendMessageResponse>(
+    const { data } = await thinksoft.post<V1SendMessageResponse>(
       `/api/conversations/${conversationId}/events`,
       message,
     );
@@ -87,7 +87,7 @@ class V1ConversationService {
       };
     }
 
-    const { data } = await openHands.post<V1AppConversationStartTask>(
+    const { data } = await thinksoft.post<V1AppConversationStartTask>(
       "/api/v1/app-conversations",
       body,
     );
@@ -105,7 +105,7 @@ class V1ConversationService {
   static async getStartTask(
     taskId: string,
   ): Promise<V1AppConversationStartTask | null> {
-    const { data } = await openHands.get<(V1AppConversationStartTask | null)[]>(
+    const { data } = await thinksoft.get<(V1AppConversationStartTask | null)[]>(
       `/api/v1/app-conversations/start-tasks?ids=${taskId}`,
     );
 
@@ -132,7 +132,7 @@ class V1ConversationService {
     const twentyMinutesAgo = new Date(Date.now() - 20 * 60 * 1000);
     params.append("created_at__gte", twentyMinutesAgo.toISOString());
 
-    const { data } = await openHands.get<V1AppConversationStartTaskPage>(
+    const { data } = await thinksoft.get<V1AppConversationStartTaskPage>(
       `/api/v1/app-conversations/start-tasks/search?${params.toString()}`,
     );
 
@@ -241,7 +241,7 @@ class V1ConversationService {
     const params = new URLSearchParams();
     ids.forEach((id) => params.append("ids", id));
 
-    const { data } = await openHands.get<(V1AppConversation | null)[]>(
+    const { data } = await thinksoft.get<(V1AppConversation | null)[]>(
       `/api/v1/app-conversations?${params.toString()}`,
     );
     return data;
@@ -294,7 +294,7 @@ class V1ConversationService {
     conversationId: string,
   ): Promise<{ runtime_id: string }> {
     const url = `/api/conversations/${conversationId}/config`;
-    const { data } = await openHands.get<{ runtime_id: string }>(url);
+    const { data } = await thinksoft.get<{ runtime_id: string }>(url);
     return data;
   }
 
@@ -308,7 +308,7 @@ class V1ConversationService {
     conversationId: string,
     isPublic: boolean,
   ): Promise<V1AppConversation> {
-    const { data } = await openHands.patch<V1AppConversation>(
+    const { data } = await thinksoft.patch<V1AppConversation>(
       `/api/v1/app-conversations/${conversationId}`,
       { public: isPublic },
     );
@@ -328,7 +328,7 @@ class V1ConversationService {
     const params = new URLSearchParams();
     params.append("file_path", filePath);
 
-    const { data } = await openHands.get<string>(
+    const { data } = await thinksoft.get<string>(
       `/api/v1/app-conversations/${conversationId}/file?${params.toString()}`,
     );
     return data;
@@ -340,7 +340,7 @@ class V1ConversationService {
    * @returns A blob containing the zip file
    */
   static async downloadConversation(conversationId: string): Promise<Blob> {
-    const response = await openHands.get(
+    const response = await thinksoft.get(
       `/api/v1/app-conversations/${conversationId}/download`,
       {
         responseType: "blob",
@@ -355,7 +355,7 @@ class V1ConversationService {
    * @returns The available skills associated with the conversation
    */
   static async getSkills(conversationId: string): Promise<GetSkillsResponse> {
-    const { data } = await openHands.get<GetSkillsResponse>(
+    const { data } = await thinksoft.get<GetSkillsResponse>(
       `/api/v1/app-conversations/${conversationId}/skills`,
     );
     return data;

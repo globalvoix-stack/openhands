@@ -1,4 +1,4 @@
-import { openHands } from "../open-hands-axios";
+import { thinksoft } from "../thinksoft-axios";
 import { GitUser } from "#/types/git";
 
 /**
@@ -10,7 +10,7 @@ class UserService {
    * @returns Git user information
    */
   static async getUser(): Promise<GitUser> {
-    const response = await openHands.get<GitUser>("/api/user/info");
+    const response = await thinksoft.get<GitUser>("/api/user/info");
 
     const { data } = response;
 

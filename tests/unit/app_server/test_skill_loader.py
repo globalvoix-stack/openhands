@@ -10,7 +10,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 
-from openhands.app_server.app_conversation.skill_loader import (
+from thinksoft.app_server.app_conversation.skill_loader import (
     _cleanup_org_repository,
     _clone_org_repository,
     _determine_org_repo_path,
@@ -30,8 +30,8 @@ from openhands.app_server.app_conversation.skill_loader import (
     load_repo_skills,
     merge_skills,
 )
-from openhands.integrations.provider import ProviderType
-from openhands.integrations.service_types import AuthenticationError
+from thinksoft.integrations.provider import ProviderType
+from thinksoft.integrations.service_types import AuthenticationError
 
 # ===== Test Fixtures =====
 
@@ -210,9 +210,9 @@ class TestLoadSpecialFiles:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._read_file_from_workspace'
+        'thinksoft.app_server.app_conversation.skill_loader._read_file_from_workspace'
     )
-    @patch('openhands.app_server.app_conversation.skill_loader.Skill')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.Skill')
     async def test_load_all_special_files(
         self,
         mock_skill_class,
@@ -242,9 +242,9 @@ class TestLoadSpecialFiles:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._read_file_from_workspace'
+        'thinksoft.app_server.app_conversation.skill_loader._read_file_from_workspace'
     )
-    @patch('openhands.app_server.app_conversation.skill_loader.Skill')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.Skill')
     async def test_load_partial_special_files(
         self, mock_skill_class, mock_read_file, mock_async_remote_workspace, mock_skill
     ):
@@ -264,7 +264,7 @@ class TestLoadSpecialFiles:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._read_file_from_workspace'
+        'thinksoft.app_server.app_conversation.skill_loader._read_file_from_workspace'
     )
     async def test_load_no_special_files(
         self, mock_read_file, mock_async_remote_workspace
@@ -284,9 +284,9 @@ class TestFindAndLoadSkillMdFiles:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._read_file_from_workspace'
+        'thinksoft.app_server.app_conversation.skill_loader._read_file_from_workspace'
     )
-    @patch('openhands.app_server.app_conversation.skill_loader.Skill')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.Skill')
     async def test_find_and_load_files_success(
         self,
         mock_skill_class,
@@ -298,7 +298,7 @@ class TestFindAndLoadSkillMdFiles:
         result_obj = Mock()
         result_obj.exit_code = 0
         result_obj.stdout = (
-            '/repo/.openhands/skills/test1.md\n/repo/.openhands/skills/test2.md\n'
+            '/repo/.thinksoft/skills/test1.md\n/repo/.thinksoft/skills/test2.md\n'
         )
         mock_async_remote_workspace.execute_command.return_value = result_obj
 
@@ -306,7 +306,7 @@ class TestFindAndLoadSkillMdFiles:
         mock_skill_class.load.side_effect = mock_skills_list[:2]
 
         result = await _find_and_load_skill_md_files(
-            mock_async_remote_workspace, '/repo/.openhands/skills', '/workspace'
+            mock_async_remote_workspace, '/repo/.thinksoft/skills', '/workspace'
         )
 
         assert len(result) == 2
@@ -318,9 +318,9 @@ class TestFindAndLoadSkillMdFiles:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._read_file_from_workspace'
+        'thinksoft.app_server.app_conversation.skill_loader._read_file_from_workspace'
     )
-    @patch('openhands.app_server.app_conversation.skill_loader.Skill')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.Skill')
     async def test_find_and_load_excludes_readme(
         self, mock_skill_class, mock_read_file, mock_async_remote_workspace, mock_skill
     ):
@@ -328,7 +328,7 @@ class TestFindAndLoadSkillMdFiles:
         result_obj = Mock()
         result_obj.exit_code = 0
         result_obj.stdout = (
-            '/repo/.openhands/skills/test.md\n/repo/.openhands/skills/README.md\n'
+            '/repo/.thinksoft/skills/test.md\n/repo/.thinksoft/skills/README.md\n'
         )
         mock_async_remote_workspace.execute_command.return_value = result_obj
 
@@ -336,7 +336,7 @@ class TestFindAndLoadSkillMdFiles:
         mock_skill_class.load.return_value = mock_skill
 
         result = await _find_and_load_skill_md_files(
-            mock_async_remote_workspace, '/repo/.openhands/skills', '/workspace'
+            mock_async_remote_workspace, '/repo/.thinksoft/skills', '/workspace'
         )
 
         assert len(result) == 1
@@ -367,14 +367,14 @@ class TestFindAndLoadSkillMdFiles:
         )
 
         result = await _find_and_load_skill_md_files(
-            mock_async_remote_workspace, '/repo/.openhands/skills', '/workspace'
+            mock_async_remote_workspace, '/repo/.thinksoft/skills', '/workspace'
         )
 
         assert len(result) == 0
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._read_file_from_workspace'
+        'thinksoft.app_server.app_conversation.skill_loader._read_file_from_workspace'
     )
     async def test_find_and_load_some_missing(
         self, mock_read_file, mock_async_remote_workspace
@@ -383,21 +383,21 @@ class TestFindAndLoadSkillMdFiles:
         result_obj = Mock()
         result_obj.exit_code = 0
         result_obj.stdout = (
-            '/repo/.openhands/skills/test1.md\n/repo/.openhands/skills/missing.md\n'
+            '/repo/.thinksoft/skills/test1.md\n/repo/.thinksoft/skills/missing.md\n'
         )
         mock_async_remote_workspace.execute_command.return_value = result_obj
 
         mock_read_file.side_effect = ['content1', None]
 
         with patch(
-            'openhands.app_server.app_conversation.skill_loader.Skill'
+            'thinksoft.app_server.app_conversation.skill_loader.Skill'
         ) as mock_skill_class:
             mock_skill = Mock()
             mock_skill_class.load.return_value = mock_skill
 
             result = await _find_and_load_skill_md_files(
                 mock_async_remote_workspace,
-                '/repo/.openhands/skills',
+                '/repo/.thinksoft/skills',
                 '/workspace',
             )
 
@@ -408,7 +408,7 @@ class TestFindAndLoadSkillMdFiles:
 class TestFindAndLoadGlobalSkillFiles:
     """Test _find_and_load_global_skill_files helper function."""
 
-    @patch('openhands.app_server.app_conversation.skill_loader.Skill')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.Skill')
     def test_find_and_load_global_files_success(
         self, mock_skill_class, temp_skills_dir, mock_skills_list
     ):
@@ -426,7 +426,7 @@ class TestFindAndLoadGlobalSkillFiles:
         skill_names = [s.name for s in result]
         assert len(skill_names) == len(file_paths)
 
-    @patch('openhands.app_server.app_conversation.skill_loader.Skill')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.Skill')
     def test_find_and_load_global_files_with_errors(
         self, mock_skill_class, temp_skills_dir, mock_skill
     ):
@@ -460,9 +460,9 @@ class TestFindAndLoadGlobalSkillFiles:
 class TestLoadGlobalSkills:
     """Test load_global_skills main function."""
 
-    @patch('openhands.app_server.app_conversation.skill_loader.Path')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.Path')
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._find_and_load_global_skill_files'
+        'thinksoft.app_server.app_conversation.skill_loader._find_and_load_global_skill_files'
     )
     def test_load_global_skills_success(
         self,
@@ -483,7 +483,7 @@ class TestLoadGlobalSkills:
         assert len(result) == len(mock_skills_list)
         assert result == mock_skills_list
 
-    @patch('openhands.app_server.app_conversation.skill_loader.Path')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.Path')
     def test_load_global_skills_dir_not_exists(self, mock_path_class):
         """Test when global skills directory doesn't exist."""
         mock_path_obj = MagicMock()
@@ -494,9 +494,9 @@ class TestLoadGlobalSkills:
 
         assert len(result) == 0
 
-    @patch('openhands.app_server.app_conversation.skill_loader.Path')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.Path')
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._find_and_load_global_skill_files'
+        'thinksoft.app_server.app_conversation.skill_loader._find_and_load_global_skill_files'
     )
     def test_load_global_skills_exception(self, mock_find_and_load, mock_path_class):
         """Test handling exception during global skill loading."""
@@ -515,9 +515,9 @@ class TestLoadRepoSkills:
     """Test load_repo_skills main function."""
 
     @pytest.mark.asyncio
-    @patch('openhands.app_server.app_conversation.skill_loader._load_special_files')
+    @patch('thinksoft.app_server.app_conversation.skill_loader._load_special_files')
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._find_and_load_skill_md_files'
+        'thinksoft.app_server.app_conversation.skill_loader._find_and_load_skill_md_files'
     )
     async def test_load_repo_skills_success(
         self,
@@ -546,9 +546,9 @@ class TestLoadRepoSkills:
         assert microagents_dir_skills[0] in result
 
     @pytest.mark.asyncio
-    @patch('openhands.app_server.app_conversation.skill_loader._load_special_files')
+    @patch('thinksoft.app_server.app_conversation.skill_loader._load_special_files')
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._find_and_load_skill_md_files'
+        'thinksoft.app_server.app_conversation.skill_loader._find_and_load_skill_md_files'
     )
     async def test_load_repo_skills_no_selected_repository(
         self,
@@ -574,7 +574,7 @@ class TestLoadRepoSkills:
         assert mock_find_and_load.call_count == 2
 
     @pytest.mark.asyncio
-    @patch('openhands.app_server.app_conversation.skill_loader._load_special_files')
+    @patch('thinksoft.app_server.app_conversation.skill_loader._load_special_files')
     async def test_load_repo_skills_exception(
         self, mock_load_special, mock_async_remote_workspace
     ):
@@ -800,9 +800,9 @@ class TestDetermineOrgRepoPath:
     """Test _determine_org_repo_path helper function."""
 
     @pytest.mark.asyncio
-    @patch('openhands.app_server.app_conversation.skill_loader._is_gitlab_repository')
+    @patch('thinksoft.app_server.app_conversation.skill_loader._is_gitlab_repository')
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._is_azure_devops_repository'
+        'thinksoft.app_server.app_conversation.skill_loader._is_azure_devops_repository'
     )
     async def test_github_repository_path(self, mock_is_azure, mock_is_gitlab):
         """Test org path for GitHub repository."""
@@ -817,13 +817,13 @@ class TestDetermineOrgRepoPath:
         )
 
         # Assert
-        assert org_repo == 'owner/.openhands'
+        assert org_repo == 'owner/.thinksoft'
         assert org_name == 'owner'
 
     @pytest.mark.asyncio
-    @patch('openhands.app_server.app_conversation.skill_loader._is_gitlab_repository')
+    @patch('thinksoft.app_server.app_conversation.skill_loader._is_gitlab_repository')
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._is_azure_devops_repository'
+        'thinksoft.app_server.app_conversation.skill_loader._is_azure_devops_repository'
     )
     async def test_gitlab_repository_path(self, mock_is_azure, mock_is_gitlab):
         """Test org path for GitLab repository."""
@@ -838,13 +838,13 @@ class TestDetermineOrgRepoPath:
         )
 
         # Assert
-        assert org_repo == 'owner/openhands-config'
+        assert org_repo == 'owner/thinksoft-config'
         assert org_name == 'owner'
 
     @pytest.mark.asyncio
-    @patch('openhands.app_server.app_conversation.skill_loader._is_gitlab_repository')
+    @patch('thinksoft.app_server.app_conversation.skill_loader._is_gitlab_repository')
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._is_azure_devops_repository'
+        'thinksoft.app_server.app_conversation.skill_loader._is_azure_devops_repository'
     )
     async def test_azure_devops_repository_path(self, mock_is_azure, mock_is_gitlab):
         """Test org path for Azure DevOps repository."""
@@ -859,7 +859,7 @@ class TestDetermineOrgRepoPath:
         )
 
         # Assert
-        assert org_repo == 'org/openhands-config/openhands-config'
+        assert org_repo == 'org/thinksoft-config/thinksoft-config'
         assert org_name == 'org'
 
 
@@ -907,16 +907,16 @@ class TestGetOrgRepositoryUrl:
         """Test successfully retrieving authenticated URL."""
         # Arrange
         mock_user_context = AsyncMock()
-        expected_url = 'https://token@github.com/owner/.openhands.git'
+        expected_url = 'https://token@github.com/owner/.thinksoft.git'
         mock_user_context.get_authenticated_git_url.return_value = expected_url
 
         # Act
-        result = await _get_org_repository_url('owner/.openhands', mock_user_context)
+        result = await _get_org_repository_url('owner/.thinksoft', mock_user_context)
 
         # Assert
         assert result == expected_url
         mock_user_context.get_authenticated_git_url.assert_called_once_with(
-            'owner/.openhands', is_optional=True
+            'owner/.thinksoft', is_optional=True
         )
 
     @pytest.mark.asyncio
@@ -929,7 +929,7 @@ class TestGetOrgRepositoryUrl:
         )
 
         # Act
-        result = await _get_org_repository_url('owner/.openhands', mock_user_context)
+        result = await _get_org_repository_url('owner/.thinksoft', mock_user_context)
 
         # Assert
         assert result is None
@@ -944,7 +944,7 @@ class TestGetOrgRepositoryUrl:
         )
 
         # Act
-        result = await _get_org_repository_url('owner/.openhands', mock_user_context)
+        result = await _get_org_repository_url('owner/.thinksoft', mock_user_context)
 
         # Assert
         assert result is None
@@ -964,10 +964,10 @@ class TestCloneOrgRepository:
         # Act
         success = await _clone_org_repository(
             mock_async_remote_workspace,
-            'https://github.com/owner/.openhands.git',
-            '/workspace/_org_openhands_owner',
+            'https://github.com/owner/.thinksoft.git',
+            '/workspace/_org_thinksoft_owner',
             '/workspace',
-            'owner/.openhands',
+            'owner/.thinksoft',
         )
 
         # Assert
@@ -989,10 +989,10 @@ class TestCloneOrgRepository:
         # Act
         success = await _clone_org_repository(
             mock_async_remote_workspace,
-            'https://github.com/owner/.openhands.git',
-            '/workspace/_org_openhands_owner',
+            'https://github.com/owner/.thinksoft.git',
+            '/workspace/_org_thinksoft_owner',
             '/workspace',
-            'owner/.openhands',
+            'owner/.thinksoft',
         )
 
         # Assert
@@ -1004,7 +1004,7 @@ class TestLoadSkillsFromOrgDirectories:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._find_and_load_skill_md_files'
+        'thinksoft.app_server.app_conversation.skill_loader._find_and_load_skill_md_files'
     )
     async def test_load_from_both_directories(
         self, mock_find_and_load, mock_async_remote_workspace, mock_skills_list
@@ -1017,7 +1017,7 @@ class TestLoadSkillsFromOrgDirectories:
 
         # Act
         result_skills, result_microagents = await _load_skills_from_org_directories(
-            mock_async_remote_workspace, '/workspace/_org_openhands_owner', '/workspace'
+            mock_async_remote_workspace, '/workspace/_org_thinksoft_owner', '/workspace'
         )
 
         # Assert
@@ -1033,7 +1033,7 @@ class TestLoadSkillsFromOrgDirectories:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._find_and_load_skill_md_files'
+        'thinksoft.app_server.app_conversation.skill_loader._find_and_load_skill_md_files'
     )
     async def test_load_with_empty_directories(
         self, mock_find_and_load, mock_async_remote_workspace
@@ -1044,7 +1044,7 @@ class TestLoadSkillsFromOrgDirectories:
 
         # Act
         result_skills, result_microagents = await _load_skills_from_org_directories(
-            mock_async_remote_workspace, '/workspace/_org_openhands_owner', '/workspace'
+            mock_async_remote_workspace, '/workspace/_org_thinksoft_owner', '/workspace'
         )
 
         # Assert
@@ -1132,7 +1132,7 @@ class TestCleanupOrgRepository:
         # Act
         await _cleanup_org_repository(
             mock_async_remote_workspace,
-            '/workspace/_org_openhands_owner',
+            '/workspace/_org_thinksoft_owner',
             '/workspace',
         )
 
@@ -1140,7 +1140,7 @@ class TestCleanupOrgRepository:
         mock_async_remote_workspace.execute_command.assert_called_once()
         call_args = mock_async_remote_workspace.execute_command.call_args
         assert 'rm -rf' in call_args[0][0]
-        assert '/workspace/_org_openhands_owner' in call_args[0][0]
+        assert '/workspace/_org_thinksoft_owner' in call_args[0][0]
 
 
 class TestLoadOrgSkills:
@@ -1164,7 +1164,7 @@ class TestLoadOrgSkills:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._validate_repository_for_org_skills'
+        'thinksoft.app_server.app_conversation.skill_loader._validate_repository_for_org_skills'
     )
     async def test_load_org_skills_invalid_repository(
         self, mock_validate, mock_async_remote_workspace
@@ -1185,12 +1185,12 @@ class TestLoadOrgSkills:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._validate_repository_for_org_skills'
+        'thinksoft.app_server.app_conversation.skill_loader._validate_repository_for_org_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._determine_org_repo_path'
+        'thinksoft.app_server.app_conversation.skill_loader._determine_org_repo_path'
     )
-    @patch('openhands.app_server.app_conversation.skill_loader._get_org_repository_url')
+    @patch('thinksoft.app_server.app_conversation.skill_loader._get_org_repository_url')
     async def test_load_org_skills_no_url_available(
         self,
         mock_get_url,
@@ -1201,7 +1201,7 @@ class TestLoadOrgSkills:
         """Test load_org_skills returns empty list when URL cannot be retrieved."""
         # Arrange
         mock_validate.return_value = True
-        mock_determine_path.return_value = ('owner/.openhands', 'owner')
+        mock_determine_path.return_value = ('owner/.thinksoft', 'owner')
         mock_get_url.return_value = None
         mock_user_context = AsyncMock()
 
@@ -1218,13 +1218,13 @@ class TestLoadOrgSkills:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._validate_repository_for_org_skills'
+        'thinksoft.app_server.app_conversation.skill_loader._validate_repository_for_org_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._determine_org_repo_path'
+        'thinksoft.app_server.app_conversation.skill_loader._determine_org_repo_path'
     )
-    @patch('openhands.app_server.app_conversation.skill_loader._get_org_repository_url')
-    @patch('openhands.app_server.app_conversation.skill_loader._clone_org_repository')
+    @patch('thinksoft.app_server.app_conversation.skill_loader._get_org_repository_url')
+    @patch('thinksoft.app_server.app_conversation.skill_loader._clone_org_repository')
     async def test_load_org_skills_clone_fails(
         self,
         mock_clone,
@@ -1236,8 +1236,8 @@ class TestLoadOrgSkills:
         """Test load_org_skills returns empty list when clone fails."""
         # Arrange
         mock_validate.return_value = True
-        mock_determine_path.return_value = ('owner/.openhands', 'owner')
-        mock_get_url.return_value = 'https://github.com/owner/.openhands.git'
+        mock_determine_path.return_value = ('owner/.thinksoft', 'owner')
+        mock_get_url.return_value = 'https://github.com/owner/.thinksoft.git'
         mock_clone.return_value = False
         mock_user_context = AsyncMock()
 
@@ -1254,17 +1254,17 @@ class TestLoadOrgSkills:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._validate_repository_for_org_skills'
+        'thinksoft.app_server.app_conversation.skill_loader._validate_repository_for_org_skills'
     )
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._determine_org_repo_path'
+        'thinksoft.app_server.app_conversation.skill_loader._determine_org_repo_path'
     )
-    @patch('openhands.app_server.app_conversation.skill_loader._get_org_repository_url')
-    @patch('openhands.app_server.app_conversation.skill_loader._clone_org_repository')
+    @patch('thinksoft.app_server.app_conversation.skill_loader._get_org_repository_url')
+    @patch('thinksoft.app_server.app_conversation.skill_loader._clone_org_repository')
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._load_skills_from_org_directories'
+        'thinksoft.app_server.app_conversation.skill_loader._load_skills_from_org_directories'
     )
-    @patch('openhands.app_server.app_conversation.skill_loader._cleanup_org_repository')
+    @patch('thinksoft.app_server.app_conversation.skill_loader._cleanup_org_repository')
     async def test_load_org_skills_success(
         self,
         mock_cleanup,
@@ -1279,8 +1279,8 @@ class TestLoadOrgSkills:
         """Test successful org skills loading."""
         # Arrange
         mock_validate.return_value = True
-        mock_determine_path.return_value = ('owner/.openhands', 'owner')
-        mock_get_url.return_value = 'https://github.com/owner/.openhands.git'
+        mock_determine_path.return_value = ('owner/.thinksoft', 'owner')
+        mock_get_url.return_value = 'https://github.com/owner/.thinksoft.git'
         mock_clone.return_value = True
         mock_load_skills.return_value = ([mock_skills_list[0]], [mock_skills_list[1]])
         mock_user_context = AsyncMock()
@@ -1299,7 +1299,7 @@ class TestLoadOrgSkills:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._validate_repository_for_org_skills'
+        'thinksoft.app_server.app_conversation.skill_loader._validate_repository_for_org_skills'
     )
     async def test_load_org_skills_handles_authentication_error(
         self, mock_validate, mock_async_remote_workspace
@@ -1322,7 +1322,7 @@ class TestLoadOrgSkills:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.skill_loader._validate_repository_for_org_skills'
+        'thinksoft.app_server.app_conversation.skill_loader._validate_repository_for_org_skills'
     )
     async def test_load_org_skills_handles_general_exception(
         self, mock_validate, mock_async_remote_workspace
@@ -1351,9 +1351,9 @@ class TestSkillLoaderIntegration:
     """Integration tests for the skill loader."""
 
     @pytest.mark.asyncio
-    @patch('openhands.app_server.app_conversation.skill_loader.load_global_skills')
-    @patch('openhands.sdk.context.skills.load_user_skills')
-    @patch('openhands.app_server.app_conversation.skill_loader.load_repo_skills')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.load_global_skills')
+    @patch('thinksoft.sdk.context.skills.load_user_skills')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.load_repo_skills')
     async def test_full_loading_workflow(
         self,
         mock_load_repo,
@@ -1391,9 +1391,9 @@ class TestSkillLoaderIntegration:
         assert names == {'global_skill', 'user_skill', 'repo_skill'}
 
     @pytest.mark.asyncio
-    @patch('openhands.app_server.app_conversation.skill_loader.load_global_skills')
-    @patch('openhands.sdk.context.skills.load_user_skills')
-    @patch('openhands.app_server.app_conversation.skill_loader.load_repo_skills')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.load_global_skills')
+    @patch('thinksoft.sdk.context.skills.load_user_skills')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.load_repo_skills')
     async def test_loading_with_override_precedence(
         self,
         mock_load_repo,
@@ -1433,10 +1433,10 @@ class TestSkillLoaderIntegration:
         assert all_skills[0].source == 'repo'
 
     @pytest.mark.asyncio
-    @patch('openhands.app_server.app_conversation.skill_loader.load_global_skills')
-    @patch('openhands.sdk.context.skills.load_user_skills')
-    @patch('openhands.app_server.app_conversation.skill_loader.load_org_skills')
-    @patch('openhands.app_server.app_conversation.skill_loader.load_repo_skills')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.load_global_skills')
+    @patch('thinksoft.sdk.context.skills.load_user_skills')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.load_org_skills')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.load_repo_skills')
     async def test_loading_with_org_skills_precedence(
         self,
         mock_load_repo,
@@ -1489,10 +1489,10 @@ class TestSkillLoaderIntegration:
         assert all_skills[0].priority == 'highest'  # Repo has highest precedence
 
     @pytest.mark.asyncio
-    @patch('openhands.app_server.app_conversation.skill_loader.load_global_skills')
-    @patch('openhands.sdk.context.skills.load_user_skills')
-    @patch('openhands.app_server.app_conversation.skill_loader.load_org_skills')
-    @patch('openhands.app_server.app_conversation.skill_loader.load_repo_skills')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.load_global_skills')
+    @patch('thinksoft.sdk.context.skills.load_user_skills')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.load_org_skills')
+    @patch('thinksoft.app_server.app_conversation.skill_loader.load_repo_skills')
     async def test_loading_org_skills_with_unique_names(
         self,
         mock_load_repo,

@@ -10,33 +10,33 @@ from uuid import UUID, uuid4
 import pytest
 from pydantic import SecretStr
 
-from openhands.agent_server.models import (
+from thinksoft.agent_server.models import (
     SendMessageRequest,
     StartConversationRequest,
 )
-from openhands.app_server.app_conversation.app_conversation_models import (
+from thinksoft.app_server.app_conversation.app_conversation_models import (
     AgentType,
     AppConversationInfo,
     AppConversationStartRequest,
 )
-from openhands.app_server.app_conversation.live_status_app_conversation_service import (
+from thinksoft.app_server.app_conversation.live_status_app_conversation_service import (
     LiveStatusAppConversationService,
 )
-from openhands.app_server.sandbox.sandbox_models import (
+from thinksoft.app_server.sandbox.sandbox_models import (
     AGENT_SERVER,
     ExposedUrl,
     SandboxInfo,
     SandboxStatus,
 )
-from openhands.app_server.sandbox.sandbox_spec_models import SandboxSpecInfo
-from openhands.app_server.user.user_context import UserContext
-from openhands.integrations.provider import ProviderToken, ProviderType
-from openhands.sdk import Agent, Event
-from openhands.sdk.llm import LLM
-from openhands.sdk.secret import LookupSecret, StaticSecret
-from openhands.sdk.workspace import LocalWorkspace
-from openhands.sdk.workspace.remote.async_remote_workspace import AsyncRemoteWorkspace
-from openhands.server.types import AppMode
+from thinksoft.app_server.sandbox.sandbox_spec_models import SandboxSpecInfo
+from thinksoft.app_server.user.user_context import UserContext
+from thinksoft.integrations.provider import ProviderToken, ProviderType
+from thinksoft.sdk import Agent, Event
+from thinksoft.sdk.llm import LLM
+from thinksoft.sdk.secret import LookupSecret, StaticSecret
+from thinksoft.sdk.workspace import LocalWorkspace
+from thinksoft.sdk.workspace.remote.async_remote_workspace import AsyncRemoteWorkspace
+from thinksoft.server.types import AppMode
 
 
 class TestLiveStatusAppConversationService:
@@ -72,7 +72,7 @@ class TestLiveStatusAppConversationService:
             sandbox_startup_poll_frequency=1,
             httpx_client=self.mock_httpx_client,
             web_url='https://test.example.com',
-            openhands_provider_base_url='https://provider.example.com',
+            thinksoft_provider_base_url='https://provider.example.com',
             access_token_hard_timeout=None,
             app_mode='test',
             keycloak_auth_cookie=None,
@@ -405,10 +405,10 @@ class TestLiveStatusAppConversationService:
         )
 
     @pytest.mark.asyncio
-    async def test_configure_llm_and_mcp_openhands_model_prefers_user_base_url(self):
-        """openhands/* model uses user.llm_base_url when provided."""
+    async def test_configure_llm_and_mcp_thinksoft_model_prefers_user_base_url(self):
+        """thinksoft/* model uses user.llm_base_url when provided."""
         # Arrange
-        self.mock_user.llm_model = 'openhands/special'
+        self.mock_user.llm_model = 'thinksoft/special'
         self.mock_user.llm_base_url = 'https://user-llm.example.com'
         self.mock_user_context.get_mcp_api_key.return_value = None
 
@@ -421,10 +421,10 @@ class TestLiveStatusAppConversationService:
         assert llm.base_url == 'https://user-llm.example.com'
 
     @pytest.mark.asyncio
-    async def test_configure_llm_and_mcp_openhands_model_uses_provider_default(self):
-        """openhands/* model falls back to configured provider base URL."""
+    async def test_configure_llm_and_mcp_thinksoft_model_uses_provider_default(self):
+        """thinksoft/* model falls back to configured provider base URL."""
         # Arrange
-        self.mock_user.llm_model = 'openhands/default'
+        self.mock_user.llm_model = 'thinksoft/default'
         self.mock_user.llm_base_url = None
         self.mock_user_context.get_mcp_api_key.return_value = None
 
@@ -437,12 +437,12 @@ class TestLiveStatusAppConversationService:
         assert llm.base_url == 'https://provider.example.com'
 
     @pytest.mark.asyncio
-    async def test_configure_llm_and_mcp_openhands_model_no_base_urls(self):
-        """openhands/* model sets base_url to None when no sources available."""
+    async def test_configure_llm_and_mcp_thinksoft_model_no_base_urls(self):
+        """thinksoft/* model sets base_url to None when no sources available."""
         # Arrange
-        self.mock_user.llm_model = 'openhands/default'
+        self.mock_user.llm_model = 'thinksoft/default'
         self.mock_user.llm_base_url = None
-        self.service.openhands_provider_base_url = None
+        self.service.thinksoft_provider_base_url = None
         self.mock_user_context.get_mcp_api_key.return_value = None
 
         # Act
@@ -454,12 +454,12 @@ class TestLiveStatusAppConversationService:
         assert llm.base_url == 'https://llm-proxy.app.all-hands.dev/'
 
     @pytest.mark.asyncio
-    async def test_configure_llm_and_mcp_non_openhands_model_ignores_provider(self):
-        """Non-openhands model ignores provider base URL and uses user base URL."""
+    async def test_configure_llm_and_mcp_non_thinksoft_model_ignores_provider(self):
+        """Non-thinksoft model ignores provider base URL and uses user base URL."""
         # Arrange
         self.mock_user.llm_model = 'gpt-4'
         self.mock_user.llm_base_url = 'https://user-llm.example.com'
-        self.service.openhands_provider_base_url = 'https://provider.example.com'
+        self.service.thinksoft_provider_base_url = 'https://provider.example.com'
         self.mock_user_context.get_mcp_api_key.return_value = None
 
         # Act
@@ -683,13 +683,13 @@ class TestLiveStatusAppConversationService:
         )
 
     @patch(
-        'openhands.app_server.app_conversation.live_status_app_conversation_service.get_planning_tools'
+        'thinksoft.app_server.app_conversation.live_status_app_conversation_service.get_planning_tools'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.AppConversationServiceBase._create_condenser'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.AppConversationServiceBase._create_condenser'
     )
     @patch(
-        'openhands.app_server.app_conversation.live_status_app_conversation_service.format_plan_structure'
+        'thinksoft.app_server.app_conversation.live_status_app_conversation_service.format_plan_structure'
     )
     def test_create_agent_with_context_planning_agent(
         self, mock_format_plan, mock_create_condenser, mock_get_tools
@@ -707,7 +707,7 @@ class TestLiveStatusAppConversationService:
 
         # Act
         with patch(
-            'openhands.app_server.app_conversation.live_status_app_conversation_service.Agent'
+            'thinksoft.app_server.app_conversation.live_status_app_conversation_service.Agent'
         ) as mock_agent_class:
             mock_agent_instance = Mock()
             mock_agent_instance.model_copy.return_value = mock_agent_instance
@@ -738,10 +738,10 @@ class TestLiveStatusAppConversationService:
             )
 
     @patch(
-        'openhands.app_server.app_conversation.live_status_app_conversation_service.get_default_tools'
+        'thinksoft.app_server.app_conversation.live_status_app_conversation_service.get_default_tools'
     )
     @patch(
-        'openhands.app_server.app_conversation.app_conversation_service_base.AppConversationServiceBase._create_condenser'
+        'thinksoft.app_server.app_conversation.app_conversation_service_base.AppConversationServiceBase._create_condenser'
     )
     def test_create_agent_with_context_default_agent(
         self, mock_create_condenser, mock_get_tools
@@ -757,7 +757,7 @@ class TestLiveStatusAppConversationService:
 
         # Act
         with patch(
-            'openhands.app_server.app_conversation.live_status_app_conversation_service.Agent'
+            'thinksoft.app_server.app_conversation.live_status_app_conversation_service.Agent'
         ) as mock_agent_class:
             mock_agent_instance = Mock()
             mock_agent_instance.model_copy.return_value = mock_agent_instance
@@ -785,7 +785,7 @@ class TestLiveStatusAppConversationService:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.live_status_app_conversation_service.ExperimentManagerImpl'
+        'thinksoft.app_server.app_conversation.live_status_app_conversation_service.ExperimentManagerImpl'
     )
     async def test_finalize_conversation_request_with_skills(
         self, mock_experiment_manager
@@ -796,7 +796,7 @@ class TestLiveStatusAppConversationService:
 
         # Create mock LLM with required attributes for _update_agent_with_llm_metadata
         mock_llm = Mock(spec=LLM)
-        mock_llm.model = 'gpt-4'  # Non-openhands model, so no metadata update
+        mock_llm.model = 'gpt-4'  # Non-thinksoft model, so no metadata update
         mock_llm.usage_id = 'agent'
 
         mock_updated_agent = Mock(spec=Agent)
@@ -852,7 +852,7 @@ class TestLiveStatusAppConversationService:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.live_status_app_conversation_service.ExperimentManagerImpl'
+        'thinksoft.app_server.app_conversation.live_status_app_conversation_service.ExperimentManagerImpl'
     )
     async def test_finalize_conversation_request_without_skills(
         self, mock_experiment_manager
@@ -863,7 +863,7 @@ class TestLiveStatusAppConversationService:
 
         # Create mock LLM with required attributes for _update_agent_with_llm_metadata
         mock_llm = Mock(spec=LLM)
-        mock_llm.model = 'gpt-4'  # Non-openhands model, so no metadata update
+        mock_llm.model = 'gpt-4'  # Non-thinksoft model, so no metadata update
         mock_llm.usage_id = 'agent'
 
         mock_updated_agent = Mock(spec=Agent)
@@ -898,7 +898,7 @@ class TestLiveStatusAppConversationService:
 
     @pytest.mark.asyncio
     @patch(
-        'openhands.app_server.app_conversation.live_status_app_conversation_service.ExperimentManagerImpl'
+        'thinksoft.app_server.app_conversation.live_status_app_conversation_service.ExperimentManagerImpl'
     )
     async def test_finalize_conversation_request_skills_loading_fails(
         self, mock_experiment_manager
@@ -909,7 +909,7 @@ class TestLiveStatusAppConversationService:
 
         # Create mock LLM with required attributes for _update_agent_with_llm_metadata
         mock_llm = Mock(spec=LLM)
-        mock_llm.model = 'gpt-4'  # Non-openhands model, so no metadata update
+        mock_llm.model = 'gpt-4'  # Non-thinksoft model, so no metadata update
         mock_llm.usage_id = 'agent'
 
         mock_updated_agent = Mock(spec=Agent)
@@ -930,7 +930,7 @@ class TestLiveStatusAppConversationService:
 
         # Act
         with patch(
-            'openhands.app_server.app_conversation.live_status_app_conversation_service._logger'
+            'thinksoft.app_server.app_conversation.live_status_app_conversation_service._logger'
         ) as mock_logger:
             result = await self.service._finalize_conversation_request(
                 mock_agent,
@@ -1243,10 +1243,10 @@ class TestLiveStatusAppConversationService:
         assert self.mock_event_service.search_events.call_count == total_pages
 
     @patch(
-        'openhands.app_server.app_conversation.live_status_app_conversation_service.AsyncRemoteWorkspace'
+        'thinksoft.app_server.app_conversation.live_status_app_conversation_service.AsyncRemoteWorkspace'
     )
     @patch(
-        'openhands.app_server.app_conversation.live_status_app_conversation_service.ConversationInfo'
+        'thinksoft.app_server.app_conversation.live_status_app_conversation_service.ConversationInfo'
     )
     async def test_start_app_conversation_default_title_uses_first_five_characters(
         self, mock_conversation_info_class, mock_remote_workspace_class
@@ -1349,7 +1349,7 @@ class TestLiveStatusAppConversationService:
         """Test _configure_llm_and_mcp merges custom SSE servers with UUID-based names."""
         # Arrange
 
-        from openhands.core.config.mcp_config import MCPConfig, MCPSSEServerConfig
+        from thinksoft.core.config.mcp_config import MCPConfig, MCPSSEServerConfig
 
         self.mock_user.mcp_config = MCPConfig(
             sse_servers=[
@@ -1392,7 +1392,7 @@ class TestLiveStatusAppConversationService:
     async def test_configure_llm_and_mcp_with_custom_shttp_servers(self):
         """Test _configure_llm_and_mcp merges custom SHTTP servers with timeout."""
         # Arrange
-        from openhands.core.config.mcp_config import MCPConfig, MCPSHTTPServerConfig
+        from thinksoft.core.config.mcp_config import MCPConfig, MCPSHTTPServerConfig
 
         self.mock_user.mcp_config = MCPConfig(
             shttp_servers=[
@@ -1428,7 +1428,7 @@ class TestLiveStatusAppConversationService:
     async def test_configure_llm_and_mcp_with_custom_stdio_servers(self):
         """Test _configure_llm_and_mcp merges custom STDIO servers with explicit names."""
         # Arrange
-        from openhands.core.config.mcp_config import MCPConfig, MCPStdioServerConfig
+        from thinksoft.core.config.mcp_config import MCPConfig, MCPStdioServerConfig
 
         self.mock_user.mcp_config = MCPConfig(
             stdio_servers=[
@@ -1462,7 +1462,7 @@ class TestLiveStatusAppConversationService:
     async def test_configure_llm_and_mcp_merges_system_and_custom_servers(self):
         """Test _configure_llm_and_mcp merges both system and custom MCP servers."""
         # Arrange
-        from openhands.core.config.mcp_config import (
+        from thinksoft.core.config.mcp_config import (
             MCPConfig,
             MCPSSEServerConfig,
             MCPStdioServerConfig,
@@ -1547,7 +1547,7 @@ class TestLiveStatusAppConversationService:
     async def test_configure_llm_and_mcp_empty_custom_config(self):
         """Test _configure_llm_and_mcp handles empty custom MCP config."""
         # Arrange
-        from openhands.core.config.mcp_config import MCPConfig
+        from thinksoft.core.config.mcp_config import MCPConfig
 
         self.mock_user.mcp_config = MCPConfig(
             sse_servers=[], stdio_servers=[], shttp_servers=[]
@@ -1569,7 +1569,7 @@ class TestLiveStatusAppConversationService:
     async def test_configure_llm_and_mcp_sse_server_without_api_key(self):
         """Test _configure_llm_and_mcp handles SSE servers without API keys."""
         # Arrange
-        from openhands.core.config.mcp_config import MCPConfig, MCPSSEServerConfig
+        from thinksoft.core.config.mcp_config import MCPConfig, MCPSSEServerConfig
 
         self.mock_user.mcp_config = MCPConfig(
             sse_servers=[MCPSSEServerConfig(url='https://public.com/sse')]
@@ -1596,7 +1596,7 @@ class TestLiveStatusAppConversationService:
     async def test_configure_llm_and_mcp_shttp_server_without_timeout(self):
         """Test _configure_llm_and_mcp handles SHTTP servers without timeout."""
         # Arrange
-        from openhands.core.config.mcp_config import MCPConfig, MCPSHTTPServerConfig
+        from thinksoft.core.config.mcp_config import MCPConfig, MCPSHTTPServerConfig
 
         self.mock_user.mcp_config = MCPConfig(
             shttp_servers=[MCPSHTTPServerConfig(url='https://example.com/mcp')]
@@ -1621,7 +1621,7 @@ class TestLiveStatusAppConversationService:
     async def test_configure_llm_and_mcp_stdio_server_without_env(self):
         """Test _configure_llm_and_mcp handles STDIO servers without environment variables."""
         # Arrange
-        from openhands.core.config.mcp_config import MCPConfig, MCPStdioServerConfig
+        from thinksoft.core.config.mcp_config import MCPConfig, MCPStdioServerConfig
 
         self.mock_user.mcp_config = MCPConfig(
             stdio_servers=[
@@ -1651,7 +1651,7 @@ class TestLiveStatusAppConversationService:
     async def test_configure_llm_and_mcp_multiple_servers_same_type(self):
         """Test _configure_llm_and_mcp handles multiple custom servers of the same type."""
         # Arrange
-        from openhands.core.config.mcp_config import MCPConfig, MCPSSEServerConfig
+        from thinksoft.core.config.mcp_config import MCPConfig, MCPSSEServerConfig
 
         self.mock_user.mcp_config = MCPConfig(
             sse_servers=[
@@ -1688,7 +1688,7 @@ class TestLiveStatusAppConversationService:
     async def test_configure_llm_and_mcp_mixed_server_types(self):
         """Test _configure_llm_and_mcp handles all three server types together."""
         # Arrange
-        from openhands.core.config.mcp_config import (
+        from thinksoft.core.config.mcp_config import (
             MCPConfig,
             MCPSHTTPServerConfig,
             MCPSSEServerConfig,

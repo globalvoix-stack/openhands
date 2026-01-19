@@ -9,15 +9,15 @@ from fastapi.testclient import TestClient
 from httpcore import Request
 from pydantic import SecretStr
 
-from openhands.integrations.provider import ProviderToken, ProviderType
-from openhands.integrations.service_types import (
+from thinksoft.integrations.provider import ProviderToken, ProviderType
+from thinksoft.integrations.service_types import (
     AuthenticationError,
     Repository,
 )
-from openhands.microagent.types import MicroagentContentResponse
-from openhands.server.dependencies import check_session_api_key
-from openhands.server.routes.git import app as git_app
-from openhands.server.user_auth import (
+from thinksoft.microagent.types import MicroagentContentResponse
+from thinksoft.server.dependencies import check_session_api_key
+from thinksoft.server.routes.git import app as git_app
+from thinksoft.server.user_auth import (
     get_access_token,
     get_provider_tokens,
     get_user_id,
@@ -144,7 +144,7 @@ class TestGetRepositoryMicroagents:
     """Test cases for the get_repository_microagents API endpoint."""
 
     @pytest.mark.asyncio
-    @patch('openhands.server.routes.git.ProviderHandler')
+    @patch('thinksoft.server.routes.git.ProviderHandler')
     async def test_get_microagents_github_success(
         self,
         mock_provider_handler_cls,
@@ -162,7 +162,7 @@ class TestGetRepositoryMicroagents:
         mock_provider_handler.get_microagents.return_value = [
             {
                 'name': 'test_agent',
-                'path': '.openhands/microagents/test_agent.md',
+                'path': '.thinksoft/microagents/test_agent.md',
                 'created_at': '2024-01-01T00:00:00',
             },
             {
@@ -194,7 +194,7 @@ class TestGetRepositoryMicroagents:
             assert 'tools' not in microagent
 
     @pytest.mark.asyncio
-    @patch('openhands.server.routes.git.ProviderHandler')
+    @patch('thinksoft.server.routes.git.ProviderHandler')
     async def test_get_microagents_gitlab_success(
         self,
         mock_provider_handler_cls,
@@ -210,7 +210,7 @@ class TestGetRepositoryMicroagents:
         mock_provider_handler.get_microagents.return_value = [
             {
                 'name': 'test_agent',
-                'path': '.openhands/microagents/test_agent.md',
+                'path': '.thinksoft/microagents/test_agent.md',
                 'created_at': '2024-01-01T00:00:00',
             }
         ]
@@ -225,7 +225,7 @@ class TestGetRepositoryMicroagents:
         assert 'content' not in data[0]  # Content should not be present in listing API
 
     @pytest.mark.asyncio
-    @patch('openhands.server.routes.git.ProviderHandler')
+    @patch('thinksoft.server.routes.git.ProviderHandler')
     async def test_get_microagents_bitbucket_success(
         self,
         mock_provider_handler_cls,
@@ -241,7 +241,7 @@ class TestGetRepositoryMicroagents:
         mock_provider_handler.get_microagents.return_value = [
             {
                 'name': 'test_agent',
-                'path': '.openhands/microagents/test_agent.md',
+                'path': '.thinksoft/microagents/test_agent.md',
                 'created_at': '2024-01-01T00:00:00',
             }
         ]
@@ -256,7 +256,7 @@ class TestGetRepositoryMicroagents:
         assert 'content' not in data[0]  # Content should not be present in listing API
 
     @pytest.mark.asyncio
-    @patch('openhands.server.routes.git.ProviderHandler')
+    @patch('thinksoft.server.routes.git.ProviderHandler')
     async def test_get_microagents_no_directory_found(
         self,
         mock_provider_handler_cls,
@@ -280,7 +280,7 @@ class TestGetRepositoryMicroagents:
         assert data == []
 
     @pytest.mark.asyncio
-    @patch('openhands.server.routes.git.ProviderHandler')
+    @patch('thinksoft.server.routes.git.ProviderHandler')
     async def test_get_microagents_authentication_error(
         self,
         mock_provider_handler_cls,
@@ -308,7 +308,7 @@ class TestGetRepositoryMicroagentContent:
     """Test cases for the get_repository_microagent_content API endpoint."""
 
     @pytest.mark.asyncio
-    @patch('openhands.server.routes.git.ProviderHandler')
+    @patch('thinksoft.server.routes.git.ProviderHandler')
     async def test_get_microagent_content_github_success(
         self,
         mock_provider_handler_cls,
@@ -324,13 +324,13 @@ class TestGetRepositoryMicroagentContent:
         mock_provider_handler.get_microagent_content.return_value = (
             MicroagentContentResponse(
                 content=sample_microagent_content,
-                path='.openhands/microagents/test_agent.md',
+                path='.thinksoft/microagents/test_agent.md',
                 triggers=['test', 'agent'],
             )
         )
 
         # Execute test
-        file_path = '.openhands/microagents/test_agent.md'
+        file_path = '.thinksoft/microagents/test_agent.md'
         response = test_client.get(
             f'/api/user/repository/test/repo/microagents/content?file_path={quote(file_path)}'
         )
@@ -345,7 +345,7 @@ class TestGetRepositoryMicroagentContent:
         assert data['triggers'] == ['test', 'agent']
 
     @pytest.mark.asyncio
-    @patch('openhands.server.routes.git.ProviderHandler')
+    @patch('thinksoft.server.routes.git.ProviderHandler')
     async def test_get_microagent_content_gitlab_success(
         self,
         mock_provider_handler_cls,
@@ -361,13 +361,13 @@ class TestGetRepositoryMicroagentContent:
         mock_provider_handler.get_microagent_content.return_value = (
             MicroagentContentResponse(
                 content=sample_microagent_content,
-                path='.openhands/microagents/test_agent.md',
+                path='.thinksoft/microagents/test_agent.md',
                 triggers=['test', 'agent'],
             )
         )
 
         # Execute test
-        file_path = '.openhands/microagents/test_agent.md'
+        file_path = '.thinksoft/microagents/test_agent.md'
         response = test_client.get(
             f'/api/user/repository/test/repo/microagents/content?file_path={quote(file_path)}'
         )
@@ -381,7 +381,7 @@ class TestGetRepositoryMicroagentContent:
         assert data['triggers'] == ['test', 'agent']
 
     @pytest.mark.asyncio
-    @patch('openhands.server.routes.git.ProviderHandler')
+    @patch('thinksoft.server.routes.git.ProviderHandler')
     async def test_get_microagent_content_bitbucket_success(
         self,
         mock_provider_handler_cls,
@@ -397,13 +397,13 @@ class TestGetRepositoryMicroagentContent:
         mock_provider_handler.get_microagent_content.return_value = (
             MicroagentContentResponse(
                 content=sample_microagent_content,
-                path='.openhands/microagents/test_agent.md',
+                path='.thinksoft/microagents/test_agent.md',
                 triggers=['test', 'agent'],
             )
         )
 
         # Execute test
-        file_path = '.openhands/microagents/test_agent.md'
+        file_path = '.thinksoft/microagents/test_agent.md'
         response = test_client.get(
             f'/api/user/repository/test/repo/microagents/content?file_path={quote(file_path)}'
         )
@@ -417,7 +417,7 @@ class TestGetRepositoryMicroagentContent:
         assert data['triggers'] == ['test', 'agent']
 
     @pytest.mark.asyncio
-    @patch('openhands.server.routes.git.ProviderHandler')
+    @patch('thinksoft.server.routes.git.ProviderHandler')
     async def test_get_microagent_content_file_not_found(
         self,
         mock_provider_handler_cls,
@@ -435,7 +435,7 @@ class TestGetRepositoryMicroagentContent:
         )
 
         # Execute test
-        file_path = '.openhands/microagents/nonexistent.md'
+        file_path = '.thinksoft/microagents/nonexistent.md'
         response = test_client.get(
             f'/api/user/repository/test/repo/microagents/content?file_path={quote(file_path)}'
         )
@@ -445,7 +445,7 @@ class TestGetRepositoryMicroagentContent:
         assert 'File not found' in response.json()
 
     @pytest.mark.asyncio
-    @patch('openhands.server.routes.git.ProviderHandler')
+    @patch('thinksoft.server.routes.git.ProviderHandler')
     async def test_get_microagent_content_authentication_error(
         self,
         mock_provider_handler_cls,
@@ -462,7 +462,7 @@ class TestGetRepositoryMicroagentContent:
         )
 
         # Execute test
-        file_path = '.openhands/microagents/test_agent.md'
+        file_path = '.thinksoft/microagents/test_agent.md'
         response = test_client.get(
             f'/api/user/repository/test/repo/microagents/content?file_path={quote(file_path)}'
         )
@@ -472,7 +472,7 @@ class TestGetRepositoryMicroagentContent:
         assert response.json() == 'Invalid credentials'
 
     @pytest.mark.asyncio
-    @patch('openhands.server.routes.git.ProviderHandler')
+    @patch('thinksoft.server.routes.git.ProviderHandler')
     async def test_get_microagent_content_cursorrules(
         self,
         mock_provider_handler_cls,
@@ -512,28 +512,28 @@ class TestSpecialRepositoryStructures:
     """Test cases for special repository structures."""
 
     @pytest.mark.asyncio
-    @patch('openhands.server.routes.git.ProviderHandler')
-    async def test_get_microagents_openhands_repo_structure(
+    @patch('thinksoft.server.routes.git.ProviderHandler')
+    async def test_get_microagents_thinksoft_repo_structure(
         self,
         mock_provider_handler_cls,
         test_client,
     ):
-        """Test microagents from .openhands repository structure."""
+        """Test microagents from .thinksoft repository structure."""
         # Setup mocks
         mock_provider_handler = AsyncMock()
         mock_provider_handler_cls.return_value = mock_provider_handler
 
-        # Mock the get_microagents method to return sample data for .openhands repo
+        # Mock the get_microagents method to return sample data for .thinksoft repo
         mock_provider_handler.get_microagents.return_value = [
             {
                 'name': 'test_agent',
-                'path': 'microagents/test_agent.md',  # Should be in microagents folder, not .openhands/microagents
+                'path': 'microagents/test_agent.md',  # Should be in microagents folder, not .thinksoft/microagents
                 'created_at': '2024-01-01T00:00:00',
             }
         ]
 
         # Execute test
-        response = test_client.get('/api/user/repository/test/.openhands/microagents')
+        response = test_client.get('/api/user/repository/test/.thinksoft/microagents')
 
         # Assertions
         assert response.status_code == 200
@@ -541,32 +541,32 @@ class TestSpecialRepositoryStructures:
         assert len(data) == 1
         assert (
             data[0]['path'] == 'microagents/test_agent.md'
-        )  # Should be in microagents folder, not .openhands/microagents
+        )  # Should be in microagents folder, not .thinksoft/microagents
 
     @pytest.mark.asyncio
-    @patch('openhands.server.routes.git.ProviderHandler')
-    async def test_get_microagents_gitlab_openhands_config_structure(
+    @patch('thinksoft.server.routes.git.ProviderHandler')
+    async def test_get_microagents_gitlab_thinksoft_config_structure(
         self,
         mock_provider_handler_cls,
         test_client,
     ):
-        """Test microagents from GitLab openhands-config repository structure."""
+        """Test microagents from GitLab thinksoft-config repository structure."""
         # Setup mocks
         mock_provider_handler = AsyncMock()
         mock_provider_handler_cls.return_value = mock_provider_handler
 
-        # Mock the get_microagents method to return sample data for openhands-config repo
+        # Mock the get_microagents method to return sample data for thinksoft-config repo
         mock_provider_handler.get_microagents.return_value = [
             {
                 'name': 'test_agent',
-                'path': 'microagents/test_agent.md',  # Should be in microagents folder, not .openhands/microagents
+                'path': 'microagents/test_agent.md',  # Should be in microagents folder, not .thinksoft/microagents
                 'created_at': '2024-01-01T00:00:00',
             }
         ]
 
         # Execute test
         response = test_client.get(
-            '/api/user/repository/test/openhands-config/microagents'
+            '/api/user/repository/test/thinksoft-config/microagents'
         )
 
         # Assertions
@@ -575,4 +575,4 @@ class TestSpecialRepositoryStructures:
         assert len(data) == 1
         assert (
             data[0]['path'] == 'microagents/test_agent.md'
-        )  # Should be in microagents folder, not .openhands/microagents
+        )  # Should be in microagents folder, not .thinksoft/microagents

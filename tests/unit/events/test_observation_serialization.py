@@ -1,21 +1,21 @@
-from openhands.core.schema.observation import ObservationType
-from openhands.events.action.files import FileEditSource
-from openhands.events.observation import (
+from thinksoft.core.schema.observation import ObservationType
+from thinksoft.events.action.files import FileEditSource
+from thinksoft.events.observation import (
     CmdOutputMetadata,
     CmdOutputObservation,
     FileEditObservation,
     Observation,
     RecallObservation,
 )
-from openhands.events.observation.agent import MicroagentKnowledge
-from openhands.events.observation.commands import MAX_CMD_OUTPUT_SIZE
-from openhands.events.recall_type import RecallType
-from openhands.events.serialization import (
+from thinksoft.events.observation.agent import MicroagentKnowledge
+from thinksoft.events.observation.commands import MAX_CMD_OUTPUT_SIZE
+from thinksoft.events.recall_type import RecallType
+from thinksoft.events.serialization import (
     event_from_dict,
     event_to_dict,
     event_to_trajectory,
 )
-from openhands.events.serialization.observation import observation_from_dict
+from thinksoft.events.serialization.observation import observation_from_dict
 
 
 def serialization_deserialization(
@@ -396,8 +396,8 @@ def test_microagent_observation_environment_serialization():
     original = RecallObservation(
         content='Environment information',
         recall_type=RecallType.WORKSPACE_CONTEXT,
-        repo_name='OpenHands',
-        repo_directory='/workspace/openhands',
+        repo_name='Thinksoft',
+        repo_directory='/workspace/thinksoft',
         repo_branch='main',
         repo_instructions="Follow the project's coding style guide.",
         runtime_hosts={'127.0.0.1': 8080, 'localhost': 5000},
@@ -411,7 +411,7 @@ def test_microagent_observation_environment_serialization():
     assert serialized['observation'] == ObservationType.RECALL
     assert serialized['content'] == 'Environment information'
     assert serialized['extras']['recall_type'] == RecallType.WORKSPACE_CONTEXT.value
-    assert serialized['extras']['repo_name'] == 'OpenHands'
+    assert serialized['extras']['repo_name'] == 'Thinksoft'
     assert serialized['extras']['runtime_hosts'] == {
         '127.0.0.1': 8080,
         'localhost': 5000,
@@ -446,8 +446,8 @@ def test_microagent_observation_combined_serialization():
         content='Combined information',
         recall_type=RecallType.WORKSPACE_CONTEXT,
         # Environment info
-        repo_name='OpenHands',
-        repo_directory='/workspace/openhands',
+        repo_name='Thinksoft',
+        repo_directory='/workspace/thinksoft',
         repo_branch='main',
         repo_instructions="Follow the project's coding style guide.",
         runtime_hosts={'127.0.0.1': 8080},
@@ -467,7 +467,7 @@ def test_microagent_observation_combined_serialization():
 
     # Verify serialized data has both types of fields
     assert serialized['extras']['recall_type'] == RecallType.WORKSPACE_CONTEXT.value
-    assert serialized['extras']['repo_name'] == 'OpenHands'
+    assert serialized['extras']['repo_name'] == 'Thinksoft'
     assert (
         serialized['extras']['microagent_knowledge'][0]['name']
         == 'python_best_practices'

@@ -13,18 +13,18 @@ import pytest
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.pool import StaticPool
 
-from openhands.app_server.app_conversation.app_conversation_models import (
+from thinksoft.app_server.app_conversation.app_conversation_models import (
     AppConversationInfo,
 )
-from openhands.app_server.app_conversation.sql_app_conversation_info_service import (
+from thinksoft.app_server.app_conversation.sql_app_conversation_info_service import (
     SQLAppConversationInfoService,
     StoredConversationMetadata,
 )
-from openhands.app_server.user.specifiy_user_context import SpecifyUserContext
-from openhands.app_server.utils.sql_utils import Base
-from openhands.sdk.conversation.conversation_stats import ConversationStats
-from openhands.sdk.event import ConversationStateUpdateEvent
-from openhands.sdk.llm.utils.metrics import Metrics, TokenUsage
+from thinksoft.app_server.user.specifiy_user_context import SpecifyUserContext
+from thinksoft.app_server.utils.sql_utils import Base
+from thinksoft.sdk.conversation.conversation_stats import ConversationStats
+from thinksoft.sdk.event import ConversationStateUpdateEvent
+from thinksoft.sdk.llm.utils.metrics import Metrics, TokenUsage
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -410,7 +410,7 @@ class TestProcessStatsEvent:
                 side_effect=Exception('Database error'),
             ),
             patch(
-                'openhands.app_server.app_conversation.sql_app_conversation_info_service.logger'
+                'thinksoft.app_server.app_conversation.sql_app_conversation_info_service.logger'
             ) as mock_logger,
         ):
             await service.process_stats_event(
@@ -451,8 +451,8 @@ class TestOnEventStatsProcessing:
     @pytest.mark.asyncio
     async def test_on_event_processes_stats_events(self):
         """Test that on_event processes stats events."""
-        from openhands.app_server.event_callback.webhook_router import on_event
-        from openhands.app_server.sandbox.sandbox_models import (
+        from thinksoft.app_server.event_callback.webhook_router import on_event
+        from thinksoft.app_server.sandbox.sandbox_models import (
             SandboxInfo,
             SandboxStatus,
         )
@@ -506,7 +506,7 @@ class TestOnEventStatsProcessing:
         # Set up process_stats_event to call update_conversation_statistics
         async def process_stats_event_side_effect(event, conversation_id):
             # Simulate what process_stats_event does - call update_conversation_statistics
-            from openhands.sdk.conversation.conversation_stats import ConversationStats
+            from thinksoft.sdk.conversation.conversation_stats import ConversationStats
 
             if isinstance(event.value, dict):
                 stats = ConversationStats.model_validate(event.value)
@@ -521,15 +521,15 @@ class TestOnEventStatsProcessing:
 
         with (
             patch(
-                'openhands.app_server.event_callback.webhook_router.valid_sandbox',
+                'thinksoft.app_server.event_callback.webhook_router.valid_sandbox',
                 return_value=mock_sandbox,
             ),
             patch(
-                'openhands.app_server.event_callback.webhook_router.valid_conversation',
+                'thinksoft.app_server.event_callback.webhook_router.valid_conversation',
                 return_value=mock_app_conversation_info,
             ),
             patch(
-                'openhands.app_server.event_callback.webhook_router._run_callbacks_in_bg_and_close'
+                'thinksoft.app_server.event_callback.webhook_router._run_callbacks_in_bg_and_close'
             ) as mock_callbacks,
         ):
             await on_event(
@@ -552,12 +552,12 @@ class TestOnEventStatsProcessing:
     @pytest.mark.asyncio
     async def test_on_event_skips_non_stats_events(self):
         """Test that on_event skips non-stats events."""
-        from openhands.app_server.event_callback.webhook_router import on_event
-        from openhands.app_server.sandbox.sandbox_models import (
+        from thinksoft.app_server.event_callback.webhook_router import on_event
+        from thinksoft.app_server.sandbox.sandbox_models import (
             SandboxInfo,
             SandboxStatus,
         )
-        from openhands.events.action.message import MessageAction
+        from thinksoft.events.action.message import MessageAction
 
         conversation_id = uuid4()
         sandbox_id = 'sandbox_123'
@@ -590,15 +590,15 @@ class TestOnEventStatsProcessing:
 
         with (
             patch(
-                'openhands.app_server.event_callback.webhook_router.valid_sandbox',
+                'thinksoft.app_server.event_callback.webhook_router.valid_sandbox',
                 return_value=mock_sandbox,
             ),
             patch(
-                'openhands.app_server.event_callback.webhook_router.valid_conversation',
+                'thinksoft.app_server.event_callback.webhook_router.valid_conversation',
                 return_value=mock_app_conversation_info,
             ),
             patch(
-                'openhands.app_server.event_callback.webhook_router._run_callbacks_in_bg_and_close'
+                'thinksoft.app_server.event_callback.webhook_router._run_callbacks_in_bg_and_close'
             ),
         ):
             await on_event(

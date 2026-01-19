@@ -6,7 +6,7 @@ import React from "react";
 import { renderWithProviders } from "test-utils";
 import { ConversationPanel } from "#/components/features/conversation-panel/conversation-panel";
 import ConversationService from "#/api/conversation-service/conversation-service.api";
-import { Conversation } from "#/api/open-hands.types";
+import { Conversation } from "#/api/thinksoft.types";
 
 // Mock the unified stop conversation hook
 const mockStopConversationMutate = vi.fn();

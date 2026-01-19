@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import CodeBranchIcon from "#/icons/u-code-branch.svg?react";
-import { Conversation } from "#/api/open-hands.types";
+import { Conversation } from "#/api/thinksoft.types";
 import { GitProviderIcon } from "#/components/shared/git-provider-icon";
 import { Provider } from "#/types/settings";
 import { formatTimeDelta } from "#/utils/format-time-delta";

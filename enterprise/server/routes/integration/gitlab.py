@@ -19,10 +19,10 @@ from server.auth.token_manager import TokenManager
 from storage.gitlab_webhook import GitlabWebhook
 from storage.gitlab_webhook_store import GitlabWebhookStore
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.integrations.gitlab.gitlab_service import GitLabServiceImpl
-from openhands.server.shared import sio
-from openhands.server.user_auth import get_user_id
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.integrations.gitlab.gitlab_service import GitLabServiceImpl
+from thinksoft.server.shared import sio
+from thinksoft.server.user_auth import get_user_id
 
 gitlab_integration_router = APIRouter(prefix='/integration')
 webhook_store = GitlabWebhookStore()
@@ -80,14 +80,14 @@ async def verify_gitlab_signature(
 async def gitlab_events(
     request: Request,
     x_gitlab_token: str = Header(None),
-    x_openhands_webhook_id: str = Header(None),
-    x_openhands_user_id: str = Header(None),
+    x_thinksoft_webhook_id: str = Header(None),
+    x_thinksoft_user_id: str = Header(None),
 ):
     try:
         await verify_gitlab_signature(
             header_webhook_secret=x_gitlab_token,
-            webhook_uuid=x_openhands_webhook_id,
-            user_id=x_openhands_user_id,
+            webhook_uuid=x_thinksoft_webhook_id,
+            user_id=x_thinksoft_user_id,
         )
 
         payload_data = await request.json()
@@ -113,7 +113,7 @@ async def gitlab_events(
             source=SourceType.GITLAB,
             message={
                 'payload': payload_data,
-                'installation_id': x_openhands_webhook_id,
+                'installation_id': x_thinksoft_webhook_id,
             },
         )
 

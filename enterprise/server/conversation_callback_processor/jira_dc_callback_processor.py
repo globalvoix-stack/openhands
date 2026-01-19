@@ -13,12 +13,12 @@ from storage.conversation_callback import (
     ConversationCallbackProcessor,
 )
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.core.schema.agent import AgentState
-from openhands.events.action import MessageAction
-from openhands.events.observation.agent import AgentStateChangedObservation
-from openhands.events.serialization.event import event_to_dict
-from openhands.server.shared import conversation_manager
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.core.schema.agent import AgentState
+from thinksoft.events.action import MessageAction
+from thinksoft.events.observation.agent import AgentStateChangedObservation
+from thinksoft.events.serialization.event import event_to_dict
+from thinksoft.server.shared import conversation_manager
 
 token_manager = TokenManager()
 jira_dc_manager = JiraDcManager(token_manager)

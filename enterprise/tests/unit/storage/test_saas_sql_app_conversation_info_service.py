@@ -16,13 +16,13 @@ from sqlalchemy.pool import StaticPool
 from enterprise.server.utils.saas_app_conversation_info_injector import (
     SaasSQLAppConversationInfoService,
 )
-from openhands.app_server.app_conversation.app_conversation_models import (
+from thinksoft.app_server.app_conversation.app_conversation_models import (
     AppConversationInfo,
 )
-from openhands.app_server.user.specifiy_user_context import SpecifyUserContext
-from openhands.app_server.utils.sql_utils import Base
-from openhands.integrations.service_types import ProviderType
-from openhands.storage.data_models.conversation_metadata import ConversationTrigger
+from thinksoft.app_server.user.specifiy_user_context import SpecifyUserContext
+from thinksoft.app_server.utils.sql_utils import Base
+from thinksoft.integrations.service_types import ProviderType
+from thinksoft.storage.data_models.conversation_metadata import ConversationTrigger
 
 
 @pytest.fixture

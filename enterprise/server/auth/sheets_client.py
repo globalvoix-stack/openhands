@@ -4,7 +4,7 @@ from typing import Dict, List, Optional, Tuple
 import gspread
 from google.auth import default
 
-from openhands.core.logger import openhands_logger as logger
+from thinksoft.core.logger import thinksoft_logger as logger
 
 
 class GoogleSheetsClient:

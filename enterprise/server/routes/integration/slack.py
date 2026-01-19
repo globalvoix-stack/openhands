@@ -36,8 +36,8 @@ from storage.slack_team_store import SlackTeamStore
 from storage.slack_user import SlackUser
 from storage.user_store import UserStore
 
-from openhands.integrations.service_types import ProviderType
-from openhands.server.shared import config, sio
+from thinksoft.integrations.service_types import ProviderType
+from thinksoft.server.shared import config, sio
 
 signature_verifier = SignatureVerifier(signing_secret=SLACK_SIGNING_SECRET)
 slack_router = APIRouter(prefix='/slack')
@@ -190,7 +190,7 @@ async def keycloak_callback(
         )
         return _html_response(
             title='Failed to authenticate.',
-            description=f'Please re-login into <a href="{HOST_URL}" style="color:#ecedee;text-decoration:underline;">OpenHands Cloud</a>. Then try <a href="https://docs.all-hands.dev/usage/cloud/slack-installation" style="color:#ecedee;text-decoration:underline;">installing the OpenHands Slack App</a> again',
+            description=f'Please re-login into <a href="{HOST_URL}" style="color:#ecedee;text-decoration:underline;">Thinksoft Cloud</a>. Then try <a href="https://docs.all-hands.dev/usage/cloud/slack-installation" style="color:#ecedee;text-decoration:underline;">installing the Thinksoft Slack App</a> again',
             status_code=400,
         )
 
@@ -200,7 +200,7 @@ async def keycloak_callback(
     if not user:
         return _html_response(
             title='Failed to authenticate.',
-            description=f'Please re-login into <a href="{HOST_URL}" style="color:#ecedee;text-decoration:underline;">OpenHands Cloud</a>. Then try <a href="https://docs.all-hands.dev/usage/cloud/slack-installation" style="color:#ecedee;text-decoration:underline;">installing the OpenHands Slack App</a> again',
+            description=f'Please re-login into <a href="{HOST_URL}" style="color:#ecedee;text-decoration:underline;">Thinksoft Cloud</a>. Then try <a href="https://docs.all-hands.dev/usage/cloud/slack-installation" style="color:#ecedee;text-decoration:underline;">installing the Thinksoft Slack App</a> again',
             status_code=400,
         )
 
@@ -253,7 +253,7 @@ async def keycloak_callback(
 
     background_tasks.add_task(slack_manager.receive_message, message)
     return _html_response(
-        title='OpenHands Authentication Successful!',
+        title='Thinksoft Authentication Successful!',
         description='It is now safe to close this tab.',
         status_code=200,
     )

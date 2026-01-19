@@ -1,11 +1,11 @@
 import React from "react";
-import { OpenHandsAction } from "#/types/core/actions";
-import { OpenHandsObservation } from "#/types/core/observations";
+import { ThinksoftAction } from "#/types/core/actions";
+import { ThinksoftObservation } from "#/types/core/observations";
 import { isErrorObservation } from "#/types/core/guards";
 import { LikertScale } from "../../feedback/likert-scale";
 
 interface LikertScaleWrapperProps {
-  event: OpenHandsAction | OpenHandsObservation;
+  event: ThinksoftAction | ThinksoftObservation;
   isLastMessage: boolean;
   isInLast10Actions: boolean;
   config?: { APP_MODE?: string } | null;

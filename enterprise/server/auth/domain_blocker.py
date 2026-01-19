@@ -1,7 +1,7 @@
 from storage.blocked_email_domain_store import BlockedEmailDomainStore
 from storage.database import session_maker
 
-from openhands.core.logger import openhands_logger as logger
+from thinksoft.core.logger import thinksoft_logger as logger
 
 
 class DomainBlocker:

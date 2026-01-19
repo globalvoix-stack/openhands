@@ -9,7 +9,7 @@ from storage.database import session_maker
 from storage.org_member import OrgMember
 from storage.user_settings import UserSettings
 
-from openhands.storage.data_models.settings import Settings
+from thinksoft.storage.data_models.settings import Settings
 
 
 class OrgMemberStore:

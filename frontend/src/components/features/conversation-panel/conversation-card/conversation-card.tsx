@@ -4,7 +4,7 @@ import { cn } from "#/utils/utils";
 import { transformVSCodeUrl } from "#/utils/vscode-url-helper";
 import ConversationService from "#/api/conversation-service/conversation-service.api";
 import { ConversationStatus } from "#/types/conversation-status";
-import { RepositorySelection } from "#/api/open-hands.types";
+import { RepositorySelection } from "#/api/thinksoft.types";
 import { ConversationCardHeader } from "./conversation-card-header";
 import { ConversationCardActions } from "./conversation-card-actions";
 import { ConversationCardFooter } from "./conversation-card-footer";

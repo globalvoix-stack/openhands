@@ -17,8 +17,8 @@ from integrations.linear.linear_view import (
 )
 from integrations.models import Message, SourceType
 
-from openhands.integrations.service_types import ProviderType, Repository
-from openhands.server.types import (
+from thinksoft.integrations.service_types import ProviderType, Repository
+from thinksoft.server.types import (
     LLMAuthenticationError,
     MissingSettingsError,
     SessionExpiredError,
@@ -297,13 +297,13 @@ class TestParseWebhook:
         assert job_context is not None
         assert job_context.issue_id == 'test_issue_id'
         assert job_context.issue_key == 'TEST-123'
-        assert job_context.user_msg == 'Please fix this @openhands'
+        assert job_context.user_msg == 'Please fix this @thinksoft'
         assert job_context.user_email == 'user@test.com'
         assert job_context.display_name == 'Test User'
         assert job_context.workspace_name == 'test-workspace'
 
     def test_parse_webhook_comment_without_mention(self, linear_manager):
-        """Test parsing comment without @openhands mention."""
+        """Test parsing comment without @thinksoft mention."""
         payload = {
             'action': 'create',
             'type': 'Comment',
@@ -324,8 +324,8 @@ class TestParseWebhook:
         job_context = linear_manager.parse_webhook(payload)
         assert job_context is None
 
-    def test_parse_webhook_issue_update_with_openhands_label(self, linear_manager):
-        """Test parsing issue update with openhands label."""
+    def test_parse_webhook_issue_update_with_thinksoft_label(self, linear_manager):
+        """Test parsing issue update with thinksoft label."""
         payload = {
             'action': 'update',
             'type': 'Issue',
@@ -334,7 +334,7 @@ class TestParseWebhook:
                 'identifier': 'TEST-123',
                 'labels': [
                     {'id': 'label1', 'name': 'bug'},
-                    {'id': 'label2', 'name': 'openhands'},
+                    {'id': 'label2', 'name': 'thinksoft'},
                 ],
                 'updatedFrom': {
                     'labelIds': []  # Label was not added previously
@@ -355,8 +355,8 @@ class TestParseWebhook:
         assert job_context.issue_key == 'TEST-123'
         assert job_context.user_msg == ''
 
-    def test_parse_webhook_issue_update_without_openhands_label(self, linear_manager):
-        """Test parsing issue update without openhands label."""
+    def test_parse_webhook_issue_update_without_thinksoft_label(self, linear_manager):
+        """Test parsing issue update without thinksoft label."""
         payload = {
             'action': 'update',
             'type': 'Issue',
@@ -378,7 +378,7 @@ class TestParseWebhook:
         assert job_context is None
 
     def test_parse_webhook_issue_update_label_previously_added(self, linear_manager):
-        """Test parsing issue update where openhands label was previously added."""
+        """Test parsing issue update where thinksoft label was previously added."""
         payload = {
             'action': 'update',
             'type': 'Issue',
@@ -386,7 +386,7 @@ class TestParseWebhook:
                 'id': 'test_issue_id',
                 'identifier': 'TEST-123',
                 'labels': [
-                    {'id': 'label2', 'name': 'openhands'},
+                    {'id': 'label2', 'name': 'thinksoft'},
                 ],
                 'updatedFrom': {
                     'labelIds': ['label2']  # Label was added previously
@@ -424,7 +424,7 @@ class TestParseWebhook:
             'action': 'create',
             'type': 'Comment',
             'data': {
-                'body': 'Please fix this @openhands',
+                'body': 'Please fix this @thinksoft',
                 'issue': {
                     'id': 'test_issue_id',
                     # Missing identifier

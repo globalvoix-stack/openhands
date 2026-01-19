@@ -4,8 +4,8 @@ from integrations.github.github_service import SaaSGitHubService
 from pydantic import SecretStr
 from server.auth.sheets_client import GoogleSheetsClient
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.integrations.github.github_types import GitHubUser
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.integrations.github.github_types import GitHubUser
 
 
 class UserVerifier:

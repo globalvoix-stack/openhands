@@ -1,5 +1,5 @@
 import { http, delay, HttpResponse } from "msw";
-import { Conversation, ResultSet } from "#/api/open-hands.types";
+import { Conversation, ResultSet } from "#/api/thinksoft.types";
 
 const conversations: Conversation[] = [
   {

@@ -3,7 +3,7 @@ import ConversationService from "#/api/conversation-service/conversation-service
 import V1ConversationService from "#/api/conversation-service/v1-conversation-service.api";
 import { SuggestedTask } from "#/utils/types";
 import { Provider } from "#/types/settings";
-import { CreateMicroagent, Conversation } from "#/api/open-hands.types";
+import { CreateMicroagent, Conversation } from "#/api/thinksoft.types";
 import { useTracking } from "#/hooks/use-tracking";
 import { useSettings } from "#/hooks/query/use-settings";
 

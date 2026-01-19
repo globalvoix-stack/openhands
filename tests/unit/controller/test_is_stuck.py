@@ -4,26 +4,26 @@ from unittest.mock import Mock, patch
 import pytest
 from pytest import TempPathFactory
 
-from openhands.controller.agent_controller import AgentController
-from openhands.controller.state.state import State
-from openhands.controller.stuck import StuckDetector
-from openhands.events.action import (
+from thinksoft.controller.agent_controller import AgentController
+from thinksoft.controller.state.state import State
+from thinksoft.controller.stuck import StuckDetector
+from thinksoft.events.action import (
     CmdRunAction,
     FileReadAction,
     MessageAction,
 )
-from openhands.events.action.commands import IPythonRunCellAction
-from openhands.events.event import Event
-from openhands.events.observation import (
+from thinksoft.events.action.commands import IPythonRunCellAction
+from thinksoft.events.event import Event
+from thinksoft.events.observation import (
     CmdOutputObservation,
     FileReadObservation,
 )
-from openhands.events.observation.agent import AgentCondensationObservation
-from openhands.events.observation.commands import IPythonRunCellObservation
-from openhands.events.observation.empty import NullObservation
-from openhands.events.observation.error import ErrorObservation
-from openhands.events.stream import EventSource, EventStream
-from openhands.storage import get_file_store
+from thinksoft.events.observation.agent import AgentCondensationObservation
+from thinksoft.events.observation.commands import IPythonRunCellObservation
+from thinksoft.events.observation.empty import NullObservation
+from thinksoft.events.observation.error import ErrorObservation
+from thinksoft.events.stream import EventSource, EventStream
+from thinksoft.storage import get_file_store
 
 # Reusable action/observation mocks for stuck-pattern tests
 cmd_ls_action = CmdRunAction(command='ls')

@@ -19,8 +19,8 @@ import httpx
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from openhands.app_server.errors import SandboxError
-from openhands.app_server.sandbox.remote_sandbox_service import (
+from thinksoft.app_server.errors import SandboxError
+from thinksoft.app_server.sandbox.remote_sandbox_service import (
     ALLOW_CORS_ORIGINS_VARIABLE,
     POD_STATUS_MAPPING,
     STATUS_MAPPING,
@@ -28,7 +28,7 @@ from openhands.app_server.sandbox.remote_sandbox_service import (
     RemoteSandboxService,
     StoredRemoteSandbox,
 )
-from openhands.app_server.sandbox.sandbox_models import (
+from thinksoft.app_server.sandbox.sandbox_models import (
     AGENT_SERVER,
     VSCODE,
     WORKER_1,
@@ -36,8 +36,8 @@ from openhands.app_server.sandbox.sandbox_models import (
     SandboxInfo,
     SandboxStatus,
 )
-from openhands.app_server.sandbox.sandbox_spec_models import SandboxSpecInfo
-from openhands.app_server.user.user_context import UserContext
+from thinksoft.app_server.sandbox.sandbox_spec_models import SandboxSpecInfo
+from thinksoft.app_server.user.user_context import UserContext
 
 
 @pytest.fixture
@@ -46,7 +46,7 @@ def mock_sandbox_spec_service():
     mock_service = AsyncMock()
     mock_spec = SandboxSpecInfo(
         id='test-image:latest',
-        command=['/usr/local/bin/openhands-agent-server', '--port', '60000'],
+        command=['/usr/local/bin/thinksoft-agent-server', '--port', '60000'],
         initial_env={'TEST_VAR': 'test_value'},
         working_dir='/workspace/project',
     )
@@ -999,7 +999,7 @@ class TestUtilityFunctions:
 
     def test_build_service_url(self):
         """Test _build_service_url function."""
-        from openhands.app_server.sandbox.remote_sandbox_service import (
+        from thinksoft.app_server.sandbox.remote_sandbox_service import (
             _build_service_url,
         )
 

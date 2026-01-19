@@ -20,8 +20,8 @@ from server.constants import (
 from server.logger import logger
 from storage.user_settings import UserSettings
 
-from openhands.server.settings import Settings
-from openhands.utils.http_session import httpx_verify_option
+from thinksoft.server.settings import Settings
+from thinksoft.utils.http_session import httpx_verify_option
 
 # Timeout in seconds for BYOR key verification requests to LiteLLM
 BYOR_KEY_VERIFICATION_TIMEOUT = 5.0
@@ -76,7 +76,7 @@ class LiteLlmManager:
                     client,
                     keycloak_user_id,
                     org_id,
-                    f'OpenHands Cloud - user {keycloak_user_id}',
+                    f'Thinksoft Cloud - user {keycloak_user_id}',
                     None,
                 )
 

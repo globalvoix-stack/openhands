@@ -8,7 +8,7 @@ from storage.jira_dc_conversation import JiraDcConversation
 from storage.jira_dc_user import JiraDcUser
 from storage.jira_dc_workspace import JiraDcWorkspace
 
-from openhands.core.logger import openhands_logger as logger
+from thinksoft.core.logger import thinksoft_logger as logger
 
 
 @dataclass

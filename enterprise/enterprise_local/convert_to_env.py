@@ -99,18 +99,18 @@ os.remove(yaml_file)
 lines = []
 lines.append('KEYCLOAK_SERVER_URL=https://auth.staging.all-hands.dev/')
 lines.append('KEYCLOAK_SERVER_URL_EXT=https://auth.staging.all-hands.dev/')
-lines.append('OPENHANDS_CONFIG_CLS=server.config.SaaSServerConfig')
+lines.append('THINKSOFT_CONFIG_CLS=server.config.SaaSServerConfig')
 lines.append(
-    'OPENHANDS_GITHUB_SERVICE_CLS=integrations.github.github_service.SaaSGitHubService'
+    'THINKSOFT_GITHUB_SERVICE_CLS=integrations.github.github_service.SaaSGitHubService'
 )
 lines.append(
-    'OPENHANDS_GITLAB_SERVICE_CLS=integrations.gitlab.gitlab_service.SaaSGitLabService'
+    'THINKSOFT_GITLAB_SERVICE_CLS=integrations.gitlab.gitlab_service.SaaSGitLabService'
 )
 lines.append(
-    'OPENHANDS_BITBUCKET_SERVICE_CLS=integrations.bitbucket.bitbucket_service.SaaSBitBucketService'
+    'THINKSOFT_BITBUCKET_SERVICE_CLS=integrations.bitbucket.bitbucket_service.SaaSBitBucketService'
 )
 lines.append(
-    'OPENHANDS_CONVERSATION_VALIDATOR_CLS=storage.saas_conversation_validator.SaasConversationValidator'
+    'THINKSOFT_CONVERSATION_VALIDATOR_CLS=storage.saas_conversation_validator.SaasConversationValidator'
 )
 lines.append('POSTHOG_CLIENT_KEY=test')
 lines.append('ENABLE_PROACTIVE_CONVERSATION_STARTERS=true')

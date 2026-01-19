@@ -8,8 +8,8 @@ from sqlalchemy import func, select
 from storage.database import a_session_maker, get_engine, session_maker
 from storage.user import User
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.utils.async_utils import wait_all
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.utils.async_utils import wait_all
 
 # Safety flag to prevent chaos routes from being added in production environments
 # Only enables these routes in non-production environments

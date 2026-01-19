@@ -1,4 +1,4 @@
-import { openHands } from "./open-hands-axios";
+import { thinksoft } from "./thinksoft-axios";
 import {
   CustomSecret,
   GetSecretsResponse,
@@ -8,7 +8,7 @@ import { Provider, ProviderToken } from "#/types/settings";
 
 export class SecretsService {
   static async getSecrets() {
-    const { data } = await openHands.get<GetSecretsResponse>("/api/secrets");
+    const { data } = await thinksoft.get<GetSecretsResponse>("/api/secrets");
     return data.custom_secrets;
   }
 
@@ -19,7 +19,7 @@ export class SecretsService {
       description,
     };
 
-    const { status } = await openHands.post("/api/secrets", secret);
+    const { status } = await thinksoft.post("/api/secrets", secret);
     return status === 201;
   }
 
@@ -29,12 +29,12 @@ export class SecretsService {
       description,
     };
 
-    const { status } = await openHands.put(`/api/secrets/${id}`, secret);
+    const { status } = await thinksoft.put(`/api/secrets/${id}`, secret);
     return status === 200;
   }
 
   static async deleteSecret(id: string) {
-    const { status } = await openHands.delete<boolean>(`/api/secrets/${id}`);
+    const { status } = await thinksoft.delete<boolean>(`/api/secrets/${id}`);
     return status === 200;
   }
 
@@ -42,7 +42,7 @@ export class SecretsService {
     const tokens: POSTProviderTokens = {
       provider_tokens: providers,
     };
-    const { data } = await openHands.post<boolean>(
+    const { data } = await thinksoft.post<boolean>(
       "/api/add-git-providers",
       tokens,
     );

@@ -8,9 +8,9 @@ from storage.org_member import OrgMember
 from storage.org_member_store import OrgMemberStore
 from storage.user_store import UserStore
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.server.user_auth import get_user_id
-from openhands.utils.async_utils import call_sync_from_async
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.server.user_auth import get_user_id
+from thinksoft.utils.async_utils import call_sync_from_async
 
 
 # Helper functions for BYOR API key management

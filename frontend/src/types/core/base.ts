@@ -1,4 +1,4 @@
-export type OpenHandsEventType =
+export type ThinksoftEventType =
   | "message"
   | "system"
   | "agent_state_changed"
@@ -21,25 +21,25 @@ export type OpenHandsEventType =
   | "task_tracking"
   | "user_rejected";
 
-export type OpenHandsSourceType = "agent" | "user" | "environment";
+export type ThinksoftSourceType = "agent" | "user" | "environment";
 
-interface OpenHandsBaseEvent {
+interface ThinksoftBaseEvent {
   id: number;
-  source: OpenHandsSourceType;
+  source: ThinksoftSourceType;
   message: string;
   timestamp: string; // ISO 8601
 }
 
-export interface OpenHandsActionEvent<
-  T extends OpenHandsEventType,
-> extends OpenHandsBaseEvent {
+export interface ThinksoftActionEvent<
+  T extends ThinksoftEventType,
+> extends ThinksoftBaseEvent {
   action: T;
   args: Record<string, unknown>;
 }
 
-export interface OpenHandsObservationEvent<
-  T extends OpenHandsEventType,
-> extends OpenHandsBaseEvent {
+export interface ThinksoftObservationEvent<
+  T extends ThinksoftEventType,
+> extends ThinksoftBaseEvent {
   cause: number;
   observation: T;
   content: string;

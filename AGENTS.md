@@ -1,16 +1,16 @@
-This repository contains the code for OpenHands, an automated AI software engineer. It has a Python backend
-(in the `openhands` directory) and React frontend (in the `frontend` directory).
+This repository contains the code for Thinksoft, an automated AI software engineer. It has a Python backend
+(in the `thinksoft` directory) and React frontend (in the `frontend` directory).
 
 ## General Setup:
 To set up the entire repo, including frontend and backend, run `make build`.
 You don't need to do this unless the user asks you to, or if you're trying to run the entire application.
 
-## Running OpenHands with OpenHands:
+## Running Thinksoft with Thinksoft:
 To run the full application to debug issues:
 ```bash
 export INSTALL_DOCKER=0
 export RUNTIME=local
-make build && make run FRONTEND_PORT=12000 FRONTEND_HOST=0.0.0.0 BACKEND_HOST=0.0.0.0 &> /tmp/openhands-log.txt &
+make build && make run FRONTEND_PORT=12000 FRONTEND_HOST=0.0.0.0 BACKEND_HOST=0.0.0.0 &> /tmp/thinksoft-log.txt &
 ```
 
 IMPORTANT: Before making any changes to the codebase, ALWAYS run `make install-pre-commit-hooks` to ensure pre-commit hooks are properly installed.
@@ -19,7 +19,7 @@ Before pushing any changes, you MUST ensure that any lint errors or simple test 
 
 * If you've made changes to the backend, you should run `pre-commit run --config ./dev_config/python/.pre-commit-config.yaml` (this will run on staged files).
 * If you've made changes to the frontend, you should run `cd frontend && npm run lint:fix && npm run build ; cd ..`
-* If you've made changes to the VSCode extension, you should run `cd openhands/integrations/vscode && npm run lint:fix && npm run compile ; cd ../../..`
+* If you've made changes to the VSCode extension, you should run `cd thinksoft/integrations/vscode && npm run lint:fix && npm run compile ; cd ../../..`
 
 The pre-commit hooks MUST pass successfully before pushing any changes to the repository. This is a mandatory requirement to maintain code quality and consistency.
 
@@ -38,7 +38,7 @@ then re-run the command to ensure it passes. Common issues include:
 
 ## Repository Structure
 Backend:
-- Located in the `openhands` directory
+- Located in the `thinksoft` directory
 - Testing:
   - All tests are in `tests/unit/test_*.py`
   - To test new code, run `poetry run pytest tests/unit/test_xxx.py` where `xxx` is the appropriate file for the current functionality
@@ -68,7 +68,7 @@ Frontend:
   - Architecture rule: UI components → TanStack Query hooks → Data Access Layer (`frontend/src/api`) → API endpoints
 
 VSCode Extension:
-- Located in the `openhands/integrations/vscode` directory
+- Located in the `thinksoft/integrations/vscode` directory
 - Setup: Run `npm install` in the extension directory
 - Linting:
   - Run linting with fixes: `npm run lint:fix`
@@ -85,7 +85,7 @@ VSCode Extension:
 
 ## Enterprise Directory
 
-The `enterprise/` directory contains additional functionality that extends the open-source OpenHands codebase. This includes:
+The `enterprise/` directory contains additional functionality that extends the open-source Thinksoft codebase. This includes:
 - Authentication and user management (Keycloak integration)
 - Database migrations (Alembic)
 - Integration services (GitHub, GitLab, Jira, Linear, Slack)
@@ -101,7 +101,7 @@ The `enterprise/` directory contains additional functionality that extends the o
 - Docker (optional)
 
 **Setup Steps:**
-1. First, build the main OpenHands project: `make build`
+1. First, build the main Thinksoft project: `make build`
 2. Then install enterprise dependencies: `cd enterprise && poetry install --with dev,test` (This can take a very long time. Be patient.)
 3. Set up enterprise pre-commit hooks: `poetry run pre-commit install --config ./dev_config/python/.pre-commit-config.yaml`
 
@@ -150,9 +150,9 @@ Each integration follows a consistent pattern with service classes, storage mode
 
 **Important Notes:**
 - Enterprise code is licensed under Polyform Free Trial License (30-day limit)
-- The enterprise server extends the OpenHands server through dynamic imports
+- The enterprise server extends the Thinksoft server through dynamic imports
 - Database changes require careful migration planning in `enterprise/migrations/`
-- Always test changes in both OpenHands and enterprise contexts
+- Always test changes in both Thinksoft and enterprise contexts
 - Use the enterprise-specific Makefile commands for development
 
 **Enterprise Testing Best Practices:**
@@ -166,7 +166,7 @@ Each integration follows a consistent pattern with service classes, storage mode
 **Import Patterns:**
 - Use relative imports without `enterprise.` prefix in enterprise code
 - Example: `from storage.database import session_maker` not `from enterprise.storage.database import session_maker`
-- This ensures code works in both OpenHands and enterprise contexts
+- This ensures code works in both Thinksoft and enterprise contexts
 
 **Test Structure:**
 - Place tests in `enterprise/tests/unit/` following the same structure as the source code
@@ -188,7 +188,7 @@ Each integration follows a consistent pattern with service classes, storage mode
 **Troubleshooting:**
 - If tests fail, ensure all dependencies are installed: `poetry install --with dev,test`
 - For database issues, check migration status and run migrations if needed
-- For frontend issues, ensure the main OpenHands frontend is built: `make build`
+- For frontend issues, ensure the main Thinksoft frontend is built: `make build`
 - Check logs in the `logs/` directory for runtime issues
 - If tests fail with import errors, verify `PYTHONPATH=".:$PYTHONPATH"` is set
 - **If GitHub CI fails but local linting passes**: Always use `--show-diff-on-failure` flag to match CI behavior exactly
@@ -203,11 +203,11 @@ These details may or may not be useful for your current task.
 
 ### Microagents
 
-Microagents are specialized prompts that enhance OpenHands with domain-specific knowledge and task-specific workflows. They are Markdown files that can include frontmatter for configuration.
+Microagents are specialized prompts that enhance Thinksoft with domain-specific knowledge and task-specific workflows. They are Markdown files that can include frontmatter for configuration.
 
 #### Types:
 - **Public Microagents**: Located in `microagents/`, available to all users
-- **Repository Microagents**: Located in `.openhands/microagents/`, specific to this repository
+- **Repository Microagents**: Located in `.thinksoft/microagents/`, specific to this repository
 
 #### Loading Behavior:
 - **Without frontmatter**: Always loaded into LLM context
@@ -238,7 +238,7 @@ Your specialized knowledge and instructions here...
   - Special actions (like "think") are displayed as collapsible elements only
 
 #### Adding User Settings:
-- To add a new user setting to OpenHands, follow these steps:
+- To add a new user setting to Thinksoft, follow these steps:
   1. Add the setting to the frontend:
      - Add the setting to the `Settings` type in `frontend/src/types/settings.ts`
      - Add the setting to the `ApiSettings` type in the same file
@@ -249,12 +249,12 @@ Your specialized knowledge and instructions here...
      - Add i18n translations for the setting name and any tooltips in `frontend/src/i18n/translation.json`
      - Add the translation key to `frontend/src/i18n/declaration.ts`
   2. Add the setting to the backend:
-     - Add the setting to the `Settings` model in `openhands/storage/data_models/settings.py`
+     - Add the setting to the `Settings` model in `thinksoft/storage/data_models/settings.py`
      - Update any relevant backend code to apply the setting (e.g., in session creation)
 
 #### Settings UI Patterns:
 
-There are two main patterns for saving settings in the OpenHands frontend:
+There are two main patterns for saving settings in the Thinksoft frontend:
 
 **Pattern 1: Entity-based Resources (Immediate Save)**
 - Used for: API Keys, Secrets, MCP Servers
@@ -283,7 +283,7 @@ There are two main patterns for saving settings in the OpenHands frontend:
 
 ### Adding New LLM Models
 
-To add a new LLM model to OpenHands, you need to update multiple files across both frontend and backend:
+To add a new LLM model to Thinksoft, you need to update multiple files across both frontend and backend:
 
 #### Model Configuration Procedure:
 
@@ -293,18 +293,18 @@ To add a new LLM model to OpenHands, you need to update multiple files across bo
      - `VERIFIED_OPENAI_MODELS` for OpenAI models
      - `VERIFIED_ANTHROPIC_MODELS` for Anthropic models
      - `VERIFIED_MISTRAL_MODELS` for Mistral models
-     - `VERIFIED_OPENHANDS_MODELS` for models available through OpenHands provider
+     - `VERIFIED_THINKSOFT_MODELS` for models available through Thinksoft provider
 
-2. **Backend CLI Integration** (`openhands/cli/utils.py`):
+2. **Backend CLI Integration** (`thinksoft/cli/utils.py`):
    - Add the model to the appropriate `VERIFIED_*_MODELS` arrays
    - This ensures the model appears in CLI model selection
 
-3. **Backend Model List** (`openhands/utils/llm.py`):
-   - **CRITICAL**: Add the model to the `openhands_models` list (lines 57-66) if using OpenHands provider
+3. **Backend Model List** (`thinksoft/utils/llm.py`):
+   - **CRITICAL**: Add the model to the `thinksoft_models` list (lines 57-66) if using Thinksoft provider
    - This is required for the model to appear in the frontend model selector
-   - Format: `'openhands/model-name'` (e.g., `'openhands/o3'`)
+   - Format: `'thinksoft/model-name'` (e.g., `'thinksoft/o3'`)
 
-4. **Backend LLM Configuration** (`openhands/llm/llm.py`):
+4. **Backend LLM Configuration** (`thinksoft/llm/llm.py`):
    - Add to feature-specific arrays based on model capabilities:
      - `FUNCTION_CALLING_SUPPORTED_MODELS` if the model supports function calling
      - `REASONING_EFFORT_SUPPORTED_MODELS` if the model supports reasoning effort parameters
@@ -322,7 +322,7 @@ To add a new LLM model to OpenHands, you need to update multiple files across bo
 - **VERIFIED_OPENAI_MODELS**: OpenAI models (LiteLLM doesn't return provider prefix)
 - **VERIFIED_ANTHROPIC_MODELS**: Anthropic models (LiteLLM doesn't return provider prefix)
 - **VERIFIED_MISTRAL_MODELS**: Mistral models (LiteLLM doesn't return provider prefix)
-- **VERIFIED_OPENHANDS_MODELS**: Models available through OpenHands managed provider
+- **VERIFIED_THINKSOFT_MODELS**: Models available through Thinksoft managed provider
 
 #### Model Feature Support Arrays:
 

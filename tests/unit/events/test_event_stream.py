@@ -8,29 +8,29 @@ import psutil
 import pytest
 from pytest import TempPathFactory
 
-from openhands.core.schema import ActionType, ObservationType
-from openhands.events import EventSource, EventStream, EventStreamSubscriber
-from openhands.events.action import (
+from thinksoft.core.schema import ActionType, ObservationType
+from thinksoft.events import EventSource, EventStream, EventStreamSubscriber
+from thinksoft.events.action import (
     CmdRunAction,
     NullAction,
 )
-from openhands.events.action.files import (
+from thinksoft.events.action.files import (
     FileEditAction,
     FileReadAction,
     FileWriteAction,
 )
-from openhands.events.action.message import MessageAction
-from openhands.events.event import FileEditSource, FileReadSource
-from openhands.events.event_filter import EventFilter
-from openhands.events.observation import NullObservation
-from openhands.events.observation.files import (
+from thinksoft.events.action.message import MessageAction
+from thinksoft.events.event import FileEditSource, FileReadSource
+from thinksoft.events.event_filter import EventFilter
+from thinksoft.events.observation import NullObservation
+from thinksoft.events.observation.files import (
     FileEditObservation,
     FileReadObservation,
     FileWriteObservation,
 )
-from openhands.events.serialization.event import event_to_dict
-from openhands.storage import get_file_store
-from openhands.storage.locations import (
+from thinksoft.events.serialization.event import event_to_dict
+from thinksoft.storage import get_file_store
+from thinksoft.storage.locations import (
     get_conversation_event_filename,
 )
 

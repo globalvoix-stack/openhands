@@ -6,13 +6,13 @@ import re
 import pytest
 from conftest import _close_test_runtime, _load_runtime
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.events.action import (
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.events.action import (
     BrowseInteractiveAction,
     BrowseURLAction,
     CmdRunAction,
 )
-from openhands.events.observation import (
+from thinksoft.events.observation import (
     BrowserOutputObservation,
     CmdOutputObservation,
     ErrorObservation,
@@ -123,9 +123,9 @@ def find_element_by_tag_and_attributes(
     return None
 
 
-def test_browser_disabled(temp_dir, runtime_cls, run_as_openhands, dynamic_port):
+def test_browser_disabled(temp_dir, runtime_cls, run_as_thinksoft, dynamic_port):
     runtime, _ = _load_runtime(
-        temp_dir, runtime_cls, run_as_openhands, enable_browser=False
+        temp_dir, runtime_cls, run_as_thinksoft, enable_browser=False
     )
 
     action_cmd = CmdRunAction(
@@ -147,9 +147,9 @@ def test_browser_disabled(temp_dir, runtime_cls, run_as_openhands, dynamic_port)
     _close_test_runtime(runtime)
 
 
-def test_simple_browse(temp_dir, runtime_cls, run_as_openhands, dynamic_port):
+def test_simple_browse(temp_dir, runtime_cls, run_as_thinksoft, dynamic_port):
     runtime, config = _load_runtime(
-        temp_dir, runtime_cls, run_as_openhands, enable_browser=True
+        temp_dir, runtime_cls, run_as_thinksoft, enable_browser=True
     )
 
     # Test browse
@@ -198,11 +198,11 @@ def test_simple_browse(temp_dir, runtime_cls, run_as_openhands, dynamic_port):
 
 
 def test_browser_navigation_actions(
-    temp_dir, runtime_cls, run_as_openhands, dynamic_port
+    temp_dir, runtime_cls, run_as_thinksoft, dynamic_port
 ):
     """Test browser navigation actions: goto, go_back, go_forward, noop."""
     runtime, config = _load_runtime(
-        temp_dir, runtime_cls, run_as_openhands, enable_browser=True
+        temp_dir, runtime_cls, run_as_thinksoft, enable_browser=True
     )
     try:
         # Create test HTML pages
@@ -335,11 +335,11 @@ def test_browser_navigation_actions(
 
 
 def test_browser_form_interactions(
-    temp_dir, runtime_cls, run_as_openhands, dynamic_port
+    temp_dir, runtime_cls, run_as_thinksoft, dynamic_port
 ):
     """Test browser form interaction actions: fill, click, select_option, clear."""
     runtime, config = _load_runtime(
-        temp_dir, runtime_cls, run_as_openhands, enable_browser=True
+        temp_dir, runtime_cls, run_as_thinksoft, enable_browser=True
     )
     try:
         # Create a test form page
@@ -553,11 +553,11 @@ fill("{textarea_bid}", "This is a test message")
 
 
 def test_browser_interactive_actions(
-    temp_dir, runtime_cls, run_as_openhands, dynamic_port
+    temp_dir, runtime_cls, run_as_thinksoft, dynamic_port
 ):
     """Test browser interactive actions: scroll, hover, fill, press, focus."""
     runtime, config = _load_runtime(
-        temp_dir, runtime_cls, run_as_openhands, enable_browser=True
+        temp_dir, runtime_cls, run_as_thinksoft, enable_browser=True
     )
     try:
         # Create a test page with scrollable content
@@ -762,10 +762,10 @@ scroll(0, 400)
         _close_test_runtime(runtime)
 
 
-def test_browser_file_upload(temp_dir, runtime_cls, run_as_openhands, dynamic_port):
+def test_browser_file_upload(temp_dir, runtime_cls, run_as_thinksoft, dynamic_port):
     """Test browser file upload action."""
     runtime, config = _load_runtime(
-        temp_dir, runtime_cls, run_as_openhands, enable_browser=True
+        temp_dir, runtime_cls, run_as_thinksoft, enable_browser=True
     )
     try:
         # Create a test file to upload
@@ -920,9 +920,9 @@ def test_browser_file_upload(temp_dir, runtime_cls, run_as_openhands, dynamic_po
         _close_test_runtime(runtime)
 
 
-def test_read_pdf_browse(temp_dir, runtime_cls, run_as_openhands):
+def test_read_pdf_browse(temp_dir, runtime_cls, run_as_thinksoft):
     runtime, config = _load_runtime(
-        temp_dir, runtime_cls, run_as_openhands, enable_browser=True
+        temp_dir, runtime_cls, run_as_thinksoft, enable_browser=True
     )
     try:
         # Create a PDF file using reportlab in the host environment
@@ -994,9 +994,9 @@ def test_read_pdf_browse(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_read_png_browse(temp_dir, runtime_cls, run_as_openhands):
+def test_read_png_browse(temp_dir, runtime_cls, run_as_thinksoft):
     runtime, config = _load_runtime(
-        temp_dir, runtime_cls, run_as_openhands, enable_browser=True
+        temp_dir, runtime_cls, run_as_thinksoft, enable_browser=True
     )
     try:
         # Create a PNG file using PIL in the host environment
@@ -1064,10 +1064,10 @@ def test_read_png_browse(temp_dir, runtime_cls, run_as_openhands):
 
 
 @pytest.mark.skip(reason='This test is flaky')
-def test_download_file(temp_dir, runtime_cls, run_as_openhands, dynamic_port):
+def test_download_file(temp_dir, runtime_cls, run_as_thinksoft, dynamic_port):
     """Test downloading a file using the browser."""
     runtime, config = _load_runtime(
-        temp_dir, runtime_cls, run_as_openhands, enable_browser=True
+        temp_dir, runtime_cls, run_as_thinksoft, enable_browser=True
     )
     try:
         # Minimal PDF content for testing

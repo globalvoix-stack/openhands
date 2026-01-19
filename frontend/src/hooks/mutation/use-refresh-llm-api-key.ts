@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { openHands } from "#/api/open-hands-axios";
+import { thinksoft } from "#/api/thinksoft-axios";
 import {
   LLM_API_KEY_QUERY_KEY,
   LlmApiKeyResponse,
@@ -10,7 +10,7 @@ export function useRefreshLlmApiKey() {
 
   return useMutation({
     mutationFn: async () => {
-      const { data } = await openHands.post<LlmApiKeyResponse>(
+      const { data } = await thinksoft.post<LlmApiKeyResponse>(
         "/api/keys/llm/byor/refresh",
       );
       return data;

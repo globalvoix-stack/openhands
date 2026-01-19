@@ -1,6 +1,6 @@
-ARG OPENHANDS_VERSION=latest
-ARG BASE="ghcr.io/openhands/openhands"
-FROM ${BASE}:${OPENHANDS_VERSION}
+ARG THINKSOFT_VERSION=latest
+ARG BASE="ghcr.io/thinksoft/thinksoft"
+FROM ${BASE}:${THINKSOFT_VERSION}
 
 # Datadog labels
 LABEL com.datadoghq.tags.service="deploy"
@@ -31,9 +31,9 @@ RUN /app/.venv/bin/pip install alembic psycopg2-binary cloud-sql-python-connecto
         "pillow>=11.3.0"
 
 WORKDIR /app
-COPY --chown=openhands:openhands --chmod=770 enterprise .
+COPY --chown=thinksoft:thinksoft --chmod=770 enterprise .
 
-USER openhands
+USER thinksoft
 
 # Command will be overridden by Kubernetes deployment template
 CMD ["uvicorn", "saas_server:app", "--host", "0.0.0.0", "--port", "3000"]

@@ -11,7 +11,7 @@ import toml
 from datasets import load_dataset
 from jinja2 import Environment, FileSystemLoader
 
-import openhands.agenthub
+import thinksoft.agenthub
 from evaluation.benchmarks.nocode_bench.binary_patch_utils import (
     remove_binary_diffs,
     remove_binary_files_from_git,
@@ -31,35 +31,35 @@ from evaluation.utils.shared import (
     codeact_user_response,
     get_default_sandbox_config_for_eval,
     get_metrics,
-    get_openhands_config_for_eval,
+    get_thinksoft_config_for_eval,
     is_fatal_evaluation_error,
     make_metadata,
     prepare_dataset,
     reset_logger_for_multiprocessing,
     update_llm_config_for_completions_logging,
 )
-from openhands.controller.state.state import State
-from openhands.core.config import (
+from thinksoft.controller.state.state import State
+from thinksoft.core.config import (
     AgentConfig,
-    OpenHandsConfig,
+    ThinksoftConfig,
     get_evaluation_parser,
     get_llm_config_arg,
 )
-from openhands.core.config.condenser_config import NoOpCondenserConfig
-from openhands.core.config.utils import get_condenser_config_arg
-from openhands.core.logger import openhands_logger as logger
-from openhands.core.main import create_runtime, run_controller
-from openhands.critic import AgentFinishedCritic
-from openhands.events.action import CmdRunAction, FileReadAction, MessageAction
-from openhands.events.observation import (
+from thinksoft.core.config.condenser_config import NoOpCondenserConfig
+from thinksoft.core.config.utils import get_condenser_config_arg
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.core.main import create_runtime, run_controller
+from thinksoft.critic import AgentFinishedCritic
+from thinksoft.events.action import CmdRunAction, FileReadAction, MessageAction
+from thinksoft.events.observation import (
     CmdOutputObservation,
     ErrorObservation,
     FileReadObservation,
 )
-from openhands.events.serialization.event import event_from_dict, event_to_dict
-from openhands.runtime.base import Runtime
-from openhands.utils.async_utils import call_async_from_sync
-from openhands.utils.shutdown_listener import sleep_if_should_continue
+from thinksoft.events.serialization.event import event_from_dict, event_to_dict
+from thinksoft.runtime.base import Runtime
+from thinksoft.utils.async_utils import call_async_from_sync
+from thinksoft.utils.shutdown_listener import sleep_if_should_continue
 
 USE_HINT_TEXT = os.environ.get('USE_HINT_TEXT', 'false').lower() == 'true'
 RUN_WITH_BROWSING = os.environ.get('RUN_WITH_BROWSING', 'false').lower() == 'true'
@@ -150,7 +150,7 @@ def get_instance_docker_image(
 def get_config(
     instance: pd.Series,
     metadata: EvalMetadata,
-) -> OpenHandsConfig:
+) -> ThinksoftConfig:
     # We use a different instance image for the each instance of NoCode-bench eval
     use_swebench_official_image = True
 
@@ -161,7 +161,7 @@ def get_config(
     logger.info(
         f'Using instance container image: {base_container_image}. '
         f'Please make sure this image exists. '
-        f'Submit an issue on https://github.com/OpenHands/OpenHands if you run into any issues.'
+        f'Submit an issue on https://github.com/Thinksoft/Thinksoft if you run into any issues.'
     )
 
     sandbox_config = get_default_sandbox_config_for_eval()
@@ -175,7 +175,7 @@ def get_config(
         instance_id=instance['instance_id'],
     )
 
-    config = get_openhands_config_for_eval(
+    config = get_thinksoft_config_for_eval(
         metadata=metadata,
         runtime=os.environ.get('RUNTIME', 'docker'),
         sandbox_config=sandbox_config,
@@ -704,7 +704,7 @@ if __name__ == '__main__':
     args, _ = parser.parse_known_args()
 
     # NOTE: It is preferable to load datasets from huggingface datasets and perform post-processing
-    # so we don't need to manage file uploading to OpenHands's repo
+    # so we don't need to manage file uploading to Thinksoft's repo
 
     dataset = load_dataset(args.dataset, args.split)
 
@@ -742,7 +742,7 @@ if __name__ == '__main__':
         )
 
     details = {'mode': args.mode}
-    _agent_cls = openhands.agenthub.Agent.get_cls(args.agent_cls)
+    _agent_cls = thinksoft.agenthub.Agent.get_cls(args.agent_cls)
 
     dataset_descrption = (
         args.dataset.replace('/', '__') + '-' + args.split.replace('/', '__')

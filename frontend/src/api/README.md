@@ -2,7 +2,7 @@
 
 ## Overview
 
-Services are the abstraction layer between frontend components and backend APIs. They encapsulate HTTP requests using the shared `openHands` axios instance and provide typed methods for each endpoint.
+Services are the abstraction layer between frontend components and backend APIs. They encapsulate HTTP requests using the shared `thinksoft` axios instance and provide typed methods for each endpoint.
 
 Each service is a plain object with async methods.
 
@@ -27,17 +27,17 @@ Use an object literal with named export. Use object destructuring for parameters
 
 ```typescript
 // feature-service/feature-service.api.ts
-import { openHands } from "../open-hands-axios";
+import { thinksoft } from "../open-hands-axios";
 import { Feature, CreateFeatureParams } from "./feature.types";
 
 export const featureService = {
   getFeature: async ({ id }: { id: string }) => {
-    const { data } = await openHands.get<Feature>(`/api/features/${id}`);
+    const { data } = await thinksoft.get<Feature>(`/api/features/${id}`);
     return data;
   },
 
   createFeature: async ({ name, description }: CreateFeatureParams) => {
-    const { data } = await openHands.post<Feature>("/api/features", {
+    const { data } = await thinksoft.post<Feature>("/api/features", {
       name,
       description,
     });

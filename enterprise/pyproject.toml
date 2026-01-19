@@ -7,11 +7,11 @@ requires = [
 [tool.poetry]
 name = "enterprise_server"
 version = "0.0.1"
-description = "Deploy OpenHands"
-authors = [ "OpenHands" ]
+description = "Deploy Thinksoft"
+authors = [ "Thinksoft" ]
 license = "POLYFORM"
 readme = "README.md"
-repository = "https://github.com/OpenHands/OpenHands"
+repository = "https://github.com/Thinksoft/Thinksoft"
 packages = [
   { include = "server" },
   { include = "storage" },
@@ -22,7 +22,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.12,<3.14"
-openhands-ai = { path = "../", develop = true }
+thinksoft-ai = { path = "../", develop = true }
 gspread = "^6.1.4"
 alembic = "^1.14.1"
 cloud-sql-python-connector = "^1.16.0"

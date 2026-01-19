@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSettings } from "#/hooks/query/use-settings";
-import { openHands } from "#/api/open-hands-axios";
+import { thinksoft } from "#/api/thinksoft-axios";
 import { displaySuccessToast } from "#/utils/custom-toast-handlers";
 import { useEmailVerification } from "#/hooks/use-email-verification";
 
@@ -174,7 +174,7 @@ function UserSettingsScreen() {
     if (email === originalEmail || !isEmailValid) return;
     try {
       setIsSaving(true);
-      await openHands.post("/api/email", { email }, { withCredentials: true });
+      await thinksoft.post("/api/email", { email }, { withCredentials: true });
       setOriginalEmail(email);
       // Display toast notification instead of setting state
       displaySuccessToast(t("SETTINGS$EMAIL_SAVED_SUCCESSFULLY"));

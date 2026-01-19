@@ -22,7 +22,7 @@ class TestJiraNewConversationView:
         assert instructions == 'Test Jira instructions template'
         assert 'TEST-123' in user_msg
         assert 'Test Issue' in user_msg
-        assert 'Fix this bug @openhands' in user_msg
+        assert 'Fix this bug @thinksoft' in user_msg
 
     @patch('integrations.jira.jira_view.create_new_conversation')
     @patch('integrations.jira.jira_view.integration_store')

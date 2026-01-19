@@ -6,7 +6,7 @@ import { useConversationId } from "#/hooks/use-conversation-id";
 import { useActiveConversation } from "#/hooks/query/use-active-conversation";
 import { useRuntimeIsReady } from "#/hooks/use-runtime-is-ready";
 import { getGitPath } from "#/utils/get-git-path";
-import type { GitChange } from "#/api/open-hands.types";
+import type { GitChange } from "#/api/thinksoft.types";
 
 /**
  * Unified hook to get git changes for both legacy (V0) and V1 conversations

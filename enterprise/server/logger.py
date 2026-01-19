@@ -8,7 +8,7 @@ from typing import TextIO
 
 from pythonjsonlogger.json import JsonFormatter
 
-from openhands.core.logger import openhands_logger
+from thinksoft.core.logger import thinksoft_logger
 
 LOG_JSON = os.getenv('LOG_JSON', '1') == '1'
 LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO').upper()
@@ -86,7 +86,7 @@ def setup_json_logger(
 def setup_all_loggers():
     """
     Setup JSON logging for all libraries that may be logging.
-    Leave OpenHands alone since it's already configured.
+    Leave Thinksoft alone since it's already configured.
     """
     if LOG_JSON:
         # Setup the root logger
@@ -117,5 +117,5 @@ def setup_all_loggers():
 
 logger = logging.getLogger('saas')
 setup_all_loggers()
-# Openhands logger is heavily customized - so we want to make sure that it is logging json
-setup_json_logger(openhands_logger)
+# Thinksoft logger is heavily customized - so we want to make sure that it is logging json
+setup_json_logger(thinksoft_logger)

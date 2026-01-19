@@ -6,13 +6,13 @@ from sqlalchemy.orm import sessionmaker
 from storage.database import session_maker
 from storage.stored_repository import StoredRepository
 
-from openhands.core.config.openhands_config import OpenHandsConfig
+from thinksoft.core.config.thinksoft_config import ThinksoftConfig
 
 
 @dataclass
 class RepositoryStore:
     session_maker: sessionmaker
-    config: OpenHandsConfig
+    config: ThinksoftConfig
 
     def store_projects(self, repositories: list[StoredRepository]) -> None:
         """
@@ -53,6 +53,6 @@ class RepositoryStore:
             session.commit()
 
     @classmethod
-    def get_instance(cls, config: OpenHandsConfig) -> RepositoryStore:
+    def get_instance(cls, config: ThinksoftConfig) -> RepositoryStore:
         """Get an instance of the UserRepositoryStore."""
         return RepositoryStore(session_maker, config)

@@ -14,8 +14,8 @@ from sqlalchemy.orm import sessionmaker
 from storage.database import a_session_maker
 from storage.proactive_convos import ProactiveConversation
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.integrations.service_types import ProviderType
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.integrations.service_types import ProviderType
 
 
 @dataclass

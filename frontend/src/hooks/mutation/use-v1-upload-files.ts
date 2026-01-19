@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import V1ConversationService from "#/api/conversation-service/v1-conversation-service.api";
-import { FileUploadSuccessResponse } from "#/api/open-hands.types";
+import { FileUploadSuccessResponse } from "#/api/thinksoft.types";
 
 interface V1UploadFilesVariables {
   conversationUrl: string | null | undefined;

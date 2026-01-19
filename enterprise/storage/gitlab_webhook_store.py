@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker
 from storage.database import a_session_maker
 from storage.gitlab_webhook import GitlabWebhook
 
-from openhands.core.logger import openhands_logger as logger
+from thinksoft.core.logger import thinksoft_logger as logger
 
 
 @dataclass

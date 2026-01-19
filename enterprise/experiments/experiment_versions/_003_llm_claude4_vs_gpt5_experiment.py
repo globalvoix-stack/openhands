@@ -13,8 +13,8 @@ from server.constants import (
 )
 from storage.experiment_assignment_store import ExperimentAssignmentStore
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.server.session.conversation_init_data import ConversationInitData
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.server.session.conversation_init_data import ConversationInitData
 
 
 def _get_model_variant(user_id: str | None, conversation_id: str) -> str | None:

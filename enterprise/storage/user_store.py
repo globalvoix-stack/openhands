@@ -24,7 +24,7 @@ from storage.role_store import RoleStore
 from storage.user import User
 from storage.user_settings import UserSettings
 
-from openhands.utils.async_utils import GENERAL_TIMEOUT, call_async_from_sync
+from thinksoft.utils.async_utils import GENERAL_TIMEOUT, call_async_from_sync
 
 # The max possible time to wait for another process to finish creating a user before retrying
 _REDIS_CREATE_TIMEOUT_SECONDS = 30
@@ -102,7 +102,7 @@ class UserStore:
     @staticmethod
     def _get_redis_client():
         """Get the Redis client from the Socket.IO manager."""
-        from openhands.server.shared import sio
+        from thinksoft.server.shared import sio
 
         return getattr(sio.manager, 'redis', None)
 
@@ -431,7 +431,7 @@ class UserStore:
     from typing import TYPE_CHECKING
 
     if TYPE_CHECKING:
-        from openhands.storage.data_models.settings import Settings
+        from thinksoft.storage.data_models.settings import Settings
 
     @staticmethod
     async def create_default_settings(
@@ -445,7 +445,7 @@ class UserStore:
         if not org_id:
             return None
 
-        from openhands.storage.data_models.settings import Settings
+        from thinksoft.storage.data_models.settings import Settings
 
         settings = Settings(language='en', enable_proactive_conversation_starters=True)
 

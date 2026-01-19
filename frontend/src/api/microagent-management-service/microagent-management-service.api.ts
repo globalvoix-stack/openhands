@@ -1,5 +1,5 @@
-import { openHands } from "#/api/open-hands-axios";
-import { Conversation, ResultSet } from "#/api/open-hands.types";
+import { thinksoft } from "#/api/thinksoft-axios";
+import { Conversation, ResultSet } from "#/api/thinksoft.types";
 
 class MicroagentManagementService {
   /**
@@ -23,7 +23,7 @@ class MicroagentManagementService {
       params.page_id = pageId;
     }
 
-    const { data } = await openHands.get<ResultSet<Conversation>>(
+    const { data } = await thinksoft.get<ResultSet<Conversation>>(
       "/api/microagent-management/conversations",
       { params },
     );

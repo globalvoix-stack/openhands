@@ -7,19 +7,19 @@ from unittest import mock
 import pytest
 from mcp import McpError
 
-from openhands.controller.agent import Agent
-from openhands.controller.agent_controller import AgentController
-from openhands.core.schema import AgentState
-from openhands.events.action.mcp import MCPAction
-from openhands.events.action.message import SystemMessageAction
-from openhands.events.event import EventSource
-from openhands.events.observation.mcp import MCPObservation
-from openhands.events.stream import EventStream
-from openhands.mcp.client import MCPClient
-from openhands.mcp.tool import MCPClientTool
-from openhands.mcp.utils import call_tool_mcp
-from openhands.server.services.conversation_stats import ConversationStats
-from openhands.storage.memory import InMemoryFileStore
+from thinksoft.controller.agent import Agent
+from thinksoft.controller.agent_controller import AgentController
+from thinksoft.core.schema import AgentState
+from thinksoft.events.action.mcp import MCPAction
+from thinksoft.events.action.message import SystemMessageAction
+from thinksoft.events.event import EventSource
+from thinksoft.events.observation.mcp import MCPObservation
+from thinksoft.events.stream import EventStream
+from thinksoft.mcp.client import MCPClient
+from thinksoft.mcp.tool import MCPClientTool
+from thinksoft.mcp.utils import call_tool_mcp
+from thinksoft.server.services.conversation_stats import ConversationStats
+from thinksoft.storage.memory import InMemoryFileStore
 
 
 class MockConfig:
@@ -233,7 +233,7 @@ async def test_mcp_tool_timeout_agent_continuation(conversation_stats):
 
     # Use our fixed function
     with mock.patch(
-        'openhands.mcp.utils.call_tool_mcp', side_effect=fixed_call_tool_mcp
+        'thinksoft.mcp.utils.call_tool_mcp', side_effect=fixed_call_tool_mcp
     ):
         # Call the function that would normally be called by the agent controller
         result = await call_tool_mcp([mock_client], mcp_action)

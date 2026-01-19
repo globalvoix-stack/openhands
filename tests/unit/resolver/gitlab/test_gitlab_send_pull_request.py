@@ -5,12 +5,12 @@ from urllib.parse import quote
 
 import pytest
 
-from openhands.core.config import LLMConfig
-from openhands.integrations.service_types import ProviderType
-from openhands.resolver.interfaces.gitlab import GitlabIssueHandler
-from openhands.resolver.interfaces.issue import ReviewThread
-from openhands.resolver.resolver_output import Issue, ResolverOutput
-from openhands.resolver.send_pull_request import (
+from thinksoft.core.config import LLMConfig
+from thinksoft.integrations.service_types import ProviderType
+from thinksoft.resolver.interfaces.gitlab import GitlabIssueHandler
+from thinksoft.resolver.interfaces.issue import ReviewThread
+from thinksoft.resolver.resolver_output import Issue, ResolverOutput
+from thinksoft.resolver.send_pull_request import (
     apply_patch,
     initialize_repo,
     load_single_resolver_output,
@@ -243,10 +243,10 @@ def test_initialize_repo(mock_output_dir):
         assert f.read() == 'hello world'
 
 
-@patch('openhands.resolver.interfaces.gitlab.GitlabIssueHandler.reply_to_comment')
+@patch('thinksoft.resolver.interfaces.gitlab.GitlabIssueHandler.reply_to_comment')
 @patch('httpx.post')
 @patch('subprocess.run')
-@patch('openhands.resolver.send_pull_request.LLM')
+@patch('thinksoft.resolver.send_pull_request.LLM')
 def test_update_existing_pull_request(
     mock_llm_class,
     mock_subprocess_run,
@@ -411,7 +411,7 @@ def test_send_pull_request(
     checkout_call, push_call = mock_run.call_args_list
 
     assert checkout_call == call(
-        ['git', '-C', repo_path, 'checkout', '-b', 'openhands-fix-issue-42'],
+        ['git', '-C', repo_path, 'checkout', '-b', 'thinksoft-fix-issue-42'],
         capture_output=True,
         text=True,
     )
@@ -422,7 +422,7 @@ def test_send_pull_request(
             repo_path,
             'push',
             'https://test-user:test-token@gitlab.com/test-owner/test-repo.git',
-            'openhands-fix-issue-42',
+            'thinksoft-fix-issue-42',
         ],
         capture_output=True,
         text=True,
@@ -432,7 +432,7 @@ def test_send_pull_request(
     if pr_type == 'branch':
         assert (
             result
-            == 'https://gitlab.com/test-owner/test-repo/-/compare/main...openhands-fix-issue-42'
+            == 'https://gitlab.com/test-owner/test-repo/-/compare/main...thinksoft-fix-issue-42'
         )
         mock_post.assert_not_called()
     else:
@@ -442,7 +442,7 @@ def test_send_pull_request(
         expected_title = pr_title if pr_title else 'Fix issue #42: Test Issue'
         assert post_data['title'] == expected_title
         assert post_data['description'].startswith('This pull request fixes #42.')
-        assert post_data['source_branch'] == 'openhands-fix-issue-42'
+        assert post_data['source_branch'] == 'thinksoft-fix-issue-42'
         assert post_data['target_branch'] == (
             target_branch if target_branch else 'main'
         )
@@ -598,7 +598,7 @@ def test_send_pull_request_git_push_failure(
         repo_path,
         'checkout',
         '-b',
-        'openhands-fix-issue-42',
+        'thinksoft-fix-issue-42',
     ]
 
     # Check the git push command
@@ -609,7 +609,7 @@ def test_send_pull_request_git_push_failure(
         repo_path,
         'push',
         'https://test-user:test-token@gitlab.com/test-owner/test-repo.git',
-        'openhands-fix-issue-42',
+        'thinksoft-fix-issue-42',
     ]
 
     # Assert that no pull request was created
@@ -680,7 +680,7 @@ def test_reply_to_comment(mock_get, mock_post, mock_issue):
     mock_response.status_code = 200
     mock_response.json.return_value = {
         'id': 123,
-        'body': 'Openhands fix success summary\n\n\nThis is a test reply.',
+        'body': 'Thinksoft fix success summary\n\n\nThis is a test reply.',
         'createdAt': '2024-10-01T12:34:56Z',
     }
 
@@ -691,7 +691,7 @@ def test_reply_to_comment(mock_get, mock_post, mock_issue):
 
     # Assert: check that the POST request was made with the correct parameters
     data = {
-        'body': 'Openhands fix success summary\n\n\nThis is a test reply.',
+        'body': 'Thinksoft fix success summary\n\n\nThis is a test reply.',
         'note_id': 123,
     }
 
@@ -709,10 +709,10 @@ def test_reply_to_comment(mock_get, mock_post, mock_issue):
     mock_response.raise_for_status.assert_called_once()
 
 
-@patch('openhands.resolver.send_pull_request.initialize_repo')
-@patch('openhands.resolver.send_pull_request.apply_patch')
-@patch('openhands.resolver.send_pull_request.update_existing_pull_request')
-@patch('openhands.resolver.send_pull_request.make_commit')
+@patch('thinksoft.resolver.send_pull_request.initialize_repo')
+@patch('thinksoft.resolver.send_pull_request.apply_patch')
+@patch('thinksoft.resolver.send_pull_request.update_existing_pull_request')
+@patch('thinksoft.resolver.send_pull_request.make_commit')
 def test_process_single_pr_update(
     mock_make_commit,
     mock_update_existing_pull_request,
@@ -771,8 +771,8 @@ def test_process_single_pr_update(
         None,
         None,
         None,
-        'openhands',
-        'openhands@all-hands.dev',
+        'thinksoft',
+        'thinksoft@all-hands.dev',
     )
 
     mock_initialize_repo.assert_called_once_with(mock_output_dir, 1, 'pr', 'branch 1')
@@ -783,8 +783,8 @@ def test_process_single_pr_update(
         f'{mock_output_dir}/patches/pr_1',
         resolver_output.issue,
         'pr',
-        'openhands',
-        'openhands@all-hands.dev',
+        'thinksoft',
+        'thinksoft@all-hands.dev',
     )
     mock_update_existing_pull_request.assert_called_once_with(
         issue=resolver_output.issue,
@@ -798,10 +798,10 @@ def test_process_single_pr_update(
     )
 
 
-@patch('openhands.resolver.send_pull_request.initialize_repo')
-@patch('openhands.resolver.send_pull_request.apply_patch')
-@patch('openhands.resolver.send_pull_request.send_pull_request')
-@patch('openhands.resolver.send_pull_request.make_commit')
+@patch('thinksoft.resolver.send_pull_request.initialize_repo')
+@patch('thinksoft.resolver.send_pull_request.apply_patch')
+@patch('thinksoft.resolver.send_pull_request.send_pull_request')
+@patch('thinksoft.resolver.send_pull_request.make_commit')
 def test_process_single_issue(
     mock_make_commit,
     mock_send_pull_request,
@@ -857,8 +857,8 @@ def test_process_single_issue(
         None,
         None,
         None,
-        'openhands',
-        'openhands@all-hands.dev',
+        'thinksoft',
+        'thinksoft@all-hands.dev',
     )
 
     # Assert that the mocked functions were called with correct arguments
@@ -870,8 +870,8 @@ def test_process_single_issue(
         f'{mock_output_dir}/patches/issue_1',
         resolver_output.issue,
         'issue',
-        'openhands',
-        'openhands@all-hands.dev',
+        'thinksoft',
+        'thinksoft@all-hands.dev',
     )
     mock_send_pull_request.assert_called_once_with(
         issue=resolver_output.issue,
@@ -886,15 +886,15 @@ def test_process_single_issue(
         reviewer=None,
         pr_title=None,
         base_domain='gitlab.com',
-        git_user_name='openhands',
-        git_user_email='openhands@all-hands.dev',
+        git_user_name='thinksoft',
+        git_user_email='thinksoft@all-hands.dev',
     )
 
 
-@patch('openhands.resolver.send_pull_request.initialize_repo')
-@patch('openhands.resolver.send_pull_request.apply_patch')
-@patch('openhands.resolver.send_pull_request.send_pull_request')
-@patch('openhands.resolver.send_pull_request.make_commit')
+@patch('thinksoft.resolver.send_pull_request.initialize_repo')
+@patch('thinksoft.resolver.send_pull_request.apply_patch')
+@patch('thinksoft.resolver.send_pull_request.send_pull_request')
+@patch('thinksoft.resolver.send_pull_request.make_commit')
 def test_process_single_issue_unsuccessful(
     mock_make_commit,
     mock_send_pull_request,
@@ -943,8 +943,8 @@ def test_process_single_issue_unsuccessful(
         None,
         None,
         None,
-        'openhands',
-        'openhands@all-hands.dev',
+        'thinksoft',
+        'thinksoft@all-hands.dev',
     )
 
     # Assert that none of the mocked functions were called
@@ -994,7 +994,7 @@ def test_send_pull_request_branch_naming(
     checkout_call, push_call = mock_run.call_args_list
 
     assert checkout_call == call(
-        ['git', '-C', repo_path, 'checkout', '-b', 'openhands-fix-issue-42-try3'],
+        ['git', '-C', repo_path, 'checkout', '-b', 'thinksoft-fix-issue-42-try3'],
         capture_output=True,
         text=True,
     )
@@ -1005,7 +1005,7 @@ def test_send_pull_request_branch_naming(
             repo_path,
             'push',
             'https://test-user:test-token@gitlab.com/test-owner/test-repo.git',
-            'openhands-fix-issue-42-try3',
+            'thinksoft-fix-issue-42-try3',
         ],
         capture_output=True,
         text=True,
@@ -1014,14 +1014,14 @@ def test_send_pull_request_branch_naming(
     # Check the result
     assert (
         result
-        == 'https://gitlab.com/test-owner/test-repo/-/compare/main...openhands-fix-issue-42-try3'
+        == 'https://gitlab.com/test-owner/test-repo/-/compare/main...thinksoft-fix-issue-42-try3'
     )
 
 
-@patch('openhands.resolver.send_pull_request.argparse.ArgumentParser')
-@patch('openhands.resolver.send_pull_request.process_single_issue')
-@patch('openhands.resolver.send_pull_request.load_single_resolver_output')
-@patch('openhands.resolver.send_pull_request.identify_token')
+@patch('thinksoft.resolver.send_pull_request.argparse.ArgumentParser')
+@patch('thinksoft.resolver.send_pull_request.process_single_issue')
+@patch('thinksoft.resolver.send_pull_request.load_single_resolver_output')
+@patch('thinksoft.resolver.send_pull_request.identify_token')
 @patch('os.path.exists')
 @patch('os.getenv')
 def test_main(
@@ -1048,8 +1048,8 @@ def test_main(
     mock_args.reviewer = None
     mock_args.pr_title = None
     mock_args.selected_repo = None
-    mock_args.git_user_name = 'openhands'
-    mock_args.git_user_email = 'openhands@all-hands.dev'
+    mock_args.git_user_name = 'thinksoft'
+    mock_args.git_user_email = 'thinksoft@all-hands.dev'
     mock_parser.return_value.parse_args.return_value = mock_args
 
     # Setup environment variables
@@ -1176,7 +1176,7 @@ def test_make_commit_no_changes(mock_subprocess_run):
     ]
 
     with pytest.raises(
-        RuntimeError, match='ERROR: Openhands failed to make code changes.'
+        RuntimeError, match='ERROR: Thinksoft failed to make code changes.'
     ):
         make_commit(repo_dir, issue, 'issue')
 

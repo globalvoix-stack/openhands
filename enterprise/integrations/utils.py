@@ -9,22 +9,22 @@ from jinja2 import Environment, FileSystemLoader
 from server.constants import WEB_HOST
 from storage.org_store import OrgStore
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.core.schema.agent import AgentState
-from openhands.events import Event, EventSource
-from openhands.events.action import (
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.core.schema.agent import AgentState
+from thinksoft.events import Event, EventSource
+from thinksoft.events.action import (
     AgentFinishAction,
     MessageAction,
 )
-from openhands.events.event_filter import EventFilter
-from openhands.events.event_store_abc import EventStoreABC
-from openhands.events.observation.agent import AgentStateChangedObservation
-from openhands.integrations.service_types import Repository
-from openhands.storage.data_models.conversation_status import ConversationStatus
-from openhands.utils.async_utils import call_sync_from_async
+from thinksoft.events.event_filter import EventFilter
+from thinksoft.events.event_store_abc import EventStoreABC
+from thinksoft.events.observation.agent import AgentStateChangedObservation
+from thinksoft.integrations.service_types import Repository
+from thinksoft.storage.data_models.conversation_status import ConversationStatus
+from thinksoft.utils.async_utils import call_sync_from_async
 
 if TYPE_CHECKING:
-    from openhands.server.conversation_manager.conversation_manager import (
+    from thinksoft.server.conversation_manager.conversation_manager import (
         ConversationManager,
     )
 
@@ -61,8 +61,8 @@ def get_session_expired_message(username: str | None = None) -> str:
         A formatted session expired message
     """
     if username:
-        return f'@{username} your session has expired. Please login again at [OpenHands Cloud]({HOST_URL}) and try again.'
-    return f'Your session has expired. Please login again at [OpenHands Cloud]({HOST_URL}) and try again.'
+        return f'@{username} your session has expired. Please login again at [Thinksoft Cloud]({HOST_URL}) and try again.'
+    return f'Your session has expired. Please login again at [Thinksoft Cloud]({HOST_URL}) and try again.'
 
 
 # Toggle for solvability report feature
@@ -79,28 +79,28 @@ ENABLE_V1_SLACK_RESOLVER = (
     os.getenv('ENABLE_V1_SLACK_RESOLVER', 'false').lower() == 'true'
 )
 
-OPENHANDS_RESOLVER_TEMPLATES_DIR = (
-    os.getenv('OPENHANDS_RESOLVER_TEMPLATES_DIR')
-    or 'openhands/integrations/templates/resolver/'
+THINKSOFT_RESOLVER_TEMPLATES_DIR = (
+    os.getenv('THINKSOFT_RESOLVER_TEMPLATES_DIR')
+    or 'thinksoft/integrations/templates/resolver/'
 )
-jinja_env = Environment(loader=FileSystemLoader(OPENHANDS_RESOLVER_TEMPLATES_DIR))
+jinja_env = Environment(loader=FileSystemLoader(THINKSOFT_RESOLVER_TEMPLATES_DIR))
 
 
 def get_oh_labels(web_host: str) -> tuple[str, str]:
-    """Get the OpenHands labels based on the web host.
+    """Get the Thinksoft labels based on the web host.
 
     Args:
         web_host: The web host string to check
 
     Returns:
         A tuple of (oh_label, inline_oh_label) where:
-        - oh_label is 'openhands-exp' for staging/local hosts, 'openhands' otherwise
-        - inline_oh_label is '@openhands-exp' for staging/local hosts, '@openhands' otherwise
+        - oh_label is 'thinksoft-exp' for staging/local hosts, 'thinksoft' otherwise
+        - inline_oh_label is '@thinksoft-exp' for staging/local hosts, '@thinksoft' otherwise
     """
     web_host = web_host.strip()
     is_staging_or_local = 'staging' in web_host or 'local' in web_host
-    oh_label = 'openhands-exp' if is_staging_or_local else 'openhands'
-    inline_oh_label = '@openhands-exp' if is_staging_or_local else '@openhands'
+    oh_label = 'thinksoft-exp' if is_staging_or_local else 'thinksoft'
+    inline_oh_label = '@thinksoft-exp' if is_staging_or_local else '@thinksoft'
     return oh_label, inline_oh_label
 
 
@@ -137,17 +137,17 @@ def has_exact_mention(text: str, mention: str) -> bool:
 
     Args:
         text: The text to check for mentions
-        mention: The mention to look for (e.g. "@openhands")
+        mention: The mention to look for (e.g. "@thinksoft")
 
     Returns:
         bool: True if the exact mention is found, False otherwise
 
     Example:
-        >>> has_exact_mention("Hello @openhands!", "@openhands")  # True
-        >>> has_exact_mention("Hello @openhands-agent!", "@openhands")  # False
-        >>> has_exact_mention("(@openhands)", "@openhands")  # True
-        >>> has_exact_mention("user@openhands.com", "@openhands")  # False
-        >>> has_exact_mention("Hello @OpenHands!", "@openhands")  # True (case-insensitive)
+        >>> has_exact_mention("Hello @thinksoft!", "@thinksoft")  # True
+        >>> has_exact_mention("Hello @thinksoft-agent!", "@thinksoft")  # False
+        >>> has_exact_mention("(@thinksoft)", "@thinksoft")  # True
+        >>> has_exact_mention("user@thinksoft.com", "@thinksoft")  # False
+        >>> has_exact_mention("Hello @Thinksoft!", "@thinksoft")  # True (case-insensitive)
     """
     # Convert both text and mention to lowercase for case-insensitive matching
     text_lower = text.lower()
@@ -185,7 +185,7 @@ def get_readable_error_reason(reason: str):
 def get_summary_for_agent_state(
     observations: list[AgentStateChangedObservation], conversation_link: str
 ) -> str:
-    unknown_error_msg = f'OpenHands encountered an unknown error. [See the conversation]({conversation_link}) for more information, or try again'
+    unknown_error_msg = f'Thinksoft encountered an unknown error. [See the conversation]({conversation_link}) for more information, or try again'
 
     if len(observations) == 0:
         logger.error(
@@ -206,7 +206,7 @@ def get_summary_for_agent_state(
                 'observation_reason': getattr(observation, 'reason', None),
             },
         )
-        return 'OpenHands was rate limited by the LLM provider. Please try again later.'
+        return 'Thinksoft was rate limited by the LLM provider. Please try again later.'
 
     if state == AgentState.ERROR:
         reason = observation.reason
@@ -222,7 +222,7 @@ def get_summary_for_agent_state(
             },
         )
 
-        return f'OpenHands encountered an error: **{reason}**.\n\n[See the conversation]({conversation_link}) for more information.'
+        return f'Thinksoft encountered an error: **{reason}**.\n\n[See the conversation]({conversation_link}) for more information.'
 
     if state == AgentState.AWAITING_USER_INPUT:
         logger.info(
@@ -233,7 +233,7 @@ def get_summary_for_agent_state(
                 'observation_reason': getattr(observation, 'reason', None),
             },
         )
-        return f'OpenHands is waiting for your input. [Continue the conversation]({conversation_link}) to provide additional instructions.'
+        return f'Thinksoft is waiting for your input. [Continue the conversation]({conversation_link}) to provide additional instructions.'
 
     # Log unknown agent state as error
     logger.error(
@@ -410,7 +410,7 @@ def infer_repo_from_message(user_msg: str) -> list[str]:
     # Captures: protocol, domain, owner, repo (with optional .git extension)
     git_url_pattern = r'https?://(?:github\.com|gitlab\.com|bitbucket\.org)/([a-zA-Z0-9_.-]+)/([a-zA-Z0-9_.-]+?)(?:\.git)?(?:[/?#].*?)?(?=\s|$|[^\w.-])'
 
-    # Pattern to match direct owner/repo mentions (e.g., "OpenHands/OpenHands")
+    # Pattern to match direct owner/repo mentions (e.g., "Thinksoft/Thinksoft")
     # Must be surrounded by word boundaries or specific characters to avoid false positives
     direct_pattern = (
         r'(?:^|\s|[\[\(\'"])([a-zA-Z0-9_.-]+)/([a-zA-Z0-9_.-]+)(?=\s|$|[\]\)\'",.])'

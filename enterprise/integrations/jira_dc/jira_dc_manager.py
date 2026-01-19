@@ -17,7 +17,7 @@ from integrations.manager import Manager
 from integrations.models import JobContext, Message
 from integrations.utils import (
     HOST_URL,
-    OPENHANDS_RESOLVER_TEMPLATES_DIR,
+    THINKSOFT_RESOLVER_TEMPLATES_DIR,
     filter_potential_repos_by_user_msg,
     get_session_expired_message,
 )
@@ -29,17 +29,17 @@ from storage.jira_dc_integration_store import JiraDcIntegrationStore
 from storage.jira_dc_user import JiraDcUser
 from storage.jira_dc_workspace import JiraDcWorkspace
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.integrations.provider import ProviderHandler
-from openhands.integrations.service_types import Repository
-from openhands.server.shared import server_config
-from openhands.server.types import (
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.integrations.provider import ProviderHandler
+from thinksoft.integrations.service_types import Repository
+from thinksoft.server.shared import server_config
+from thinksoft.server.types import (
     LLMAuthenticationError,
     MissingSettingsError,
     SessionExpiredError,
 )
-from openhands.server.user_auth.user_auth import UserAuth
-from openhands.utils.http_session import httpx_verify_option
+from thinksoft.server.user_auth.user_auth import UserAuth
+from thinksoft.utils.http_session import httpx_verify_option
 
 
 class JiraDcManager(Manager):
@@ -47,13 +47,13 @@ class JiraDcManager(Manager):
         self.token_manager = token_manager
         self.integration_store = JiraDcIntegrationStore.get_instance()
         self.jinja_env = Environment(
-            loader=FileSystemLoader(OPENHANDS_RESOLVER_TEMPLATES_DIR + 'jira_dc')
+            loader=FileSystemLoader(THINKSOFT_RESOLVER_TEMPLATES_DIR + 'jira_dc')
         )
 
     async def authenticate_user(
         self, user_email: str, jira_dc_user_id: str, workspace_id: int
     ) -> tuple[JiraDcUser | None, UserAuth | None]:
-        """Authenticate Jira DC user and get their OpenHands user auth."""
+        """Authenticate Jira DC user and get their Thinksoft user auth."""
 
         if not jira_dc_user_id or jira_dc_user_id == 'none':
             # Get Keycloak user ID from email
@@ -158,7 +158,7 @@ class JiraDcManager(Manager):
             comment_data = payload.get('comment', {})
             comment = comment_data.get('body', '')
 
-            if '@openhands' not in comment:
+            if '@thinksoft' not in comment:
                 return None
 
             issue_data = payload.get('issue', {})
@@ -179,7 +179,7 @@ class JiraDcManager(Manager):
                 if item.get('field') == 'labels' and 'toString' in item
             ]
 
-            if 'openhands' not in labels:
+            if 'thinksoft' not in labels:
                 return None
 
             issue_data = payload.get('issue', {})
@@ -396,11 +396,11 @@ class JiraDcManager(Manager):
 
         except MissingSettingsError as e:
             logger.warning(f'[Jira DC] Missing settings error: {str(e)}')
-            msg_info = f'Please re-login into [OpenHands Cloud]({HOST_URL}) before starting a job.'
+            msg_info = f'Please re-login into [Thinksoft Cloud]({HOST_URL}) before starting a job.'
 
         except LLMAuthenticationError as e:
             logger.warning(f'[Jira DC] LLM authentication error: {str(e)}')
-            msg_info = f'Please set a valid LLM API key in [OpenHands Cloud]({HOST_URL}) before starting a job.'
+            msg_info = f'Please set a valid LLM API key in [Thinksoft Cloud]({HOST_URL}) before starting a job.'
 
         except SessionExpiredError as e:
             logger.warning(f'[Jira DC] Session expired: {str(e)}')

@@ -1,6 +1,6 @@
-// Here are the list of verified models and providers that we know work well with OpenHands.
+// Here are the list of verified models and providers that we know work well with Thinksoft.
 export const VERIFIED_PROVIDERS = [
-  "openhands",
+  "thinksoft",
   "anthropic",
   "openai",
   "mistral",
@@ -71,9 +71,9 @@ export const VERIFIED_MISTRAL_MODELS = [
   "devstral-small-2505",
 ];
 
-// LiteLLM does not return the compatible OpenHands models with the provider, so we list them here to set them ourselves
-// (e.g., they return `claude-sonnet-4-20250514` instead of `openhands/claude-sonnet-4-20250514`)
-export const VERIFIED_OPENHANDS_MODELS = [
+// LiteLLM does not return the compatible Thinksoft models with the provider, so we list them here to set them ourselves
+// (e.g., they return `claude-sonnet-4-20250514` instead of `thinksoft/claude-sonnet-4-20250514`)
+export const VERIFIED_THINKSOFT_MODELS = [
   "claude-sonnet-4-20250514",
   "claude-sonnet-4-5-20250929",
   "claude-haiku-4-5-20251001",
@@ -92,5 +92,5 @@ export const VERIFIED_OPENHANDS_MODELS = [
   "qwen3-coder-480b",
 ];
 
-// Default model for OpenHands provider
-export const DEFAULT_OPENHANDS_MODEL = "openhands/claude-opus-4-5-20251101";
+// Default model for Thinksoft provider
+export const DEFAULT_THINKSOFT_MODEL = "thinksoft/claude-opus-4-5-20251101";

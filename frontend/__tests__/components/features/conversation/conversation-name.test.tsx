@@ -13,7 +13,7 @@ import { renderWithProviders } from "test-utils";
 import { ConversationName } from "#/components/features/conversation/conversation-name";
 import { ConversationNameContextMenu } from "#/components/features/conversation/conversation-name-context-menu";
 import { BrowserRouter } from "react-router";
-import type { Conversation } from "#/api/open-hands.types";
+import type { Conversation } from "#/api/thinksoft.types";
 
 // Hoisted mocks for controllable return values
 const {

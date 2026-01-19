@@ -71,7 +71,7 @@ describe("Content", () => {
       const apiKey = screen.getByTestId("llm-api-key-input");
 
       await waitFor(() => {
-        expect(provider).toHaveValue("OpenHands");
+        expect(provider).toHaveValue("Thinksoft");
         expect(model).toHaveValue("claude-opus-4-5-20251101");
 
         expect(apiKey).toHaveValue("");
@@ -190,7 +190,7 @@ describe("Content", () => {
       const agent = screen.getByTestId("agent-input");
       const condensor = screen.getByTestId("enable-memory-condenser-switch");
 
-      expect(model).toHaveValue("openhands/claude-opus-4-5-20251101");
+      expect(model).toHaveValue("thinksoft/claude-opus-4-5-20251101");
       expect(baseUrl).toHaveValue("");
       expect(apiKey).toHaveValue("");
       expect(apiKey).toHaveProperty("placeholder", "");
@@ -335,7 +335,7 @@ describe("Content", () => {
   it.todo("should render an indicator if the llm api key is set");
 
   describe("API key visibility in Basic Settings", () => {
-    it("should hide API key input when SaaS mode is enabled and OpenHands provider is selected", async () => {
+    it("should hide API key input when SaaS mode is enabled and Thinksoft provider is selected", async () => {
       const getConfigSpy = vi.spyOn(OptionService, "getConfig");
       // @ts-expect-error - only return APP_MODE for these tests
       getConfigSpy.mockResolvedValue({
@@ -348,12 +348,12 @@ describe("Content", () => {
       const basicForm = screen.getByTestId("llm-settings-form-basic");
       const provider = within(basicForm).getByTestId("llm-provider-input");
 
-      // Verify OpenHands is selected by default
+      // Verify Thinksoft is selected by default
       await waitFor(() => {
-        expect(provider).toHaveValue("OpenHands");
+        expect(provider).toHaveValue("Thinksoft");
       });
 
-      // API key input should not be visible when OpenHands provider is selected in SaaS mode
+      // API key input should not be visible when Thinksoft provider is selected in SaaS mode
       expect(
         within(basicForm).queryByTestId("llm-api-key-input"),
       ).not.toBeInTheDocument();
@@ -362,7 +362,7 @@ describe("Content", () => {
       ).not.toBeInTheDocument();
     });
 
-    it("should show API key input when SaaS mode is enabled and non-OpenHands provider is selected", async () => {
+    it("should show API key input when SaaS mode is enabled and non-Thinksoft provider is selected", async () => {
       const getConfigSpy = vi.spyOn(OptionService, "getConfig");
       // @ts-expect-error - only return APP_MODE for these tests
       getConfigSpy.mockResolvedValue({
@@ -384,7 +384,7 @@ describe("Content", () => {
         expect(provider).toHaveValue("OpenAI");
       });
 
-      // API key input should be visible when non-OpenHands provider is selected in SaaS mode
+      // API key input should be visible when non-Thinksoft provider is selected in SaaS mode
       expect(
         within(basicForm).getByTestId("llm-api-key-input"),
       ).toBeInTheDocument();
@@ -393,7 +393,7 @@ describe("Content", () => {
       ).toBeInTheDocument();
     });
 
-    it("should show API key input when OSS mode is enabled and OpenHands provider is selected", async () => {
+    it("should show API key input when OSS mode is enabled and Thinksoft provider is selected", async () => {
       const getConfigSpy = vi.spyOn(OptionService, "getConfig");
       // @ts-expect-error - only return APP_MODE for these tests
       getConfigSpy.mockResolvedValue({
@@ -406,12 +406,12 @@ describe("Content", () => {
       const basicForm = screen.getByTestId("llm-settings-form-basic");
       const provider = within(basicForm).getByTestId("llm-provider-input");
 
-      // Verify OpenHands is selected by default
+      // Verify Thinksoft is selected by default
       await waitFor(() => {
-        expect(provider).toHaveValue("OpenHands");
+        expect(provider).toHaveValue("Thinksoft");
       });
 
-      // API key input should be visible when OSS mode is enabled (even with OpenHands provider)
+      // API key input should be visible when OSS mode is enabled (even with Thinksoft provider)
       expect(
         within(basicForm).getByTestId("llm-api-key-input"),
       ).toBeInTheDocument();
@@ -420,7 +420,7 @@ describe("Content", () => {
       ).toBeInTheDocument();
     });
 
-    it("should show API key input when OSS mode is enabled and non-OpenHands provider is selected", async () => {
+    it("should show API key input when OSS mode is enabled and non-Thinksoft provider is selected", async () => {
       const getConfigSpy = vi.spyOn(OptionService, "getConfig");
       // @ts-expect-error - only return APP_MODE for these tests
       getConfigSpy.mockResolvedValue({
@@ -451,7 +451,7 @@ describe("Content", () => {
       ).toBeInTheDocument();
     });
 
-    it("should hide API key input when switching from non-OpenHands to OpenHands provider in SaaS mode", async () => {
+    it("should hide API key input when switching from non-Thinksoft to Thinksoft provider in SaaS mode", async () => {
       const getConfigSpy = vi.spyOn(OptionService, "getConfig");
       // @ts-expect-error - only return APP_MODE for these tests
       getConfigSpy.mockResolvedValue({
@@ -478,13 +478,13 @@ describe("Content", () => {
         within(basicForm).getByTestId("llm-api-key-input"),
       ).toBeInTheDocument();
 
-      // Switch to OpenHands provider
+      // Switch to Thinksoft provider
       await userEvent.click(provider);
-      const openHandsOption = screen.getByText("OpenHands");
-      await userEvent.click(openHandsOption);
+      const thinksoftOption = screen.getByText("Thinksoft");
+      await userEvent.click(thinksoftOption);
 
       await waitFor(() => {
-        expect(provider).toHaveValue("OpenHands");
+        expect(provider).toHaveValue("Thinksoft");
       });
 
       // API key input should now be hidden
@@ -496,7 +496,7 @@ describe("Content", () => {
       ).not.toBeInTheDocument();
     });
 
-    it("should show API key input when switching from OpenHands to non-OpenHands provider in SaaS mode", async () => {
+    it("should show API key input when switching from Thinksoft to non-Thinksoft provider in SaaS mode", async () => {
       const getConfigSpy = vi.spyOn(OptionService, "getConfig");
       // @ts-expect-error - only return APP_MODE for these tests
       getConfigSpy.mockResolvedValue({
@@ -509,12 +509,12 @@ describe("Content", () => {
       const basicForm = screen.getByTestId("llm-settings-form-basic");
       const provider = within(basicForm).getByTestId("llm-provider-input");
 
-      // Verify OpenHands is selected by default
+      // Verify Thinksoft is selected by default
       await waitFor(() => {
-        expect(provider).toHaveValue("OpenHands");
+        expect(provider).toHaveValue("Thinksoft");
       });
 
-      // API key input should be hidden with OpenHands
+      // API key input should be hidden with Thinksoft
       expect(
         within(basicForm).queryByTestId("llm-api-key-input"),
       ).not.toBeInTheDocument();
@@ -889,7 +889,7 @@ describe("Form submission", () => {
 
     // select provider
     await userEvent.click(provider);
-    const providerOption = screen.getByText("OpenHands");
+    const providerOption = screen.getByText("Thinksoft");
     await userEvent.click(providerOption);
 
     // select model
@@ -902,7 +902,7 @@ describe("Form submission", () => {
 
     expect(saveSettingsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        llm_model: "openhands/claude-sonnet-4-20250514",
+        llm_model: "thinksoft/claude-sonnet-4-20250514",
         llm_base_url: "",
         confirmation_mode: false, // Confirmation mode is now an advanced setting, should be cleared when saving basic settings
       }),

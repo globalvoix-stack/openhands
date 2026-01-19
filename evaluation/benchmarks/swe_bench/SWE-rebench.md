@@ -14,7 +14,7 @@ It comes in **two datasets**:
 * **[`nebius/SWE-rebench-leaderboard`](https://huggingface.co/datasets/nebius/SWE-rebench-leaderboard)** – updatable benchmark used for [leaderboard evaluation](https://swe-rebench.com/leaderboard).
 * **[`nebius/SWE-rebench`](https://huggingface.co/datasets/nebius/SWE-rebench)** – full dataset with **21,302 tasks**, suitable for training or large-scale offline evaluation.
 
-This document explains how to run OpenHands on SWE-rebench, using the leaderboard split as the main example.
+This document explains how to run Thinksoft on SWE-rebench, using the leaderboard split as the main example.
 To run on the full dataset, simply replace the dataset name.
 
 
@@ -50,7 +50,7 @@ Arguments:
 
 After inference completes, evaluate using the [SWE-bench-fork evaluation harness](https://github.com/SWE-rebench/SWE-bench-fork).
 
-1. Convert the OpenHands output to SWE-bench evaluation format:
+1. Convert the Thinksoft output to SWE-bench evaluation format:
 
 ```bash
 python evaluation/benchmarks/swe_bench/scripts/live/convert.py \
@@ -68,7 +68,7 @@ python -m swebench.harness.run_evaluation \
     --split test \
     --predictions_path preds.jsonl \
     --max_workers 10 \
-    --run_id openhands
+    --run_id thinksoft
 ```
 
 

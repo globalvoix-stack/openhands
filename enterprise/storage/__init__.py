@@ -18,7 +18,7 @@ from storage.linear_conversation import LinearConversation
 from storage.linear_user import LinearUser
 from storage.linear_workspace import LinearWorkspace
 from storage.maintenance_task import MaintenanceTask, MaintenanceTaskStatus
-from storage.openhands_pr import OpenhandsPR
+from storage.thinksoft_pr import ThinksoftPR
 from storage.org import Org
 from storage.org_member import OrgMember
 from storage.proactive_convos import ProactiveConversation
@@ -63,7 +63,7 @@ __all__ = [
     'LinearWorkspace',
     'MaintenanceTask',
     'MaintenanceTaskStatus',
-    'OpenhandsPR',
+    'ThinksoftPR',
     'Org',
     'OrgMember',
     'ProactiveConversation',

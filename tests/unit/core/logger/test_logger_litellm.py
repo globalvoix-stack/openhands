@@ -14,16 +14,16 @@ def reset_litellm():
     litellm.suppress_debug_info = False
     litellm.set_verbose = False
     # Remove logger module from sys.modules to force reload
-    if 'openhands.core.logger' in sys.modules:
-        del sys.modules['openhands.core.logger']
+    if 'thinksoft.core.logger' in sys.modules:
+        del sys.modules['thinksoft.core.logger']
 
 
 def test_litellm_settings_debug_llm_disabled(reset_litellm):
     """Test that litellm settings are properly configured when DEBUG_LLM is disabled."""
     with mock.patch.dict(os.environ, {'DEBUG_LLM': 'false'}):
-        import openhands.core.logger  # noqa: F401
+        import thinksoft.core.logger  # noqa: F401
 
-        importlib.reload(openhands.core.logger)
+        importlib.reload(thinksoft.core.logger)
 
         assert litellm.suppress_debug_info is True
         assert litellm.set_verbose is False
@@ -35,9 +35,9 @@ def test_litellm_settings_debug_llm_enabled(reset_litellm):
         mock.patch.dict(os.environ, {'DEBUG_LLM': 'true'}),
         mock.patch('builtins.input', return_value='y'),
     ):
-        import openhands.core.logger  # noqa: F401
+        import thinksoft.core.logger  # noqa: F401
 
-        importlib.reload(openhands.core.logger)
+        importlib.reload(thinksoft.core.logger)
 
         assert litellm.suppress_debug_info is False
         assert litellm.set_verbose is True
@@ -49,9 +49,9 @@ def test_litellm_settings_debug_llm_enabled_but_declined(reset_litellm):
         mock.patch.dict(os.environ, {'DEBUG_LLM': 'true'}),
         mock.patch('builtins.input', return_value='n'),
     ):
-        import openhands.core.logger  # noqa: F401
+        import thinksoft.core.logger  # noqa: F401
 
-        importlib.reload(openhands.core.logger)
+        importlib.reload(thinksoft.core.logger)
 
         assert litellm.suppress_debug_info is True
         assert litellm.set_verbose is False
@@ -72,12 +72,12 @@ def test_litellm_loggers_suppressed_with_uvicorn_json_config(reset_litellm):
     # (pytest caches bytecode, so we can't rely on imports or inspect.getsource)
     import pathlib
 
-    # Find the logger.py file path relative to the openhands package
+    # Find the logger.py file path relative to the thinksoft package
     # __file__ is tests/unit/core/logger/test_logger_litellm.py
-    # We need to go up to tests/, then find openhands/core/logger.py
+    # We need to go up to tests/, then find thinksoft/core/logger.py
     test_dir = pathlib.Path(__file__).parent  # tests/unit/core/logger
-    project_root = test_dir.parent.parent.parent.parent  # workspace/openhands
-    logger_file = project_root / 'openhands' / 'core' / 'logger.py'
+    project_root = test_dir.parent.parent.parent.parent  # workspace/thinksoft
+    logger_file = project_root / 'thinksoft' / 'core' / 'logger.py'
 
     # Read the actual source file
     with open(logger_file, 'r') as f:

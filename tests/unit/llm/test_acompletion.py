@@ -4,13 +4,13 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from openhands.core.config import load_openhands_config
-from openhands.core.exceptions import UserCancelledError
-from openhands.llm.async_llm import AsyncLLM
-from openhands.llm.llm import LLM
-from openhands.llm.streaming_llm import StreamingLLM
+from thinksoft.core.config import load_thinksoft_config
+from thinksoft.core.exceptions import UserCancelledError
+from thinksoft.llm.async_llm import AsyncLLM
+from thinksoft.llm.llm import LLM
+from thinksoft.llm.streaming_llm import StreamingLLM
 
-config = load_openhands_config()
+config = load_thinksoft_config()
 
 
 @pytest.fixture
@@ -46,7 +46,7 @@ def mock_response():
 
 @contextmanager
 def _patch_http():
-    with patch('openhands.llm.llm.httpx.get', MagicMock()) as mock_http:
+    with patch('thinksoft.llm.llm.httpx.get', MagicMock()) as mock_http:
         mock_http.json.return_value = {
             'data': [
                 {'model_name': 'some_model'},

@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from openhands.microagent import (
+from thinksoft.microagent import (
     BaseMicroagent,
     KnowledgeMicroagent,
     MicroagentMetadata,
@@ -19,7 +19,7 @@ CONTENT = '# dummy header\ndummy content\n## dummy subheader\ndummy subcontent\n
 
 def test_legacy_micro_agent_load(tmp_path):
     """Test loading of legacy microagents."""
-    legacy_file = tmp_path / '.openhands_instructions'
+    legacy_file = tmp_path / '.thinksoft_instructions'
     legacy_file.write_text(CONTENT)
 
     # Pass microagent_dir (tmp_path in this case) to load
@@ -188,7 +188,7 @@ This microagent has an invalid type.
     invalid_file.write_text(invalid_agent)
 
     # Attempt to load the microagent should raise a MicroagentValidationError
-    from openhands.core.exceptions import MicroagentValidationError
+    from thinksoft.core.exceptions import MicroagentValidationError
 
     with pytest.raises(MicroagentValidationError) as excinfo:
         load_microagents_from_dir(temp_microagents_dir)
@@ -320,8 +320,8 @@ def temp_microagents_dir_with_cursorrules():
     with tempfile.TemporaryDirectory() as temp_dir:
         root = Path(temp_dir)
 
-        # Create .openhands/microagents directory structure
-        microagents_dir = root / '.openhands' / 'microagents'
+        # Create .thinksoft/microagents directory structure
+        microagents_dir = root / '.thinksoft' / 'microagents'
         microagents_dir.mkdir(parents=True, exist_ok=True)
 
         # Create .cursorrules file in repository root
@@ -348,7 +348,7 @@ Repository-specific test instructions.
 def test_load_microagents_with_cursorrules(temp_microagents_dir_with_cursorrules):
     """Test loading microagents when .cursorrules file exists."""
     microagents_dir = (
-        temp_microagents_dir_with_cursorrules / '.openhands' / 'microagents'
+        temp_microagents_dir_with_cursorrules / '.thinksoft' / 'microagents'
     )
 
     repo_agents, knowledge_agents = load_microagents_from_dir(microagents_dir)
@@ -368,7 +368,7 @@ def test_load_microagents_with_cursorrules(temp_microagents_dir_with_cursorrules
 
 @pytest.fixture
 def temp_dir_with_cursorrules_only():
-    """Create a temporary directory with only .cursorrules file (no .openhands/microagents directory)."""
+    """Create a temporary directory with only .cursorrules file (no .thinksoft/microagents directory)."""
     with tempfile.TemporaryDirectory() as temp_dir:
         root = Path(temp_dir)
 
@@ -377,18 +377,18 @@ def temp_dir_with_cursorrules_only():
 Follow PEP 8 style guidelines."""
         (root / '.cursorrules').write_text(cursorrules_content)
 
-        # Note: We intentionally do NOT create .openhands/microagents directory
+        # Note: We intentionally do NOT create .thinksoft/microagents directory
         yield root
 
 
 def test_load_cursorrules_without_microagents_dir(temp_dir_with_cursorrules_only):
-    """Test loading .cursorrules file when .openhands/microagents directory doesn't exist.
+    """Test loading .cursorrules file when .thinksoft/microagents directory doesn't exist.
 
     This test reproduces the bug where .cursorrules is only loaded when
-    .openhands/microagents directory exists.
+    .thinksoft/microagents directory exists.
     """
     # Try to load from non-existent microagents directory
-    microagents_dir = temp_dir_with_cursorrules_only / '.openhands' / 'microagents'
+    microagents_dir = temp_dir_with_cursorrules_only / '.thinksoft' / 'microagents'
 
     repo_agents, knowledge_agents = load_microagents_from_dir(microagents_dir)
 
@@ -455,7 +455,7 @@ Use TypeScript for all new files."""
 
 @pytest.fixture
 def temp_dir_with_agents_md_only():
-    """Create a temporary directory with only AGENTS.md file (no .openhands/microagents directory)."""
+    """Create a temporary directory with only AGENTS.md file (no .thinksoft/microagents directory)."""
     with tempfile.TemporaryDirectory() as temp_dir:
         root = Path(temp_dir)
 
@@ -475,14 +475,14 @@ def temp_dir_with_agents_md_only():
 - Use type hints everywhere"""
         (root / 'AGENTS.md').write_text(agents_content)
 
-        # Note: We intentionally do NOT create .openhands/microagents directory
+        # Note: We intentionally do NOT create .thinksoft/microagents directory
         yield root
 
 
 def test_load_agents_md_without_microagents_dir(temp_dir_with_agents_md_only):
-    """Test loading AGENTS.md file when .openhands/microagents directory doesn't exist."""
+    """Test loading AGENTS.md file when .thinksoft/microagents directory doesn't exist."""
     # Try to load from non-existent microagents directory
-    microagents_dir = temp_dir_with_agents_md_only / '.openhands' / 'microagents'
+    microagents_dir = temp_dir_with_agents_md_only / '.thinksoft' / 'microagents'
 
     repo_agents, knowledge_agents = load_microagents_from_dir(microagents_dir)
 
@@ -523,10 +523,10 @@ Follow PEP 8 style guidelines."""
 
 
 def test_load_both_cursorrules_and_agents_md(temp_dir_with_both_cursorrules_and_agents):
-    """Test loading both .cursorrules and AGENTS.md files when .openhands/microagents doesn't exist."""
+    """Test loading both .cursorrules and AGENTS.md files when .thinksoft/microagents doesn't exist."""
     # Try to load from non-existent microagents directory
     microagents_dir = (
-        temp_dir_with_both_cursorrules_and_agents / '.openhands' / 'microagents'
+        temp_dir_with_both_cursorrules_and_agents / '.thinksoft' / 'microagents'
     )
 
     repo_agents, knowledge_agents = load_microagents_from_dir(microagents_dir)

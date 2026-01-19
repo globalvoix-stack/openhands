@@ -1,4 +1,4 @@
-import { openHands } from "../open-hands-axios";
+import { thinksoft } from "../thinksoft-axios";
 import { Provider } from "#/types/settings";
 import { GitRepository, PaginatedBranchesResponse, Branch } from "#/types/git";
 import { extractNextPageFromLink } from "#/utils/extract-next-page-from-link";
@@ -7,7 +7,7 @@ import {
   MicroagentContentResponse,
   GitChange,
   GitChangeDiff,
-} from "../open-hands.types";
+} from "../thinksoft.types";
 import ConversationService from "../conversation-service/conversation-service.api";
 
 /**
@@ -26,7 +26,7 @@ class GitService {
     per_page = 100,
     selected_provider?: Provider,
   ): Promise<GitRepository[]> {
-    const response = await openHands.get<GitRepository[]>(
+    const response = await thinksoft.get<GitRepository[]>(
       "/api/user/search/repositories",
       {
         params: {
@@ -52,7 +52,7 @@ class GitService {
     page = 1,
     per_page = 30,
   ) {
-    const { data } = await openHands.get<GitRepository[]>(
+    const { data } = await thinksoft.get<GitRepository[]>(
       "/api/user/repositories",
       {
         params: {
@@ -88,7 +88,7 @@ class GitService {
     per_page = 30,
   ) {
     const installationId = installations[installationIndex];
-    const response = await openHands.get<GitRepository[]>(
+    const response = await thinksoft.get<GitRepository[]>(
       "/api/user/repositories",
       {
         params: {
@@ -133,7 +133,7 @@ class GitService {
     perPage: number = 30,
     selectedProvider?: Provider,
   ): Promise<PaginatedBranchesResponse> {
-    const { data } = await openHands.get<PaginatedBranchesResponse>(
+    const { data } = await thinksoft.get<PaginatedBranchesResponse>(
       `/api/user/repository/branches`,
       {
         params: {
@@ -162,7 +162,7 @@ class GitService {
     perPage: number = 30,
     selectedProvider?: Provider,
   ): Promise<Branch[]> {
-    const { data } = await openHands.get<Branch[]>(
+    const { data } = await thinksoft.get<Branch[]>(
       `/api/user/search/branches`,
       {
         params: {
@@ -186,7 +186,7 @@ class GitService {
     owner: string,
     repo: string,
   ): Promise<RepositoryMicroagent[]> {
-    const { data } = await openHands.get<RepositoryMicroagent[]>(
+    const { data } = await thinksoft.get<RepositoryMicroagent[]>(
       `/api/user/repository/${owner}/${repo}/microagents`,
     );
     return data;
@@ -204,7 +204,7 @@ class GitService {
     repo: string,
     filePath: string,
   ): Promise<MicroagentContentResponse> {
-    const { data } = await openHands.get<MicroagentContentResponse>(
+    const { data } = await thinksoft.get<MicroagentContentResponse>(
       `/api/user/repository/${owner}/${repo}/microagents/content`,
       {
         params: { file_path: filePath },
@@ -219,7 +219,7 @@ class GitService {
    * @returns List of installation IDs
    */
   static async getUserInstallationIds(provider: Provider): Promise<string[]> {
-    const { data } = await openHands.get<string[]>(
+    const { data } = await thinksoft.get<string[]>(
       `/api/user/installations?provider=${provider}`,
     );
     return data;
@@ -232,7 +232,7 @@ class GitService {
    */
   static async getGitChanges(conversationId: string): Promise<GitChange[]> {
     const url = `${ConversationService.getConversationUrl(conversationId)}/git/changes`;
-    const { data } = await openHands.get<GitChange[]>(url, {
+    const { data } = await thinksoft.get<GitChange[]>(url, {
       headers: ConversationService.getConversationHeaders(),
     });
     return data;
@@ -249,7 +249,7 @@ class GitService {
     path: string,
   ): Promise<GitChangeDiff> {
     const url = `${ConversationService.getConversationUrl(conversationId)}/git/diff`;
-    const { data } = await openHands.get<GitChangeDiff>(url, {
+    const { data } = await thinksoft.get<GitChangeDiff>(url, {
       params: { path },
       headers: ConversationService.getConversationHeaders(),
     });

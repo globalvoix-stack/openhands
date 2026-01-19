@@ -25,13 +25,13 @@ if [ -z "$AGENT" ]; then
   AGENT="BrowsingAgent"
 fi
 
-get_openhands_version
+get_thinksoft_version
 
 echo "AGENT: $AGENT"
-echo "OPENHANDS_VERSION: $OPENHANDS_VERSION"
+echo "THINKSOFT_VERSION: $THINKSOFT_VERSION"
 echo "MODEL_CONFIG: $MODEL_CONFIG"
 
-EVAL_NOTE="${OPENHANDS_VERSION}_${NOTE}"
+EVAL_NOTE="${THINKSOFT_VERSION}_${NOTE}"
 
 COMMAND="export PYTHONPATH=evaluation/benchmarks/miniwob:\$PYTHONPATH && poetry run python evaluation/benchmarks/miniwob/run_infer.py \
   --agent-cls $AGENT \

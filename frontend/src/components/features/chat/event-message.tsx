@@ -1,16 +1,16 @@
 import React from "react";
-import { OpenHandsAction } from "#/types/core/actions";
+import { ThinksoftAction } from "#/types/core/actions";
 import {
   isUserMessage,
   isErrorObservation,
   isAssistantMessage,
-  isOpenHandsAction,
+  isThinksoftAction,
   isFinishAction,
   isRejectObservation,
   isMcpObservation,
   isTaskTrackingObservation,
 } from "#/types/core/guards";
-import { OpenHandsObservation } from "#/types/core/observations";
+import { ThinksoftObservation } from "#/types/core/observations";
 import { MicroagentStatus } from "#/types/microagent-status";
 import { useConfig } from "#/hooks/query/use-config";
 import { useFeedbackExists } from "#/hooks/query/use-feedback-exists";
@@ -26,7 +26,7 @@ import {
 } from "./event-message-components";
 
 interface EventMessageProps {
-  event: OpenHandsAction | OpenHandsObservation;
+  event: ThinksoftAction | ThinksoftObservation;
   hasObservationPair: boolean;
   isAwaitingUserConfirmation: boolean;
   isLastMessage: boolean;
@@ -81,8 +81,8 @@ export function EventMessage({
     return <ErrorEventMessage event={event} {...commonProps} />;
   }
 
-  // Observation pairs with OpenHands actions
-  if (hasObservationPair && isOpenHandsAction(event)) {
+  // Observation pairs with Thinksoft actions
+  if (hasObservationPair && isThinksoftAction(event)) {
     return (
       <ObservationPairEventMessage
         event={event}

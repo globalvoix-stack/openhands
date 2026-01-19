@@ -1,7 +1,7 @@
 """
 E2E: Settings configuration test (GitHub token)
 
-This test navigates to OpenHands, configures the LLM API key if prompted,
+This test navigates to Thinksoft, configures the LLM API key if prompted,
 then ensures the GitHub token is set in Settings → Integrations and that the
 home screen shows the repository selector.
 """
@@ -14,7 +14,7 @@ from playwright.sync_api import Page, expect
 def test_github_token_configuration(page: Page, base_url: str):
     """
     Test the GitHub token configuration flow:
-    1. Navigate to OpenHands
+    1. Navigate to Thinksoft
     2. Configure LLM API key if needed
     3. Check if GitHub token is already configured
     4. If not, navigate to settings and configure it
@@ -27,8 +27,8 @@ def test_github_token_configuration(page: Page, base_url: str):
     if not base_url:
         base_url = 'http://localhost:12000'
 
-    # Navigate to the OpenHands application
-    print(f'Step 1: Navigating to OpenHands application at {base_url}...')
+    # Navigate to the Thinksoft application
+    print(f'Step 1: Navigating to Thinksoft application at {base_url}...')
     page.goto(base_url)
     page.wait_for_load_state('networkidle', timeout=30000)
 
@@ -76,7 +76,7 @@ def test_github_token_configuration(page: Page, base_url: str):
 
     try:
         # First, check if we're already on the home screen with repository selection
-        # This means the GitHub token is already configured in ~/.openhands/settings.json
+        # This means the GitHub token is already configured in ~/.thinksoft/settings.json
         connect_to_provider = page.locator('text=Connect to a Repository')
 
         if connect_to_provider.is_visible(timeout=3000):

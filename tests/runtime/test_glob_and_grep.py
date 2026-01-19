@@ -8,13 +8,13 @@ from conftest import (
     _load_runtime,
 )
 
-from openhands.agenthub.readonly_agent.function_calling import (
+from thinksoft.agenthub.readonly_agent.function_calling import (
     glob_to_cmdrun,
     grep_to_cmdrun,
 )
-from openhands.core.logger import openhands_logger as logger
-from openhands.events.action import CmdRunAction
-from openhands.events.observation import CmdOutputObservation, ErrorObservation
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.events.action import CmdRunAction
+from thinksoft.events.observation import CmdOutputObservation, ErrorObservation
 
 # Skip all tests in this file if running with CLIRuntime,
 # as they depend on `rg` (ripgrep) which is not guaranteed to be available.
@@ -48,9 +48,9 @@ def test_grep_to_cmdrun_basic():
     assert 'Below are the execution results' in cmd
 
 
-def test_grep_to_cmdrun_quotes(temp_dir, runtime_cls, run_as_openhands):
+def test_grep_to_cmdrun_quotes(temp_dir, runtime_cls, run_as_thinksoft):
     """Test patterns with different types of quotes."""
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Double quotes in pattern
         cmd = grep_to_cmdrun(r'const message = "Hello"', '/workspace')
@@ -80,9 +80,9 @@ def test_grep_to_cmdrun_quotes(temp_dir, runtime_cls, run_as_openhands):
         _close_test_runtime(runtime)
 
 
-def test_grep_to_cmdrun_special_chars(runtime_cls, run_as_openhands, temp_dir):
+def test_grep_to_cmdrun_special_chars(runtime_cls, run_as_thinksoft, temp_dir):
     """Test patterns with special shell characters."""
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Create test directory and files with special pattern content
         setup_cmd = """
@@ -153,9 +153,9 @@ def test_grep_to_cmdrun_special_chars(runtime_cls, run_as_openhands, temp_dir):
         _close_test_runtime(runtime)
 
 
-def test_grep_to_cmdrun_paths_with_spaces(runtime_cls, run_as_openhands, temp_dir):
+def test_grep_to_cmdrun_paths_with_spaces(runtime_cls, run_as_thinksoft, temp_dir):
     """Test paths with spaces and special characters."""
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Create test files with content in paths with spaces
         setup_cmd = """
@@ -207,9 +207,9 @@ def test_glob_to_cmdrun_basic():
     assert 'echo "Below are the execution results of the glob command:' in cmd
 
 
-def test_glob_to_cmdrun_special_patterns(runtime_cls, run_as_openhands, temp_dir):
+def test_glob_to_cmdrun_special_patterns(runtime_cls, run_as_thinksoft, temp_dir):
     """Test glob patterns with special characters."""
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Create test files matching the patterns we'll test
         setup_cmd = r"""
@@ -265,9 +265,9 @@ def test_glob_to_cmdrun_special_patterns(runtime_cls, run_as_openhands, temp_dir
         _close_test_runtime(runtime)
 
 
-def test_glob_to_cmdrun_paths_with_spaces(runtime_cls, run_as_openhands, temp_dir):
+def test_glob_to_cmdrun_paths_with_spaces(runtime_cls, run_as_thinksoft, temp_dir):
     """Test paths with spaces and special characters for glob command."""
-    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_openhands)
+    runtime, config = _load_runtime(temp_dir, runtime_cls, run_as_thinksoft)
     try:
         # Create test directories with spaces and special characters
         setup_cmd = """

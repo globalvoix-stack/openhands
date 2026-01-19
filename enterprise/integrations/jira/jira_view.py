@@ -9,12 +9,12 @@ from storage.jira_integration_store import JiraIntegrationStore
 from storage.jira_user import JiraUser
 from storage.jira_workspace import JiraWorkspace
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.server.services.conversation_service import (
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.server.services.conversation_service import (
     create_new_conversation,
 )
-from openhands.server.user_auth.user_auth import UserAuth
-from openhands.storage.data_models.conversation_metadata import ConversationTrigger
+from thinksoft.server.user_auth.user_auth import UserAuth
+from thinksoft.storage.data_models.conversation_metadata import ConversationTrigger
 
 integration_store = JiraIntegrationStore.get_instance()
 

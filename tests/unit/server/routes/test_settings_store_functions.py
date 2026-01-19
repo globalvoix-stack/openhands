@@ -6,20 +6,20 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from pydantic import SecretStr
 
-from openhands.integrations.provider import ProviderToken
-from openhands.integrations.service_types import ProviderType
-from openhands.server.routes.secrets import (
+from thinksoft.integrations.provider import ProviderToken
+from thinksoft.integrations.service_types import ProviderType
+from thinksoft.server.routes.secrets import (
     app as secrets_router,
 )
-from openhands.server.routes.secrets import (
+from thinksoft.server.routes.secrets import (
     check_provider_tokens,
 )
-from openhands.server.routes.settings import store_llm_settings
-from openhands.server.settings import POSTProviderModel
-from openhands.storage import get_file_store
-from openhands.storage.data_models.secrets import Secrets
-from openhands.storage.data_models.settings import Settings
-from openhands.storage.secrets.file_secrets_store import FileSecretsStore
+from thinksoft.server.routes.settings import store_llm_settings
+from thinksoft.server.settings import POSTProviderModel
+from thinksoft.storage import get_file_store
+from thinksoft.storage.data_models.secrets import Secrets
+from thinksoft.storage.data_models.settings import Settings
+from thinksoft.storage.secrets.file_secrets_store import FileSecretsStore
 
 
 # Mock functions to simulate the actual functions in settings.py
@@ -38,9 +38,9 @@ def test_client():
 
     with (
         patch.dict(os.environ, {'SESSION_API_KEY': ''}, clear=False),
-        patch('openhands.server.dependencies._SESSION_API_KEY', None),
+        patch('thinksoft.server.dependencies._SESSION_API_KEY', None),
         patch(
-            'openhands.server.routes.secrets.check_provider_tokens',
+            'thinksoft.server.routes.secrets.check_provider_tokens',
             AsyncMock(return_value=''),
         ),
     ):
@@ -58,7 +58,7 @@ def file_secrets_store(temp_dir):
     file_store = get_file_store('local', temp_dir)
     store = FileSecretsStore(file_store)
     with patch(
-        'openhands.storage.secrets.file_secrets_store.FileSecretsStore.get_instance',
+        'thinksoft.storage.secrets.file_secrets_store.FileSecretsStore.get_instance',
         AsyncMock(return_value=store),
     ):
         yield store
@@ -76,7 +76,7 @@ async def test_check_provider_tokens_valid():
 
     # Mock the validate_provider_token function to return GITHUB for valid tokens
     with patch(
-        'openhands.server.routes.secrets.validate_provider_token'
+        'thinksoft.server.routes.secrets.validate_provider_token'
     ) as mock_validate:
         mock_validate.return_value = ProviderType.GITHUB
 
@@ -98,7 +98,7 @@ async def test_check_provider_tokens_invalid():
 
     # Mock the validate_provider_token function to return None for invalid tokens
     with patch(
-        'openhands.server.routes.secrets.validate_provider_token'
+        'thinksoft.server.routes.secrets.validate_provider_token'
     ) as mock_validate:
         mock_validate.return_value = None
 

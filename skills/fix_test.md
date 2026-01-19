@@ -1,7 +1,7 @@
 ---
 name: fix_test
 version: 1.0.0
-author: openhands
+author: thinksoft
 agent: CodeActAgent
 triggers:
 - /fix_test

@@ -2,7 +2,7 @@ import { delay, http, HttpResponse } from "msw";
 import { GitRepository, Branch, PaginatedBranchesResponse } from "#/types/git";
 import { Provider } from "#/types/settings";
 import { RepositoryMicroagent } from "#/types/microagent-management";
-import { MicroagentContentResponse } from "#/api/open-hands.types";
+import { MicroagentContentResponse } from "#/api/thinksoft.types";
 
 // Generate a list of mock repositories with realistic data
 const generateMockRepositories = (
@@ -40,7 +40,7 @@ const generateMockBranches = (count: number): Branch[] =>
 const generateMockMicroagents = (count: number): RepositoryMicroagent[] =>
   Array.from({ length: count }, (_, i) => ({
     name: `microagent-${i + 1}`,
-    path: `.openhands/microagents/microagent-${i + 1}.md`,
+    path: `.thinksoft/microagents/microagent-${i + 1}.md`,
     created_at: new Date(
       Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000,
     ).toISOString(),

@@ -136,7 +136,7 @@ if 'uvicorn.server' not in sys.modules:
     uvicorn_server.HANDLED_SIGNALS = set()
     sys.modules['uvicorn.server'] = uvicorn_server
 
-# Stub json_repair used by openhands.io.json
+# Stub json_repair used by thinksoft.io.json
 if 'json_repair' not in sys.modules:
     json_repair_mod = types.ModuleType('json_repair')
 
@@ -162,10 +162,10 @@ if 'deprecated' not in sys.modules:
     deprecated_mod.deprecated = deprecated
     sys.modules['deprecated'] = deprecated_mod
 
-# Import OpenHands after stubbing optional deps
-from openhands.core.config.llm_config import LLMConfig
-from openhands.llm.llm import LLM
-from openhands.llm.metrics import Metrics
+# Import Thinksoft after stubbing optional deps
+from thinksoft.core.config.llm_config import LLMConfig
+from thinksoft.llm.llm import LLM
+from thinksoft.llm.metrics import Metrics
 
 
 class DummyResponse:

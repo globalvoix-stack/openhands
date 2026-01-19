@@ -7,10 +7,10 @@ from storage.database import session_maker
 from storage.feedback import ConversationFeedback
 from storage.stored_conversation_metadata_saas import StoredConversationMetadataSaas
 
-from openhands.events.event_store import EventStore
-from openhands.server.shared import file_store
-from openhands.server.user_auth import get_user_id
-from openhands.utils.async_utils import call_sync_from_async
+from thinksoft.events.event_store import EventStore
+from thinksoft.server.shared import file_store
+from thinksoft.server.user_auth import get_user_id
+from thinksoft.utils.async_utils import call_sync_from_async
 
 router = APIRouter(prefix='/feedback', tags=['feedback'])
 

@@ -2,10 +2,10 @@ import json
 
 import pytest
 
-from openhands.storage.conversation.file_conversation_store import FileConversationStore
-from openhands.storage.locations import get_conversation_metadata_filename
-from openhands.storage.memory import InMemoryFileStore
-from openhands.utils.search_utils import iterate, offset_to_page_id, page_id_to_offset
+from thinksoft.storage.conversation.file_conversation_store import FileConversationStore
+from thinksoft.storage.locations import get_conversation_metadata_filename
+from thinksoft.storage.memory import InMemoryFileStore
+from thinksoft.utils.search_utils import iterate, offset_to_page_id, page_id_to_offset
 
 
 def test_offset_to_page_id():

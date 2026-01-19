@@ -1,5 +1,5 @@
-from openhands.resolver.patching.apply import apply_diff
-from openhands.resolver.patching.patch import parse_patch
+from thinksoft.resolver.patching.apply import apply_diff
+from thinksoft.resolver.patching.patch import parse_patch
 
 
 def test_patch_whitespace_mismatch():

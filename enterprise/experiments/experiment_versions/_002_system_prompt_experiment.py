@@ -12,8 +12,8 @@ from experiments.constants import EXPERIMENT_SYSTEM_PROMPT_EXPERIMENT
 from server.constants import IS_FEATURE_ENV
 from storage.experiment_assignment_store import ExperimentAssignmentStore
 
-from openhands.core.config.openhands_config import OpenHandsConfig
-from openhands.core.logger import openhands_logger as logger
+from thinksoft.core.config.thinksoft_config import ThinksoftConfig
+from thinksoft.core.logger import thinksoft_logger as logger
 
 
 def _get_system_prompt_variant(user_id, conversation_id):
@@ -117,18 +117,18 @@ def _get_system_prompt_variant(user_id, conversation_id):
 
 
 def handle_system_prompt_experiment(
-    user_id, conversation_id, config: OpenHandsConfig
-) -> OpenHandsConfig:
+    user_id, conversation_id, config: ThinksoftConfig
+) -> ThinksoftConfig:
     """
-    Handle the system prompt experiment for OpenHands config.
+    Handle the system prompt experiment for Thinksoft config.
 
     Args:
         user_id: The user ID
         conversation_id: The conversation ID
-        config: The OpenHands configuration
+        config: The Thinksoft configuration
 
     Returns:
-        Modified OpenHands configuration
+        Modified Thinksoft configuration
     """
     enabled_variant = _get_system_prompt_variant(user_id, conversation_id)
 

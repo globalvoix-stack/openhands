@@ -19,7 +19,7 @@ from storage.lite_llm_manager import LiteLlmManager
 from storage.subscription_access import SubscriptionAccess
 from storage.user_store import UserStore
 
-from openhands.server.user_auth import get_user_id
+from thinksoft.server.user_auth import get_user_id
 
 stripe.api_key = STRIPE_API_KEY
 billing_router = APIRouter(prefix='/api/billing')
@@ -34,10 +34,10 @@ def is_all_hands_saas_environment(request: Request) -> bool:
         request: FastAPI Request object
 
     Returns:
-        True if the current domain contains "all-hands.dev" or "openhands.dev" postfix
+        True if the current domain contains "all-hands.dev" or "thinksoft.dev" postfix
     """
     hostname = request.url.hostname or ''
-    return hostname.endswith('all-hands.dev') or hostname.endswith('openhands.dev')
+    return hostname.endswith('all-hands.dev') or hostname.endswith('thinksoft.dev')
 
 
 def validate_saas_environment(request: Request) -> None:
@@ -184,7 +184,7 @@ async def create_checkout_session(
                     'unit_amount': body.amount * 100,
                     'currency': 'usd',
                     'product_data': {
-                        'name': 'OpenHands Credits',
+                        'name': 'Thinksoft Credits',
                         'tax_code': 'txcd_10000000',
                     },
                     'tax_behavior': 'exclusive',

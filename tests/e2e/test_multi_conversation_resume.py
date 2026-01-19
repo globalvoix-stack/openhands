@@ -22,8 +22,8 @@ from playwright.sync_api import Page, expect
 def test_multi_conversation_resume(page: Page):
     """
     Test resuming an older conversation and continuing it:
-    1. Navigate to OpenHands (assumes GitHub token is already configured)
-    2. Select the OpenHands repository
+    1. Navigate to Thinksoft (assumes GitHub token is already configured)
+    2. Select the Thinksoft repository
     3. Start a conversation and ask about a specific file
     4. Wait for agent response
     5. Navigate away from the conversation
@@ -34,8 +34,8 @@ def test_multi_conversation_resume(page: Page):
     # Create test-results directory if it doesn't exist
     os.makedirs('test-results', exist_ok=True)
 
-    # Navigate to the OpenHands application
-    print('Step 1: Navigating to OpenHands application...')
+    # Navigate to the Thinksoft application
+    print('Step 1: Navigating to Thinksoft application...')
     page.goto('http://localhost:12000')
     page.wait_for_load_state('networkidle', timeout=30000)
 
@@ -43,8 +43,8 @@ def test_multi_conversation_resume(page: Page):
     page.screenshot(path='test-results/multi_conv_01_initial_load.png')
     print('Screenshot saved: multi_conv_01_initial_load.png')
 
-    # Step 2: Select the OpenHands repository
-    print('Step 2: Selecting openhands-agent/OpenHands repository...')
+    # Step 2: Select the Thinksoft repository
+    print('Step 2: Selecting thinksoft-agent/Thinksoft repository...')
 
     # Wait for the home screen to load
     home_screen = page.locator('[data-testid="home-screen"]')
@@ -63,7 +63,7 @@ def test_multi_conversation_resume(page: Page):
     # Type the repository name
     try:
         page.keyboard.press('Control+a')  # Select all
-        page.keyboard.type('openhands-agent/OpenHands')
+        page.keyboard.type('thinksoft-agent/Thinksoft')
         print('Used keyboard.type() for React Select component')
     except Exception as e:
         print(f'Keyboard input failed: {e}')
@@ -72,14 +72,14 @@ def test_multi_conversation_resume(page: Page):
 
     # Try to find and click the repository option
     option_selectors = [
-        '[data-testid="repo-dropdown"] [role="option"]:has-text("openhands-agent/OpenHands")',
-        '[data-testid="repo-dropdown"] [role="option"]:has-text("OpenHands")',
-        '[data-testid="repo-dropdown"] div[id*="option"]:has-text("openhands-agent/OpenHands")',
-        '[data-testid="repo-dropdown"] div[id*="option"]:has-text("OpenHands")',
-        '[role="option"]:has-text("openhands-agent/OpenHands")',
-        '[role="option"]:has-text("OpenHands")',
-        'div:has-text("openhands-agent/OpenHands"):not([id="aria-results"])',
-        'div:has-text("OpenHands"):not([id="aria-results"])',
+        '[data-testid="repo-dropdown"] [role="option"]:has-text("thinksoft-agent/Thinksoft")',
+        '[data-testid="repo-dropdown"] [role="option"]:has-text("Thinksoft")',
+        '[data-testid="repo-dropdown"] div[id*="option"]:has-text("thinksoft-agent/Thinksoft")',
+        '[data-testid="repo-dropdown"] div[id*="option"]:has-text("Thinksoft")',
+        '[role="option"]:has-text("thinksoft-agent/Thinksoft")',
+        '[role="option"]:has-text("Thinksoft")',
+        'div:has-text("thinksoft-agent/Thinksoft"):not([id="aria-results"])',
+        'div:has-text("Thinksoft"):not([id="aria-results"])',
     ]
 
     option_found = False
@@ -411,8 +411,8 @@ def test_multi_conversation_resume(page: Page):
                             'pyproject' in content_lower
                             and ('name' in content_lower or 'project' in content_lower)
                             and (
-                                'openhands' in content_lower
-                                or 'openhands-ai' in content_lower
+                                'thinksoft' in content_lower
+                                or 'thinksoft-ai' in content_lower
                             )
                         ):
                             print(
@@ -426,11 +426,11 @@ def test_multi_conversation_resume(page: Page):
                                 project_name = name_match.group(1)
                                 print(f'Extracted project name: {project_name}')
                             else:
-                                # Fallback: look for "openhands" variations in the content
-                                if 'openhands-ai' in content_lower:
-                                    project_name = 'openhands-ai'
-                                elif 'openhands' in content_lower:
-                                    project_name = 'openhands'
+                                # Fallback: look for "thinksoft" variations in the content
+                                if 'thinksoft-ai' in content_lower:
+                                    project_name = 'thinksoft-ai'
+                                elif 'thinksoft' in content_lower:
+                                    project_name = 'thinksoft'
                                 print(f'Fallback project name: {project_name}')
 
                             first_response_found = True
@@ -833,7 +833,7 @@ def test_multi_conversation_resume(page: Page):
                                 'application',
                                 'software',
                                 'ai',
-                                'openhands',
+                                'thinksoft',
                             ]
 
                             if any(

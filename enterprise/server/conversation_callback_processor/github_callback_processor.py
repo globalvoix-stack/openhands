@@ -16,12 +16,12 @@ from storage.conversation_callback import (
 )
 from storage.database import session_maker
 
-from openhands.core.logger import openhands_logger as logger
-from openhands.core.schema.agent import AgentState
-from openhands.events.action import MessageAction
-from openhands.events.observation.agent import AgentStateChangedObservation
-from openhands.events.serialization.event import event_to_dict
-from openhands.server.shared import conversation_manager
+from thinksoft.core.logger import thinksoft_logger as logger
+from thinksoft.core.schema.agent import AgentState
+from thinksoft.events.action import MessageAction
+from thinksoft.events.observation.agent import AgentStateChangedObservation
+from thinksoft.events.serialization.event import event_to_dict
+from thinksoft.server.shared import conversation_manager
 
 
 class GithubCallbackProcessor(ConversationCallbackProcessor):
@@ -44,7 +44,7 @@ class GithubCallbackProcessor(ConversationCallbackProcessor):
         """
         try:
             # Create a message object for GitHub
-            message_obj = Message(source=SourceType.OPENHANDS, message=message)
+            message_obj = Message(source=SourceType.THINKSOFT, message=message)
 
             # Get the token manager
             token_manager = TokenManager()
